@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
 
@@ -10,11 +8,9 @@ import IsSmall from '@/layout/is-small';
 
 const MediumScreenNavigationBar = dynamic(() => import('@/app/[locale]/(main)/medium-navigation-items'), {
 	loading: () => <div className="h-full w-nav" />,
-	ssr: false,
 });
 const SmallScreenNavigationBar = dynamic(() => import('@/app/[locale]/(main)/small-navigation-items'), {
 	loading: () => <div className="w-full h-nav" />,
-	ssr: false,
 });
 
 export default function NavigationBar({ children }: { children: ReactNode }) {

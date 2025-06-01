@@ -5,11 +5,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 
-import { Batcher } from '@/lib/batcher';
+import useUser from '@/hooks/use-user';
 import { cn } from '@/lib/utils';
 import { MessageGroup } from '@/types/response/Message';
-
-import { useQuery } from '@tanstack/react-query';
 
 type Props = {
 	className?: string;
@@ -19,10 +17,7 @@ type Props = {
 export function MessageCard({ className, message }: Props) {
 	const { userId, contents, createdAt } = message;
 
-	const { data } = useQuery({
-		queryKey: ['users', userId],
-		queryFn: () => Batcher.user.get(userId),
-	});
+	const { data } = useUser(userId);
 
 	return (
 		<div className={cn('flex gap-2 p-2 w-full text-base text-wrap hover:bg-secondary/50', className)}>

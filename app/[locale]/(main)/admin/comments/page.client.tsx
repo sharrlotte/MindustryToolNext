@@ -18,9 +18,8 @@ import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 
 import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
-import { Batcher } from '@/lib/batcher';
+import useUser from '@/hooks/use-user';
 import { deleteCommentById, getAllCommentCount, getAllComments } from '@/query/comment';
 import { Comment } from '@/types/response/Comment';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
@@ -73,10 +72,7 @@ type CommentCardProps = {
 function CommentCard({ comment }: CommentCardProps) {
 	const { id, userId, content, createdAt } = comment;
 
-	const { data } = useClientQuery({
-		queryKey: ['users', userId],
-		queryFn: () => Batcher.user.get(userId),
-	});
+	const { data } = useUser(userId);
 
 	return (
 		<div className="flex flex-col gap-2 p-2 border rounded-md">
