@@ -65,7 +65,7 @@ function GlobalChatInput() {
 			session={session}
 			filter={true}
 			alt={
-				<div className="h-full mx-auto whitespace-nowrap border-t p-2 text-center">
+				<div className="h-full whitespace-nowrap border-t p-2 text-center">
 					<LoginButton className="justify-center">
 						<Tran text="chat.require-login" />
 					</LoginButton>

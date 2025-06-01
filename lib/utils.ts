@@ -147,7 +147,7 @@ export type Filter =
 	| undefined;
 
 export function hasAccess(session: Session | ApiError | undefined | null, filter: Filter): boolean {
-	if (filter === undefined) {
+	if (filter === undefined || filter === true) {
 		return true;
 	}
 
