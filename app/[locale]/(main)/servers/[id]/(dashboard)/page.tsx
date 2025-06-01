@@ -38,7 +38,6 @@ type Props = {
 
 const HostServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/host-server-button'));
 const InitServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/init-server-button'));
-const RemoveServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/remove-server-button'));
 const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button'));
 const StopServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/stop-server-button'));
 const PlayerList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/player-list'));
@@ -173,8 +172,7 @@ export default async function Page({ params }: Props) {
 					<footer className="flex gap-8 flex-wrap justify-between h-9 w-full overflow-x-auto">
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className="flex flex-row gap-2 justify-end items-center ml-auto">
-								{status !== 'DELETED' && <RemoveServerButton id={id} />}
-								{(status === 'HOST' || status === 'UP') && <ShutdownServerButton id={id} />}
+								{status !== 'DELETED' && <ShutdownServerButton id={id} />}
 								{status === 'HOST' && <PauseServerButton id={id} />}
 								{status === 'HOST' ? (
 									<StopServerButton id={id} />
