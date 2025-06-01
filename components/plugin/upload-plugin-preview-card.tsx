@@ -59,19 +59,17 @@ function UploadPluginCard({ plugin }: Props) {
 
 	return (
 		<div className="min-h-28 relative flex flex-col gap-2 rounded-md bg-card p-2">
-			<DeleteButton
-				className="right-1 backdrop-brightness-100"
-				description={<Tran text="delete-alert" args={{ name }} />}
-				variant="ghost"
-				isLoading={isDeleting}
-				onClick={() => deletePluginById(id)}
-			/>
-			<InternalLink className="flex flex-col gap-2" href={githubUrl}>
-				<h2>{name}</h2>
-				<span>{description}</span>
+			<InternalLink className="flex flex-col gap-2 items-start" href={githubUrl}>
+				<h2 className="font-semibold">{name}</h2>
+				<span className="text-muted-foreground">{description}</span>
 				<IdUserCard id={userId} />
 			</InternalLink>
 			<div className="flex gap-2">
+				<DeleteButton
+					description={<Tran text="delete-alert" args={{ name }} />}
+					isLoading={isDeleting}
+					onClick={() => deletePluginById(id)}
+				/>
 				<VerifyPluginDialog plugin={plugin} />
 			</div>
 		</div>

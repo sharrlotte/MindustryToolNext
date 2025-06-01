@@ -4,7 +4,13 @@ export const errors: string[] = [];
 
 export function reportError(error: any) {
 	if (process.env.NODE_ENV === 'production') {
-		fetch(`${env.url.api}/error`, { method: 'POST', body: getLoggedErrorMessage(error) });
+		fetch(`${env.url.api}/error`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ message: getLoggedErrorMessage(error) }),
+		});
 		errors.push(error);
 	}
 }
