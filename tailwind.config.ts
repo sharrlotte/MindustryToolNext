@@ -126,7 +126,7 @@ module.exports = {
 				'slide-in': 'slide-in 0.5s forwards',
 				popup: 'popup 0.2s forwards',
 				spin: 'spin 1s linear infinite',
-				appear: 'appear 0.5s linear',
+				appear: 'appear 0.2s linear',
 				expand: 'expand 1s linear forwards',
 				collapse: 'collapse 1s linear forwards',
 			},
