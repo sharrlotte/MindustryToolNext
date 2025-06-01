@@ -30,10 +30,9 @@ import UserAvatar from '@/components/user/user-avatar';
 
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
-import useClientQuery from '@/hooks/use-client-query';
 import useQueriesData from '@/hooks/use-queries-data';
+import useUser from '@/hooks/use-user';
 import { useI18n } from '@/i18n/client';
-import { Batcher } from '@/lib/batcher';
 import { isError } from '@/lib/error';
 import { isNumeric } from '@/lib/utils';
 import { CreateCommentRequest, CreateCommentSchema, createComment, getComments } from '@/query/comment';
@@ -122,10 +121,7 @@ type CommentCardProps = {
 export function CommentCard({ comment }: CommentCardProps) {
 	const { userId, content, createdAt } = comment;
 
-	const { data } = useClientQuery({
-		queryKey: ['users', userId],
-		queryFn: () => Batcher.user.get(userId),
-	});
+	const { data } = useUser(userId);
 
 	return (
 		<div className="flex flex-col gap-2">
