@@ -91,7 +91,7 @@ const GridPaginationList = <T, P extends QuerySchema>({
 	}
 
 	return (
-		<div className="scroll-container h-full">
+		<div className="h-full">
 			<section
 				className={cn(
 					'grid w-full grid-cols-[repeat(auto-fill,minmax(min(var(--preview-size),100%),1fr))] justify-center gap-2',

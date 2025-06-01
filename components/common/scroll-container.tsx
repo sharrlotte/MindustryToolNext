@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, forwardRef, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 
 import { CatchError } from '@/components/common/catch-error';
 
@@ -13,52 +13,46 @@ type Props = {
 	className?: string;
 	additionalPadding?: AdditionalPadding;
 	children: ReactNode;
-	as?: 'div' | 'ul' | 'ol' | 'section';
-};
+} & React.ComponentPropsWithoutRef<'div'>;
 
-const ScrollContainer = React.forwardRef<HTMLDivElement, Props>(({ className, id, children, as = 'div' }, forwardedRef) => {
+const ScrollContainer = forwardRef<HTMLDivElement, Props>(({ className, id, children }, forwardedRef) => {
 	const pathname = usePathname();
-	const lastScrollTop = React.useRef(0);
+	const innerRef = useRef<HTMLDivElement>(null);
 
-	const Component = as;
+	useImperativeHandle(forwardedRef, () => innerRef.current!, []);
 
-	function handle(container: HTMLDivElement | null) {
-		if (!container) return;
+	const scrollKey = useMemo(() => `scroll-top${pathname}-${id}`.replaceAll('/', '-'), [id, pathname]);
 
-		const scrollTop = sessionStorage.getItem(`scroll-top-${pathname}-${id}`);
-		try {
-			if (scrollTop) {
-				container.scrollTop = parseInt(scrollTop);
-			} else {
-				container.scrollTop = lastScrollTop.current;
+	useEffect(() => {
+		const scrollTop = localStorage.getItem(scrollKey);
+		const div = innerRef.current;
+
+		if (div && scrollTop) {
+			try {
+				setTimeout(() => {
+					if (innerRef.current?.scrollTop !== parseInt(scrollTop)) div.scrollTo({ top: parseInt(scrollTop), behavior: 'smooth' });
+				}, 0);
+				div.scrollTo({ top: parseInt(scrollTop) });
+			} catch (error) {
+				console.error(error);
 			}
-		} catch (error) {
-			console.error(error);
 		}
-	}
+	}, [scrollKey]);
+
+	const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+		localStorage.setItem(scrollKey, event.currentTarget.scrollTop.toString());
+	};
 
 	return (
 		<CatchError>
-			<Component
+			<div
 				id={id}
+				ref={innerRef}
 				className={cn('h-fit scroll-container overflow-y-auto w-full', className)}
-				onScroll={(event) => {
-					lastScrollTop.current = event.currentTarget.scrollTop;
-					sessionStorage.setItem(`scroll-top-${pathname}-${id}`, event.currentTarget.scrollTop.toString());
-				}}
-				ref={(current: any) => {
-					if (typeof forwardedRef === 'function') {
-						forwardedRef(current);
-						handle(current);
-					} else if (forwardedRef !== null) {
-						forwardedRef.current = current;
-					} else {
-						handle(current);
-					}
-				}}
+				onScroll={handleScroll}
 			>
 				{children}
-			</Component>
+			</div>
 		</CatchError>
 	);
 });

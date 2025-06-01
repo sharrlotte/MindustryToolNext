@@ -235,7 +235,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 								{useSort && <SortDropdown sortBy={sortBy} handleSortChange={handleSortChange} />}
 							</div>
 							<Separator className="border" orientation="horizontal" />
-							<ScrollContainer className="overscroll-none space-y-2">
+							<ScrollContainer id="tag-container" className="overscroll-none space-y-2">
 								<AuthorFilter authorId={authorId} handleAuthorChange={handleAuthorChange} />
 								<Separator className="border" orientation="horizontal" />
 								<ModFilter multiple value={selectedMod} onValueSelected={setSelectedMod} />
