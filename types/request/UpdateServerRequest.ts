@@ -11,6 +11,7 @@ export const PutServerSchema = z.object({
 	gamemode: z.string().max(100).optional().nullable(),
 	hostCommand: z.string().max(1000).optional().nullable(),
 	webhook: z.string().max(1000).optional().nullable(),
+	discordChannelId: z.string().max(100).optional().nullable(),
 	avatar: z.string().max(1000).optional().nullable(),
 	image: z.string().max(1000),
 });

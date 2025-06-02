@@ -14,6 +14,7 @@ export default interface Server {
 	hostCommand: string | null;
 	address: string;
 	image: string;
+	discordChannelId: string | null;
 	avatar: string;
 	webhook: string | null;
 	isAutoTurnOff: boolean;

@@ -18,6 +18,7 @@ export type ServerDto = {
 	mapName: string;
 	address: string;
 	avatar: string;
+	discordChannelId: string | null;
 	isAutoTurnOff: boolean;
 	isHub: boolean;
 	isPaused: boolean;
