@@ -1,7 +1,7 @@
 'use client';
 
 import { LayoutGridIcon, List } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 
 import Hydrated from '@/components/common/hydrated';
 
@@ -49,12 +49,6 @@ export function ListLayout({ children }: Props) {
 		config: { paginationType },
 	} = useSession();
 
-	const [hydrated, setHydrated] = useState(false);
-
-	useEffect(() => setHydrated(true), []);
-
-	if (hydrated === false) return null;
-
 	return paginationType === 'infinite-scroll' ? children : undefined;
 }
 
@@ -62,12 +56,6 @@ export function GridLayout({ children }: Props) {
 	const {
 		config: { paginationType },
 	} = useSession();
-
-	const [hydrated, setHydrated] = useState(false);
-
-	useEffect(() => setHydrated(true), []);
-
-	if (hydrated === false) return null;
 
 	return paginationType === 'grid' ? children : undefined;
 }
