@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import PluginList from '@/app/[locale]/(main)/servers/[id]/plugins/plugin-list';
 
@@ -31,7 +31,9 @@ export default function ServerPluginPage({ id }: Props) {
 						<PluginList id={id} />
 					</ServerTabsContent>
 					<ServerTabsContent value="download">
-						<DownloadPluginList />
+						<Suspense>
+							<DownloadPluginList />
+						</Suspense>
 					</ServerTabsContent>
 				</ScrollContainer>
 			</ServerTabs>
