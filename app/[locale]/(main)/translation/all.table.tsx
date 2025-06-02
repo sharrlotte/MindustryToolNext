@@ -11,7 +11,6 @@ import GridPaginationList from '@/components/common/grid-pagination-list';
 import PaginationNavigator from '@/components/common/pagination-navigator';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -144,11 +143,9 @@ function ValueCard({ keyId, tKey: key, keyGroup, value, locale }: ValueCardProps
 			<div className="flex gap-2 items-center">
 				<TranslationStatus status={status} />
 				{currentValue.id && (
-					<EllipsisButton>
-						<Suspense>
-							<DeleteTranslationDialog value={{ key, id: keyId }} />
-						</Suspense>
-					</EllipsisButton>
+					<Suspense>
+						<DeleteTranslationDialog variant='ghost' value={{ key, id: keyId }} />
+					</Suspense>
 				)}
 			</div>
 		</div>
