@@ -5,6 +5,7 @@ import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 import ChatPanel from '@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-panel';
+import ServerImage from '@/app/[locale]/(main)/servers/[id]/(dashboard)/server-image';
 
 import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
@@ -212,15 +213,7 @@ export default async function Page({ params }: Props) {
 						</div>
 						{status === 'HOST' && (
 							<div className="flex min-w-[30vw] h-auto w-full rounded-md overflow-hidden">
-								<Image
-									key={status}
-									id="server-map-preview"
-									className="object-contain overflow-hidden w-full h-auto rounded-md border"
-									src={`${env.url.api}/servers/${id}/image`}
-									alt={name}
-									width={500}
-									height={500}
-								/>
+								<ServerImage id={id} key={status} alt={name} />
 							</div>
 						)}
 					</div>
