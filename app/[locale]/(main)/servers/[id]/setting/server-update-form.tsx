@@ -219,6 +219,24 @@ export default function ServerUpdateForm({ server }: Props) {
 				/>
 				<FormField
 					control={form.control}
+					name="discordChannelId"
+					render={({ field }) => (
+						<FormItem className="grid">
+							<FormLabel>
+								<Tran text="server.discord-channel-id" />
+							</FormLabel>
+							<FormControl>
+								<Input {...field} value={field.value ?? ''} />
+							</FormControl>
+							<FormDescription>
+								<Tran text="server.discord-channel-id-description" />
+							</FormDescription>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
 					name="avatar"
 					render={({ field }) => (
 						<FormItem className="grid">
