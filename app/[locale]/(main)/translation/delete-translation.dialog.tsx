@@ -1,3 +1,5 @@
+import React from 'react';
+
 import DeleteButton from '@/components/button/delete.button';
 import Tran from '@/components/common/tran';
 
@@ -13,9 +15,10 @@ type DeleteTranslationDialogProps = {
 		id: string;
 		key: string;
 	};
+	variant?: Parameters<typeof DeleteButton>[0]['variant'];
 };
 
-export default function DeleteTranslationDialog({ value: { id, key } }: DeleteTranslationDialogProps) {
+export default function DeleteTranslationDialog({ value: { id, key }, variant = 'command' }: DeleteTranslationDialogProps) {
 	const axios = useClientApi();
 	const { invalidateByKey } = useQueriesData();
 	const { mutate, isPending } = useMutation({
@@ -28,7 +31,7 @@ export default function DeleteTranslationDialog({ value: { id, key } }: DeleteTr
 
 	return (
 		<DeleteButton
-			variant="command"
+			variant={variant}
 			isLoading={isPending}
 			description={<Tran text="translation.delete" args={{ key }} />}
 			onClick={() => mutate(id)}
