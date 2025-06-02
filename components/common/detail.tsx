@@ -23,7 +23,7 @@ type DetailProps = HTMLAttributes<HTMLDivElement>;
 
 export function Detail({ className, children }: DetailProps) {
 	return (
-		<ScrollContainer className="absolute inset-0 w-full h-full" additionalPadding="pr-4">
+		<ScrollContainer className="absolute inset-0 w-full h-full">
 			<div className={cn('flex overflow-hidden relative flex-col gap-6 h-full', className)}>{children}</div>
 		</ScrollContainer>
 	);
