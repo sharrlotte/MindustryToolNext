@@ -81,7 +81,7 @@ export default function UploadSchematicDetailCard({
 			<DetailContent>
 				<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
 				<DetailHeader>
-					<DetailTitle>{name}</DetailTitle>
+					<DetailTitle className="border-b">{name}</DetailTitle>
 					<Tabs defaultValue="info" className="overflow-hidden flex flex-col">
 						<TabsList className="grid w-full grid-cols-2">
 							<TabsTrigger value="info">
