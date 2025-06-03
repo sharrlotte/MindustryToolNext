@@ -1,7 +1,13 @@
 import { Metadata } from 'next';
-import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import React, { Suspense } from 'react';
 
-import ServerPluginPage from '@/app/[locale]/(main)/servers/[id]/plugins/page.client';
+import PluginList from '@/app/[locale]/(main)/servers/[id]/plugins/plugin-list';
+
+import ScrollContainer from '@/components/common/scroll-container';
+import Tran from '@/components/common/tran';
+import Divider from '@/components/ui/divider';
+import { ServerTabs, ServerTabsContent, ServerTabsList, ServerTabsTrigger } from '@/components/ui/server-tabs';
 
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
@@ -14,6 +20,8 @@ type Props = {
 		id: string;
 	}>;
 };
+
+const DownloadPluginList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/plugins/download-plugin-list'));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id, locale } = await params;
@@ -30,8 +38,30 @@ export default async function Page({ params }: Props) {
 	const { id } = await params;
 
 	return (
-		<Suspense>
-			<ServerPluginPage id={id} />
-		</Suspense>
+		<div className="h-full w-full overflow-hidden p-2 flex flex-col gap-2">
+			<Suspense>
+				<ServerTabs className="gap-2" name="tab" value="list" values={['list', 'download']}>
+					<ServerTabsList className="border-none rounded-lg w-fit">
+						<ServerTabsTrigger value="list">
+							<Tran text="list" />
+						</ServerTabsTrigger>
+						<ServerTabsTrigger value="download">
+							<Tran text="download" />
+						</ServerTabsTrigger>
+					</ServerTabsList>
+					<Divider />
+					<ScrollContainer>
+						<ServerTabsContent value="list">
+							<PluginList id={id} />
+						</ServerTabsContent>
+						<Suspense>
+							<ServerTabsContent value="download">
+								<DownloadPluginList />
+							</ServerTabsContent>
+						</Suspense>
+					</ScrollContainer>
+				</ServerTabs>
+			</Suspense>
+		</div>
 	);
 }
