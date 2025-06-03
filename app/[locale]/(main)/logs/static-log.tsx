@@ -1,7 +1,7 @@
 'use client';
 
 import { FilterIcon, XIcon } from 'lucide-react';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -39,8 +39,6 @@ const defaultFilter: Omit<LogPaginationQueryType, 'page' | 'size'> = {
 export default function StaticLog() {
 	const [filter, _setFilter] = useState<Omit<LogPaginationQueryType, 'page' | 'size'>>(defaultFilter);
 	const { env, ip, userId, url, content, before, after, collection } = filter;
-
-	const container = useRef<HTMLDivElement | null>(null);
 
 	const setFilter = useCallback(
 		(value: Partial<Omit<LogPaginationQueryType, 'page' | 'size'>>) => _setFilter((prev) => ({ ...prev, ...value })),
@@ -83,7 +81,7 @@ export default function StaticLog() {
 				</div>
 				<PaginationLayoutSwitcher />
 			</div>
-			<ScrollContainer className="relative flex h-full flex-col gap-2" ref={container}>
+			<ScrollContainer className="relative flex h-full flex-col gap-2">
 				<ListLayout>
 					<InfinitePage<Log, typeof LogPaginationQuerySchema>
 						className="flex w-full flex-col items-center justify-center gap-2"
