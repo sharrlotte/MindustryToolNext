@@ -2,7 +2,6 @@ import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } f
 import { useLocalStorage } from 'usehooks-ts';
 
 import NoResult from '@/components/common/no-result';
-import ScrollContainer from '@/components/common/scroll-container';
 
 import { useSocket } from '@/context/socket.context';
 import useMessageQuery from '@/hooks/use-message-query';
@@ -216,13 +215,13 @@ export default function MessageList({
 	}
 
 	return (
-		<ScrollContainer id={queryKey.join('_')} className={cn('flex h-full w-full overflow-x-hidden', className)} ref={container}>
+		<div className={cn('flex h-full w-full overflow-x-hidden', className)} ref={container}>
 			<section className="h-fit w-full" ref={(ref) => setList(ref)}>
 				{!hasNextPage && end}
 				{isFetching && loader}
 				{pages}
 				{isError && <ErrorMessage error={error} />}
 			</section>
-		</ScrollContainer>
+		</div>
 	);
 }

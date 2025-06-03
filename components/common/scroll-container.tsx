@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import React, { ReactNode, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -11,12 +11,10 @@ type Props = {
 	children: ReactNode;
 } & React.ComponentPropsWithoutRef<'div'>;
 
-const ScrollContainer = forwardRef<HTMLDivElement, Props>(({ className, id, children }, forwardedRef) => {
+export default function ScrollContainer({ className, id, children, ...rest }: Props) {
 	const pathname = usePathname();
 	const innerRef = useRef<HTMLDivElement>(null);
 	const scrollKey = useMemo(() => `scroll-top${pathname}-${id}`.replaceAll('/', '-'), [id, pathname]);
-
-	useImperativeHandle(forwardedRef, () => innerRef.current!, []);
 
 	useEffect(() => {
 		try {
@@ -38,12 +36,13 @@ const ScrollContainer = forwardRef<HTMLDivElement, Props>(({ className, id, chil
 	);
 
 	return (
-		<div ref={innerRef} className={cn('h-fit scroll-container overflow-y-auto w-full', className)} onScroll={handleScroll}>
+		<div
+			{...rest}
+			ref={innerRef}
+			className={cn('h-fit scroll-container overflow-y-auto w-full', className)}
+			onScroll={handleScroll}
+		>
 			{children}
 		</div>
 	);
-});
-
-ScrollContainer.displayName = 'ScrollContainer';
-
-export default ScrollContainer;
+}
