@@ -99,7 +99,7 @@ export default function StaticLog() {
 						queryKey={['logs']}
 						queryFn={getLogs}
 					>
-						{(page) => page.map((data) => <LogCard key={data.id} log={data} onClick={setFilter} />)}
+						{(page) => page.map((data) => <LogCard key={data.id} log={data} />)}
 					</InfinitePage>
 				</ListLayout>
 				<GridLayout>
@@ -119,7 +119,7 @@ export default function StaticLog() {
 						queryKey={['logs']}
 						queryFn={getLogs}
 					>
-						{(page) => page.map((data) => <LogCard key={data.id} log={data} onClick={setFilter} />)}
+						{(page) => page.map((data) => <LogCard key={data.id} log={data} />)}
 					</GridPaginationList>
 				</GridLayout>
 			</ScrollContainer>
