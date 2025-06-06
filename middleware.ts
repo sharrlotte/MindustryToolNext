@@ -1,12 +1,17 @@
 import acceptLanguage from 'accept-language';
 import { NextRequest, NextResponse, userAgent } from 'next/server';
 
+
+
 import { cookieName, defaultLocale, locales } from '@/i18n/config';
+
 
 acceptLanguage.languages(locales as any);
 
 export const config = {
-	matcher: ['/((?!api|_next/static|_next/image|links|assets|favicon.ico|sw.js|site.webmanifest|sitemap|en|vi|kr|cn|jp|ru|uk).*)'],
+	matcher: [
+		'/((?!api|_next/static|_next/image|webmanifest|links|assets|favicon.ico|sw.js|site.webmanifest|sitemap|en|vi|kr|cn|jp|ru|uk).*)',
+	],
 };
 
 export function middleware(req: NextRequest) {
