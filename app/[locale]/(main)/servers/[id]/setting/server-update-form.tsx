@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
 import ImageUploader from '@/components/common/image-uploader';
+import InputWithAutoComplete from '@/components/common/input-with-autocomplete';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -158,20 +159,12 @@ export default function ServerUpdateForm({ server }: Props) {
 								<Tran text="server.image" />
 							</FormLabel>
 							<FormControl>
-								<ComboBox
+								<InputWithAutoComplete
+									{...field}
 									className={cn('w-full lowercase', {
 										'border-destructive': fieldState.invalid,
 									})}
-									searchBar={false}
-									value={{ label: field.value, value: field.value }}
-									values={
-										images?.map((value) => ({
-											label: value,
-											value,
-										})) ?? []
-									}
-									required
-									onChange={(value) => field.onChange(value)}
+									values={images ?? []}
 								/>
 							</FormControl>
 							<FormDescription>
