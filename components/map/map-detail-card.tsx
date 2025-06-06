@@ -79,7 +79,7 @@ export default function MapDetailCard({
 				<DetailContent>
 					<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
 					<DetailHeader>
-						<DetailTitle>{name}</DetailTitle>
+						<DetailTitle className="border-b">{name}</DetailTitle>
 						<Tabs defaultValue="info" className="overflow-hidden flex flex-col">
 							<TabsList className="grid w-full grid-cols-3">
 								<TabsTrigger value="info">

@@ -57,7 +57,7 @@ export default function UploadMapDetailCard({
 			<DetailContent>
 				<DetailImage src={imageUrl} errorSrc={errorImageUrl} alt={name} />
 				<DetailHeader>
-					<DetailTitle>{name}</DetailTitle>
+					<DetailTitle className="border-b">{name}</DetailTitle>
 					<Tabs defaultValue="info" className="flex overflow-hidden flex-col">
 						<TabsList className="grid grid-cols-3 w-full">
 							<TabsTrigger value="info">

@@ -57,7 +57,7 @@ type TitleProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
 
 export function DetailTitle({ className, children }: TitleProps) {
 	return (
-		<h1 className={cn('text-xl capitalize border-b', className)}>
+		<h1 className={cn('text-xl capitalize', className)}>
 			<ColorText text={children} />
 		</h1>
 	);
