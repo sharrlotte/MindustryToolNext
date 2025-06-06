@@ -174,7 +174,6 @@ export default async function Page({ params }: Props) {
 						<ProtectedElement session={session} filter={canAccess}>
 							<div className="flex flex-row gap-2 justify-end items-center ml-auto">
 								{status !== 'DELETED' && <ShutdownServerButton id={id} />}
-								{status === 'HOST' && <PauseServerButton id={id} />}
 								{status === 'HOST' ? (
 									<StopServerButton id={id} />
 								) : status === 'UP' ? (
@@ -182,6 +181,7 @@ export default async function Page({ params }: Props) {
 								) : (
 									<InitServerButton id={id} />
 								)}
+								{status === 'HOST' && <PauseServerButton id={id} />}
 							</div>
 						</ProtectedElement>
 					</footer>

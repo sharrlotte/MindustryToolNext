@@ -159,7 +159,7 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 					))}
 				</NavLinkContainer>
 			</NavLinkProvider>
-			<div className="flex overflow-hidden flex-col w-full h-full" key="child">
+			<div className="flex overflow-hidden flex-col w-full h-full relative" key="child">
 				<CatchError>
 					<ProtectedRoute filter={filter}>{children}</ProtectedRoute>
 				</CatchError>
