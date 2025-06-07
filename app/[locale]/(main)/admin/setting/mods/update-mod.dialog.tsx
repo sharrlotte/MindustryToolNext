@@ -27,12 +27,13 @@ type Props = {
 };
 
 export default function UpdateModDialog({ mod }: Props) {
+	const { icon, ...modWithoutIcon } = mod;
 	const form = useForm<UpdateModRequest>({
 		resolver: zodResolver(UpdateModSchema),
-		defaultValues: mod,
+		defaultValues: modWithoutIcon,
 	});
 
-	const [url, setUrl] = useState<string>(mod.icon);
+	const [url, setUrl] = useState<string>(icon);
 
 	const [open, setOpen] = useState(false);
 
