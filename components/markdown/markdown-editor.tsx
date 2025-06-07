@@ -121,7 +121,6 @@ export default function MarkdownEditor({ value, onChange, defaultMode = 'live' }
 						onInput={(event) => {
 							setHtml(event.currentTarget.innerHTML);
 							htmlProcessor.process(event.currentTarget.innerHTML).then(({ result }) => {
-								console.log({ result });
 								onChange(({ files }) => ({
 									text: result as string,
 									files,

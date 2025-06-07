@@ -1,9 +1,6 @@
 import React, { useMemo } from 'react';
 
-
-
 import { colours } from '@/constant/constant';
-
 
 // eslint-disable-next-line no-control-regex
 const COLOR_REGEX = /(\[[#]*[a-fA-F0-9]*\]|\[[#]*[a-zA-Z]*\]|\u001B\[[0-9;]*m)/gim;
@@ -111,7 +108,7 @@ function parse(text: string | undefined): ParseResult {
 
 	const arr = text.match(COLOR_REGEX);
 
-	if (!arr) return [{ line: text, format: {} }];
+	if (!arr) return breakdownLine(text).map((line) => ({ line, format: {} }));
 
 	const colors: {
 		rawColor: string;
@@ -220,7 +217,7 @@ function breakdownLine(text: string): string[] {
 		return [];
 	}
 
-	const lines = text.split('\n');
+	const lines = text.split(/\n/g);
 	const result = [];
 
 	if (lines.length === 1) {

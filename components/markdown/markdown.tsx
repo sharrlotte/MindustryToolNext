@@ -43,8 +43,6 @@ function toId(children: any): string {
 		return toId((children.props as any).children);
 	}
 
-	console.log(children);
-
 	throw new Error('Cannot extract ID from complex ReactNode on client');
 }
 
@@ -61,7 +59,7 @@ const Heading = ({ as: Tag, children, ...props }: { as: any; children: React.Rea
 			</Tag>
 		);
 	} catch (e: any) {
-		console.log(e);
+		console.error(e);
 		return (
 			<span>
 				<Tag {...props}>{children}</Tag>
