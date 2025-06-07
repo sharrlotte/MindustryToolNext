@@ -42,7 +42,7 @@ export default function UpdateModDialog({ mod }: Props) {
 	const axios = useClientApi();
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: (data: UpdateModRequest) => updateMod(axios, data),
+		mutationFn: (data: UpdateModRequest) => updateMod(axios, modWithoutIcon.id, data),
 		mutationKey: ['mods'],
 		onSuccess: () => {
 			toast.success(<Tran text="delete.success" />);
