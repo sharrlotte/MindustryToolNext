@@ -261,7 +261,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 						)}
 					/>
 				</ScrollContainer>
-				<div className="mt-auto flex justify-end space-x-2 gap-2 p-2">
+				<div className="mt-auto flex justify-end gap-2 p-2">
 					<Button variant="outline" onClick={() => setPreview(undefined)}>
 						<Tran text="close" />
 					</Button>
