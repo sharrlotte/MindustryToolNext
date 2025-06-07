@@ -4,7 +4,6 @@ import { toast } from '@/components/ui/sonner';
 
 import { isClient } from '@/constant/constant';
 import env from '@/constant/env';
-import { uuid } from '@/lib/utils';
 
 const axiosInstance = Axios.create({
 	baseURL: env.url.api,

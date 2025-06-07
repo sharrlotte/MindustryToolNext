@@ -16,7 +16,7 @@ import { toast } from '@/components/ui/sonner';
 import { acceptedImageFormats } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { UpdateModRequest, UpdateModSchema, createMod } from '@/query/mod';
+import { UpdateModRequest, UpdateModSchema, updateMod } from '@/query/mod';
 import { Mod } from '@/types/response/Mod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,7 +42,7 @@ export default function UpdateModDialog({ mod }: Props) {
 	const axios = useClientApi();
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: (data: UpdateModRequest) => createMod(axios, data),
+		mutationFn: (data: UpdateModRequest) => updateMod(axios, modWithoutIcon.id, data),
 		mutationKey: ['mods'],
 		onSuccess: () => {
 			toast.success(<Tran text="delete.success" />);
