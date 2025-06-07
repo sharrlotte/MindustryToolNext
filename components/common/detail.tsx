@@ -122,8 +122,8 @@ export function DetailDescription({ className, children }: DescriptionProps) {
 
 	return (
 		<p className={cn('flex flex-wrap gap-0.5 text-muted-foreground text-sm', className)}>
-			{result.map((item, index) =>
-				typeof item === 'string' ? <ColorText key={index} text={item} /> : <MindustryIcon key={index} name={item.name} />,
+			{result.map(({ type, value }, index) =>
+				type === 'text' ? <ColorText key={index} text={value} /> : <MindustryIcon key={index} name={value} />,
 			)}
 		</p>
 	);

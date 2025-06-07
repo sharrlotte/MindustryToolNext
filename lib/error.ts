@@ -47,7 +47,6 @@ export function getErrorMessage(error: TError) {
 	}
 
 	if (typeof error === 'object' && 'response' in error) {
-		console.log(error.response);
 		if (error.response?.data?.message) {
 			return error.response?.data?.message;
 		}
