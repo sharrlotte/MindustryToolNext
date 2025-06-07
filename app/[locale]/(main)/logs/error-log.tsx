@@ -59,7 +59,7 @@ function ErrorCard({ error: { content, createdAt, status } }: { error: ErrorRepo
 		<div className="p-2 rounded-md border">
 			<div className="flex gap-2">
 				<ColorText text={content} />
-				<RelativeTime className="ml-auto text-sm" date={new Date(createdAt)} />
+				<RelativeTime className="ml-auto text-sm text-muted-foreground" date={new Date(createdAt)} />
 			</div>
 			<span className={cn('rounded-full px-2.5 py-0.5 text-xs', statusColor[status])}>{status.toLowerCase()}</span>
 		</div>
