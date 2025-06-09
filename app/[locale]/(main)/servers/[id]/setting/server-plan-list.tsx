@@ -136,7 +136,7 @@ function PlanCard({
 			{isSelected && (
 				<div className="absolute top-1 right-2">
 					<Badge variant="special">
-						<Tran text="selected" asChild />
+						<Tran text="server.plan-selected" asChild />
 					</Badge>
 				</div>
 			)}
@@ -144,7 +144,7 @@ function PlanCard({
 				<LoadingSpinner />
 			) : (
 				<>
-					<span className={cn('font-semibold text-xl', text)}>{name}</span>
+					<span className={cn('font-semibold text-xl text-start', text)}>{name}</span>
 					<div className="flex justify-between items-center gap-4">
 						<div className="flex gap-1 items-center">
 							<CpuIcon className="size-4" />

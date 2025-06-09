@@ -1,8 +1,15 @@
+import { ServerStatus } from '@/constant/constant';
+
 export type ServerStats = {
+	tps: number;
 	ramUsage: number;
-	cpuUsage: number;
 	totalRam: number;
-	mapName?: string;
-	status: ServerStats;
-    mods: string[];
+	cpuUsage: number;
+	players: number;
+	mapName: string;
+	mods: string[];
+	kicks: number;
+	isPaused: boolean;
+	isHosting: boolean;
+	status: ServerStatus;
 };
