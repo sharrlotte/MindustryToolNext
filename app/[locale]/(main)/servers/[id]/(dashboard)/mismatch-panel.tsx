@@ -9,7 +9,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
-import useServerStatus from '@/hooks/use-server-status';
 import { getServerMismatch } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
@@ -20,12 +19,10 @@ const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers
 
 export default function MismatchPanel() {
 	const id = usePathId();
-	const status = useServerStatus(id);
 	const axios = useClientApi();
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ['server', id, 'mismatch'],
 		queryFn: () => getServerMismatch(axios, id),
-		enabled: status === 'AVAILABLE',
 	});
 
 	if (isError) {
@@ -46,7 +43,9 @@ export default function MismatchPanel() {
 				<div className="text-sm text-destructive-foreground overflow-hidden text-ellipsis">
 					<p>{data[0]}</p>
 					{data.length > 1 && (
-						<p className="inline-flex min-w-4 bg-destructive-foreground text-white p-0.5 text-xs rounded-full">{data.length - 1}+</p>
+						<p className="inline-flex min-w-4 bg-destructive-foreground text-white p-0.5 text-xs rounded-full">
+							{data.length - 1}+
+						</p>
 					)}
 				</div>
 			</PopoverTrigger>

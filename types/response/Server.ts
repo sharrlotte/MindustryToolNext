@@ -1,5 +1,6 @@
 import { ServerStatus } from '@/constant/constant';
 import { ServerMode } from '@/types/request/UpdateServerRequest';
+import { ServerPlan } from '@/types/response/ServerPlan';
 
 export default interface Server {
 	id: string;
@@ -22,4 +23,6 @@ export default interface Server {
 	isPaused: boolean;
 	status: ServerStatus;
 	players: number;
+	planId: number;
+	plan: ServerPlan;
 }

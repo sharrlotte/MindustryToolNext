@@ -21,6 +21,7 @@ import { ServerFile } from '@/types/response/ServerFile';
 import ServerLoginLog from '@/types/response/ServerLoginLog';
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerMetric } from '@/types/response/ServerMetric';
+import { ServerPlan } from '@/types/response/ServerPlan';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { ServerStats } from '@/types/response/ServerStats';
 import { PaginationQuery } from '@/types/schema/search-query';
@@ -268,6 +269,17 @@ export async function getServerEnv(axios: AxiosInstance, serverId: string): Prom
 	return result.data;
 }
 
+export async function getServerPlans(axios: AxiosInstance): Promise<ServerPlan[]> {
+	const result = await axios.get(`/server-plans`);
+
+	return result.data;
+}
+
+export async function updateServerPlan(axios: AxiosInstance, serverId: string, planId: number) {
+	const result = await axios.put(`/servers/${serverId}/plans/${planId}`);
+
+	return result.data;
+}
 export const CreateServerEnvSchema = z.object({
 	name: z.string().min(1).max(128),
 	value: z.string().min(1).max(1024),

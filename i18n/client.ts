@@ -151,10 +151,9 @@ export function useI18n(namespace: string | string[] = 'common', options?: any) 
 		}, [language, cookies[cookieName]]);
 	}
 
-	const retT = useCallback((key: string, options?: any) => t(key, options) as string, [t]);
 	return {
 		...ret,
-		t: retT,
+		t,
 	};
 }
 

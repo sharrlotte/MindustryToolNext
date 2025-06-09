@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
+import Divider from '@/components/ui/divider';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
@@ -55,102 +56,108 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 	const isChanged = form.formState.isDirty;
 
 	return (
-		<Form {...form}>
-			<form
-				className="relative flex flex-1 flex-col justify-between gap-4 p-4 bg-card rounded-md"
-				onSubmit={form.handleSubmit((value) => mutate(value))}
-			>
-				<FormMessage />
-				<div className="space-y-6">
-					<FormField
-						control={form.control}
-						name="port"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>
-									<Tran text="server.port" />
-								</FormLabel>
-								<FormControl>
-									<Input placeholder="6568" {...field} />
-								</FormControl>
-								<FormDescription>
-									<Tran text="server.port-description" />
-								</FormDescription>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="isOfficial"
-						render={({ field }) => (
-							<FormItem>
-								<div className="flex gap-1 items-center">
-									<FormControl>
-										<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
-									</FormControl>
+		<div className="p-4 gap-2 flex-col flex">
+			<h2 className="text-xl">
+				<Tran text="server.setting-admin" asChild />
+			</h2>
+			<Divider />
+			<Form {...form}>
+				<form className="flex flex-1 flex-col justify-between gap-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
+					<FormMessage />
+					<div className="space-y-6">
+						<FormField
+							control={form.control}
+							name="port"
+							render={({ field }) => (
+								<FormItem>
 									<FormLabel>
-										<Tran text="server.is-official" />
+										<Tran text="server.port" />
 									</FormLabel>
-								</div>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="isHub"
-						render={({ field }) => (
-							<FormItem>
-								<div className="flex gap-1 items-center">
 									<FormControl>
-										<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+										<Input placeholder="6568" {...field} />
 									</FormControl>
-									<FormLabel>
-										<Tran text="server.is-hub" />
-									</FormLabel>
-								</div>
-								<FormMessage />
-							</FormItem>
+									<FormDescription>
+										<Tran text="server.port-description" />
+									</FormDescription>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="isOfficial"
+							render={({ field }) => (
+								<FormItem>
+									<div className="flex gap-1 items-center">
+										<FormControl>
+											<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+										</FormControl>
+										<FormLabel>
+											<Tran text="server.is-official" />
+										</FormLabel>
+									</div>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="isHub"
+							render={({ field }) => (
+								<FormItem>
+									<div className="flex gap-1 items-center">
+										<FormControl>
+											<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+										</FormControl>
+										<FormLabel>
+											<Tran text="server.is-hub" />
+										</FormLabel>
+									</div>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="isAutoTurnOff"
+							render={({ field }) => (
+								<FormItem>
+									<div className="flex gap-1 items-center">
+										<FormControl>
+											<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+										</FormControl>
+										<FormLabel>
+											<Tran text="server.is-auto-turn-off" />
+										</FormLabel>
+									</div>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+					<div
+						className={cn(
+							'flex w-full border-brand border justify-end gap-2 transition-all translate-y-full opacity-0 absolute bottom-0 right-0 p-2 backdrop-blur backdrop-brightness-50',
+							{
+								'opacity-100 translate-y-0': isChanged,
+							},
 						)}
-					/>
-					<FormField
-						control={form.control}
-						name="isAutoTurnOff"
-						render={({ field }) => (
-							<FormItem>
-								<div className="flex gap-1 items-center">
-									<FormControl>
-										<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
-									</FormControl>
-									<FormLabel>
-										<Tran text="server.is-auto-turn-off" />
-									</FormLabel>
-								</div>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-				<div
-					className={cn('flex justify-end gap-2 opacity-0 translate-y-full transition-all', {
-						'opacity-100 translate-y-0': isChanged,
-					})}
-				>
-					<Button
-						className="flex justify-end"
-						variant="secondary"
-						title="reset"
-						onClick={() => form.reset()}
-						disabled={!isChanged || isPending}
 					>
-						<Tran text="reset" />
-					</Button>
-					<Button variant="primary" type="submit" title="update" disabled={!isChanged || isPending}>
-						<Tran text="update" />
-					</Button>
-				</div>
-			</form>
-		</Form>
+						<Button
+							className="flex justify-end"
+							variant="secondary"
+							title="reset"
+							onClick={() => form.reset()}
+							disabled={!isChanged || isPending}
+						>
+							<Tran text="reset" />
+						</Button>
+						<Button variant="primary" type="submit" title="update" disabled={!isChanged || isPending}>
+							<Tran text="update" />
+						</Button>
+					</div>
+				</form>
+			</Form>
+		</div>
 	);
 }
