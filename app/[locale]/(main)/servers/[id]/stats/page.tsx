@@ -115,7 +115,11 @@ function LineChart({
 			<Line
 				className="p-2"
 				options={{
-					animation: false,
+					animations: {
+						y: {
+							duration: 0,
+						},
+					},
 					responsive: true,
 					aspectRatio: 16 / 9,
 					scales: {
@@ -133,7 +137,10 @@ function LineChart({
 					},
 				}}
 				data={{
-					labels: metrics.map(({ createdAt }) => `${createdAt.getMinutes()}:${createdAt.getSeconds()}`),
+					labels: metrics.map(
+						({ createdAt }) =>
+							`${createdAt.getMinutes().toString().padStart(2, '0')}:${createdAt.getSeconds().toString().padStart(2, '0')}`,
+					),
 					datasets: [
 						{
 							label: unit ? `${t(label)} (${unit})` : t(label),
