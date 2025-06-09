@@ -201,7 +201,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 							.sort(([a], [b]) => b.localeCompare(a))
 							.map(([key, value]) => (
 								<div className="py-2" key={key}>
-									{typeof value === 'string' || typeof value === 'number' || value === '{}' || value === '' || value === [] ? (
+									{typeof value === 'string' || typeof value === 'number' || value === '{}' || value === '' ? (
 										<span className="space-x-1">
 											<span>{key}:</span>
 											<span>{value}</span>
