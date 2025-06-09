@@ -211,7 +211,7 @@ function RefreshButton() {
 	const refresh = () => {
 		setIsPlaying(true);
 
-		invalidateByKey(['server', 'metric']);
+		invalidateByKey(['metric']);
 
 		setTimeout(() => {
 			setIsPlaying(false);
