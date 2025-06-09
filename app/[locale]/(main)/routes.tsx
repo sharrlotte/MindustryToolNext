@@ -7,6 +7,7 @@ import {
 	CrownIcon,
 	FileIcon,
 	Folder,
+	HistoryIcon,
 	HomeIcon,
 	ImageIcon,
 	LineChart,
@@ -227,7 +228,11 @@ export const groups: readonly PathGroup[] = [
 				id: 'logs',
 				path: '/logs',
 				name: <Tran asChild text="log" />,
-				icon: <LogPathIcon />,
+				icon: (
+					<LogPathIcon>
+						<HistoryIcon />
+					</LogPathIcon>
+				),
 				filter: { authority: 'VIEW_LOG' },
 				regex: [`^${localesRegex}/logs$`],
 			},
