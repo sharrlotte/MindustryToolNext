@@ -15,18 +15,67 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 export default function Page() {
 	const id = usePathId();
 	const data = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
-		limit: 50,
+		limit: 25,
 	});
 
+	console.log(data);
+
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+		<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 p-2">
 			<Suspense>
 				<LineChart
 					label="cpu"
+					unit="%"
 					metrics={
 						data?.map(({ createdAt, value }) => ({
 							createdAt: new Date(createdAt),
 							value: value.cpuUsage,
+						})) ?? []
+					}
+				/>
+			</Suspense>
+			<Suspense>
+				<LineChart
+					label="ram"
+					unit="Mb"
+					metrics={
+						data?.map(({ createdAt, value }) => ({
+							createdAt: new Date(createdAt),
+							value: value.ramUsage,
+						})) ?? []
+					}
+				/>
+			</Suspense>
+			<Suspense>
+				<LineChart
+					label="tps"
+					unit="Tick per second"
+					metrics={
+						data?.map(({ createdAt, value }) => ({
+							createdAt: new Date(createdAt),
+							value: value.tps,
+						})) ?? []
+					}
+				/>
+			</Suspense>
+			<Suspense>
+				<LineChart
+					label="player"
+					metrics={
+						data?.map(({ createdAt, value }) => ({
+							createdAt: new Date(createdAt),
+							value: value.players,
+						})) ?? []
+					}
+				/>
+			</Suspense>
+			<Suspense>
+				<LineChart
+					label="kick"
+					metrics={
+						data?.map(({ createdAt, value }) => ({
+							createdAt: new Date(createdAt),
+							value: value.kicks,
 						})) ?? []
 					}
 				/>
@@ -38,8 +87,10 @@ export default function Page() {
 function LineChart({
 	metrics,
 	label,
+	unit,
 }: {
 	label: string;
+	unit?: string;
 	metrics: {
 		createdAt: Date;
 		value: number;
@@ -69,10 +120,10 @@ function LineChart({
 					},
 				}}
 				data={{
-					labels: metrics.map(({ createdAt }) => `${createdAt.getHours()}:${createdAt.getMinutes()}`),
+					labels: metrics.map(({ createdAt }) => `${createdAt.getMinutes()}:${createdAt.getSeconds()}`),
 					datasets: [
 						{
-							label: t(label),
+							label: unit ? `${t(label)} (${unit})` : t(label),
 							data: metrics.map(({ value }) => value),
 							borderColor: 'rgb(255, 99, 132)',
 							backgroundColor: 'rgba(255, 99, 132, 0.5)',
