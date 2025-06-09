@@ -115,7 +115,7 @@ function PlanCard({
 		mutationFn: async () => updateServerPlan(axios, serverId, id),
 		onError: (error) => toast.error(<Tran text="update.fail" />, { error }),
 		onSettled: () => {
-			invalidateByKey(['servers']);
+			invalidateByKey(['server']);
 			revalidate({ path: '/[locale]/(main)/servers' });
 		},
 	});

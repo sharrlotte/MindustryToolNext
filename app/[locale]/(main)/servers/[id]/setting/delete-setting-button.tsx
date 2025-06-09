@@ -40,7 +40,7 @@ function DeleteServerButton({ id }: ServerSettingButtonProps) {
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['servers'],
+		mutationKey: ['server'],
 		mutationFn: () => deleteServer(axios, id),
 		onSuccess: () => {
 			toast.success(<Tran text="delete-success" />);
@@ -50,7 +50,7 @@ function DeleteServerButton({ id }: ServerSettingButtonProps) {
 		onError: (error) => toast.error(<Tran text="delete-fail" />, { error }),
 		onSettled: () => {
 			revalidate({ path: '/servers' });
-			invalidateByKey(['servers']);
+			invalidateByKey(['server']);
 		},
 	});
 	return (
@@ -83,7 +83,7 @@ function TransferServerButton({ id }: ServerSettingButtonProps) {
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['servers'],
+		mutationKey: ['server'],
 		mutationFn: () => {
 			// TODO: Implement transfer server logic here.
 			return new Promise((resolve) => {
@@ -98,7 +98,7 @@ function TransferServerButton({ id }: ServerSettingButtonProps) {
 		onError: (error) => toast.error(<Tran text="transfer-fail" />, { error }),
 		onSettled: () => {
 			revalidate({ path: '/servers' });
-			invalidateByKey(['servers']);
+			invalidateByKey(['server']);
 		},
 	});
 	return (

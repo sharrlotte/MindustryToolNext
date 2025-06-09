@@ -59,7 +59,7 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: CreateServerRequest) => createServer(axios, data),
-		mutationKey: ['servers'],
+		mutationKey: ['server'],
 		onSuccess: (data: any) => {
 			toast.success(<Tran text="upload.success" />);
 
@@ -71,7 +71,7 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 		onError: (error) => toast.error(<Tran text="upload.fail" />, { error }),
 
 		onSettled: () => {
-			invalidateByKey(['servers']);
+			invalidateByKey(['server']);
 			revalidate({ path: '/servers' });
 		},
 	});

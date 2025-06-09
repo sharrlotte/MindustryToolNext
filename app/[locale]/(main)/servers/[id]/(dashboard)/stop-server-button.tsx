@@ -34,7 +34,7 @@ export default function StopServerButton({ id }: Props) {
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['servers'],
+		mutationKey: ['server'],
 		mutationFn: async () => stopServer(axios, id),
 		onMutate: () => toast.loading(<Tran text="server.stopping" />),
 		onSuccess: (_data, _variable, id) => toast.success(<Tran text="server.stop-success" />, { id }),

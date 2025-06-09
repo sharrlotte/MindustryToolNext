@@ -42,13 +42,13 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 	const axios = useClientApi();
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['servers'],
+		mutationKey: ['server'],
 		mutationFn: (data: PutServerPortRequest) => updateServerPort(axios, id, data),
 		onSuccess: (_data) => toast.success(<Tran text="update.success" />),
 		onError: (error) => toast.error(<Tran text="update.fail" />, { error }),
 
 		onSettled: () => {
-			invalidateByKey(['servers']);
+			invalidateByKey(['server']);
 			revalidate({ path: '/[locale]/(main)/servers' });
 		},
 	});

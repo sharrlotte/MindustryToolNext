@@ -42,7 +42,7 @@ export default function ServerUpdateForm({ server }: Props) {
 	const { id } = server;
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['servers'],
+		mutationKey: ['server'],
 		mutationFn: (data: PutServerRequest) => updateServer(axios, id, data),
 		onSuccess: () => {
 			toast.success(<Tran text="update.success" />);
@@ -50,7 +50,7 @@ export default function ServerUpdateForm({ server }: Props) {
 		},
 		onError: (error) => toast.error(<Tran text="update.fail" />, { error }),
 		onSettled: () => {
-			invalidateByKey(['servers']);
+			invalidateByKey(['server']);
 			revalidate({ path: '/[locale]/(main)/servers' });
 		},
 	});
