@@ -1,15 +1,6 @@
 'use client';
 
-import {
-	BarChart4,
-	FileIcon,
-	HardDriveIcon,
-	LayoutDashboardIcon,
-	MapIcon,
-	PlugIcon,
-	SettingsIcon,
-	TerminalIcon,
-} from 'lucide-react';
+import { FileIcon, HardDriveIcon, LayoutDashboardIcon, MapIcon, PlugIcon, SettingsIcon, TerminalIcon } from 'lucide-react';
 import { useParams, usePathname } from 'next/navigation';
 import React, { ReactNode, use, useMemo } from 'react';
 
@@ -142,13 +133,6 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 				href: '/data',
 				label: <Tran text="data" />,
 				icon: <HardDriveIcon className="size-5" />,
-				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
-			},
-			{
-				id: 'metric',
-				href: '/metrics',
-				label: <Tran text="metric" />,
-				icon: <BarChart4 className="size-5" />,
 				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 			},
 			{
