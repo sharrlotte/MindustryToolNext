@@ -1,6 +1,6 @@
 'use client';
 
-import { Globe, SettingsIcon } from 'lucide-react';
+import { Globe, MailWarningIcon, SettingsIcon } from 'lucide-react';
 import React, { ReactNode } from 'react';
 
 import { ChangeLanguageDialog } from '@/app/[locale]/(main)/change-locale.dialog';
@@ -8,6 +8,7 @@ import NotificationDialog from '@/app/[locale]/(main)/notification.dialog';
 
 import Hydrated from '@/components/common/hydrated';
 import InternalLink from '@/components/common/internal-link';
+import ReportErrorDialog from '@/components/common/report-error.dialog';
 import Tran from '@/components/common/tran';
 import { ThemeSwitcher } from '@/components/theme/theme-switcher';
 
@@ -47,6 +48,14 @@ const tabs: Tab = [
 			</InternalLink>
 		),
 		filter: true,
+	},
+	{
+		icon: <MailWarningIcon className="size-5" />,
+		action: (
+			<ReportErrorDialog>
+				<Tran text="report-error" />
+			</ReportErrorDialog>
+		),
 	},
 ];
 

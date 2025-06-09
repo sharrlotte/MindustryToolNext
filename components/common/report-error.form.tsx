@@ -16,11 +16,11 @@ import { useMutation } from '@tanstack/react-query';
 
 const EXPLAIN_MESSAGE = `If you encountered an error, please let us know what happened. To help us fix it, describe:
 
-    What you were doing when the error occurred
+What you were doing when the error occurred
 
-    The steps to reproduce the error (if possible)
+The steps to reproduce the error (if possible)
 
-    Any error messages you saw
+Any error messages you saw
 
 The more details you provide, the easier it is for us to solve the problem. Thank you!`;
 
@@ -29,11 +29,11 @@ export default function ReportErrorForm() {
 	const axios = useClientApi();
 	const { mutate, isPending } = useMutation({
 		mutationFn: () => {
-			const data = `
-			URL: ${window.location.href}
-			User message: ${message}
-			Errors: ${errors.join()}
-			`;
+			const data = {
+				url: window.location.href,
+				message,
+				errors: errors.join('\n'),
+			};
 
 			errors.length = 0;
 
