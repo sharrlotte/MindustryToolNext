@@ -19,7 +19,7 @@ export default function PluginList({ id }: { id: string }) {
 	}
 
 	return (
-		<ScrollContainer className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3 grid-flow-row">
+		<ScrollContainer className="grid w-full gap-2 md:grid-cols-2 xl:grid-cols-3 grid-flow-row">
 			{data?.map((plugin) => <ServerPluginCard serverId={id} key={plugin.filename} plugin={plugin} />)}
 		</ScrollContainer>
 	);

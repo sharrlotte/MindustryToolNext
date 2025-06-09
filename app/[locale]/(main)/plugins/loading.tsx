@@ -8,7 +8,7 @@ export default function Loading() {
 	return (
 		<div className="flex h-full w-full flex-col gap-2 p-2">
 			<NameTagSearchSkeleton />
-			<div className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid w-full gap-2 md:grid-cols-2 xl:grid-cols-3">
 				<Skeletons number={20}>
 					<PluginCardSkeleton />
 				</Skeletons>
