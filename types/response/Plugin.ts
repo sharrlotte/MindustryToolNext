@@ -9,4 +9,5 @@ export type Plugin = {
 	url: string;
 	isPrivate: boolean;
 	lastReleaseAt: number;
+	verifierId: string;
 };

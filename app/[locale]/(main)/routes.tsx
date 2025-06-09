@@ -7,7 +7,6 @@ import {
 	CrownIcon,
 	FileIcon,
 	Folder,
-	HistoryIcon,
 	HomeIcon,
 	ImageIcon,
 	LineChart,
@@ -24,6 +23,7 @@ import {
 import { ReactNode } from 'react';
 
 import { MessageCircleIconPath } from '@/app/[locale]/(main)/chat-icon-path';
+import { LogPathIcon } from '@/app/[locale]/(main)/log-path';
 import { MapPath } from '@/app/[locale]/(main)/map-path';
 import { PluginPath } from '@/app/[locale]/(main)/plugin-path';
 import { PostPath } from '@/app/[locale]/(main)/post-path';
@@ -227,7 +227,7 @@ export const groups: readonly PathGroup[] = [
 				id: 'logs',
 				path: '/logs',
 				name: <Tran asChild text="log" />,
-				icon: <HistoryIcon />,
+				icon: <LogPathIcon />,
 				filter: { authority: 'VIEW_LOG' },
 				regex: [`^${localesRegex}/logs$`],
 			},

@@ -45,7 +45,7 @@ export function Internal() {
 				<div className="flex h-16 items-center justify-between rounded-sm bg-card p-1">
 					<div className="flex items-center justify-center gap-1">
 						<UserAvatar className="h-12 w-12" user={session} url="/users/@me" />
-						<div className="grid p-1">
+						<div className="flex flex-col p-1">
 							<span className="capitalize">{session.name}</span>
 							<UserRoleCard roles={session.roles} />
 						</div>

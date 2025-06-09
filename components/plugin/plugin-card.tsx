@@ -5,11 +5,13 @@ import React from 'react';
 
 import DeleteButton from '@/components/button/delete.button';
 import TakeDownButton from '@/components/button/take-down.button';
+import { Verifier } from '@/components/common/detail';
 import FallbackImage from '@/components/common/fallback-image';
 import Tran from '@/components/common/tran';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import { toast } from '@/components/ui/sonner';
 
+import { GITHUB_PATTERN } from '@/constant/constant';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -18,13 +20,12 @@ import { deletePlugin, unverifyPlugin } from '@/query/plugin';
 import { Plugin } from '@/types/response/Plugin';
 
 import { useMutation } from '@tanstack/react-query';
-import { GITHUB_PATTERN } from '@/constant/constant';
 
 type Props = {
 	plugin: Plugin;
 };
 
-export default function PluginCard({ plugin: { id, name, description, url, userId, isPrivate } }: Props) {
+export default function PluginCard({ plugin: { id, name, description, url, userId, isPrivate, verifierId } }: Props) {
 	const { invalidateByKey } = useQueriesData();
 
 	const { session } = useSession();
@@ -80,6 +81,7 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 					<span className="line-clamp-2 h-full w-full overflow-hidden text-ellipsis text-wrap text-muted-foreground">
 						{description}
 					</span>
+					<Verifier verifierId={verifierId} />
 					{isPrivate && <span className="top-1 right-1 font-semibold text-sm absolute px-1">PRIVATE</span>}
 				</div>
 			</ContextMenuTrigger>
