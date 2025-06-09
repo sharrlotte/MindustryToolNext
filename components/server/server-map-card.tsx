@@ -35,7 +35,7 @@ export default function ServerMapCard({ serverId, map: { name, filename } }: Ser
 			toast.error(<Tran text="delete-fail" />, { error });
 		},
 		onSettled: () => {
-			invalidateByKey(['servers', serverId, 'maps']);
+			invalidateByKey(['server', serverId, 'maps']);
 		},
 	});
 

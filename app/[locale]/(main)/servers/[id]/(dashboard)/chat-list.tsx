@@ -12,7 +12,7 @@ export default function ServerConsolePage() {
 	return (
 		<MessageList
 			className="flex h-full flex-col gap-1"
-			queryKey={['servers', id, 'chat']}
+			queryKey={['server', id, 'chat']}
 			room={`SERVER_CHAT-${id}`}
 			params={{ size: 50 }}
 			showNotification

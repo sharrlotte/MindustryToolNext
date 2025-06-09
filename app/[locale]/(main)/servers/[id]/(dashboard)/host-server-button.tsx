@@ -30,7 +30,7 @@ export default function HostServerButton({ id }: Props) {
 	const { data, last, mutate, isPending, isSuccess, isError, error } = useHttpStream({
 		url: `${env.url.api}/servers/${id}/host`,
 		method: 'POST',
-		mutationKey: ['servers', id, 'host'],
+		mutationKey: ['server', id, 'host'],
 		onSettled: () => {
 			invalidateByKey(['server']);
 		},

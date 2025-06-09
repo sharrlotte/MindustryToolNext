@@ -21,7 +21,7 @@ type ServerAdminListProps = {
 export default function ServerAdminList({ id }: ServerAdminListProps) {
 	return (
 		<AnimatePresence>
-			<div className="flex flex-col gap-4 p-4 bg-card rounded-md">
+			<div className="flex flex-col gap-4 p-4">
 				<div className="flex gap-1 flex-col">
 					<h2 className="text-xl">
 						<Tran asChild text="admin" />

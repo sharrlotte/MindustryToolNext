@@ -30,7 +30,7 @@ export default function InitServerButton({ id }: Props) {
 	const { data, last, mutate, isPending, isSuccess, isError, error } = useHttpStream({
 		url: `${env.url.api}/servers/${id}/init`,
 		method: 'POST',
-		mutationKey: ['servers', id, 'init'],
+		mutationKey: ['server', id, 'init'],
 		onSettled: () => {
 			invalidateByKey(['server']);
 			revalidate({ path: '/[locale]/(main)/servers/[id]' });

@@ -34,7 +34,7 @@ export default function ShutdownServerButton({ id }: Props) {
 	const { invalidateByKey } = useQueriesData();
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['servers'],
+		mutationKey: ['server'],
 		mutationFn: async () => removeServer(axios, id),
 		onMutate: () => toast.loading(<Tran text="server.shutting-down" />),
 		onSuccess: (_data, _variable, id) => toast.success(<Tran text="server.shutdown-success" />, { id }),

@@ -4,9 +4,11 @@ import React from 'react';
 import { ServerSettingButton } from '@/app/[locale]/(main)/servers/[id]/setting/delete-setting-button';
 import ServerAdminList from '@/app/[locale]/(main)/servers/[id]/setting/server-admin-list';
 import Environment from '@/app/[locale]/(main)/servers/[id]/setting/server-environment';
+import ServerPlanList from '@/app/[locale]/(main)/servers/[id]/setting/server-plan-list';
 import ServerUpdateAdminForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-admin-form';
 import ServerUpdateForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-form';
 
+import { CatchError } from '@/components/common/catch-error';
 import ErrorScreen from '@/components/common/error-screen';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -53,16 +55,29 @@ export default async function Page({ params }: Props) {
 	}
 
 	return (
-		<ScrollContainer className="flex h-full flex-col gap-2">
-			<ServerUpdateForm server={server} />
-			<ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
-				<ServerUpdateAdminForm server={server} />
-			</ProtectedElement>
-			<ServerAdminList id={id} />
-			<Environment id={id} />
-			<ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: server.userId }] }}>
-				<ServerSettingButton id={id} />
-			</ProtectedElement>
+		<ScrollContainer className="flex h-full flex-col divide-y bg-card">
+			<CatchError>
+				<ServerUpdateForm server={server} />
+			</CatchError>
+			<CatchError>
+				<ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
+					<ServerUpdateAdminForm server={server} />
+				</ProtectedElement>
+			</CatchError>
+			<CatchError>
+				<ServerPlanList server={server} />
+			</CatchError>
+			<CatchError>
+				<ServerAdminList id={id} />
+			</CatchError>
+			<CatchError>
+				<Environment id={id} />
+			</CatchError>
+			<CatchError>
+				<ProtectedElement session={session} filter={{ any: [{ authority: 'EDIT_ADMIN_SERVER' }, { authorId: server.userId }] }}>
+					<ServerSettingButton id={id} />
+				</ProtectedElement>
+			</CatchError>
 		</ScrollContainer>
 	);
 }

@@ -30,7 +30,7 @@ type Props = {
 };
 export default function Environment({ id }: Props) {
 	return (
-		<div className="bg-card gap-4 h-full flex flex-col rounded-md p-4">
+		<div className="gap-4 h-full flex flex-col p-4">
 			<div className="flex gap-1 flex-col">
 				<h2 className="text-xl">
 					<Tran asChild text="env" />
