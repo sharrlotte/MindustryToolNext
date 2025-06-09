@@ -1,7 +1,7 @@
 'use client';
 
 import { CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
-import { CheckCircleIcon } from 'lucide-react';
+import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
 import { Suspense } from 'react';
 import { Line } from 'react-chartjs-2';
 
@@ -25,7 +25,8 @@ export default function Page() {
 
 	return (
 		<div className="p-2 flex flex-col gap-2">
-			<div className="flex gap-2 h-8 min-h-8 items-center text-muted-foreground text-sm">
+			<div className="flex gap-0.5 h-8 min-h-8 items-center text-muted-foreground text-sm font-semibold">
+				{state === 'disconnected' && <XCircleIcon className="m-0 size-4" />}
 				{state === 'connecting' && <LoadingSpinner className="m-0 size-4" />}
 				{state === 'connected' && <CheckCircleIcon className="m-0 size-4" />}
 				<Tran text={state} defaultValue={state} />
@@ -114,6 +115,7 @@ function LineChart({
 			<Line
 				className="p-2"
 				options={{
+					animation: false,
 					responsive: true,
 					aspectRatio: 16 / 9,
 					scales: {
