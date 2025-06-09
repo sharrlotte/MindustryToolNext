@@ -1,8 +1,13 @@
 'use client';
 
 import { CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
+import { CheckCircleIcon } from 'lucide-react';
 import { Suspense } from 'react';
 import { Line } from 'react-chartjs-2';
+
+import LoadingSpinner from '@/components/common/loading-spinner';
+import Tran from '@/components/common/tran';
+import Divider from '@/components/ui/divider';
 
 import env from '@/constant/env';
 import usePathId from '@/hooks/use-path-id';
@@ -14,70 +19,78 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 export default function Page() {
 	const id = usePathId();
-	const data = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
-		limit: 25,
+	const { data, state } = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
+		limit: 15,
 	});
 
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 p-2">
-			<Suspense>
-				<LineChart
-					label="cpu"
-					unit="%"
-					metrics={
-						data?.map(({ createdAt, value }) => ({
-							createdAt: new Date(createdAt),
-							value: value.cpuUsage,
-						})) ?? []
-					}
-				/>
-			</Suspense>
-			<Suspense>
-				<LineChart
-					label="ram"
-					unit="Mb"
-					metrics={
-						data?.map(({ createdAt, value }) => ({
-							createdAt: new Date(createdAt),
-							value: value.ramUsage,
-						})) ?? []
-					}
-				/>
-			</Suspense>
-			<Suspense>
-				<LineChart
-					label="tps"
-					unit="Tick per second"
-					metrics={
-						data?.map(({ createdAt, value }) => ({
-							createdAt: new Date(createdAt),
-							value: value.tps,
-						})) ?? []
-					}
-				/>
-			</Suspense>
-			<Suspense>
-				<LineChart
-					label="player"
-					metrics={
-						data?.map(({ createdAt, value }) => ({
-							createdAt: new Date(createdAt),
-							value: value.players,
-						})) ?? []
-					}
-				/>
-			</Suspense>
-			<Suspense>
-				<LineChart
-					label="kick"
-					metrics={
-						data?.map(({ createdAt, value }) => ({
-							createdAt: new Date(createdAt),
-							value: value.kicks,
-						})) ?? []
-					}
-				/>
-			</Suspense>
+		<div className="p-2 flex flex-col gap-2">
+			<div className="flex gap-2 h-8 min-h-8 items-center text-muted-foreground text-sm">
+				{state === 'connecting' && <LoadingSpinner className="m-0 size-4" />}
+				{state === 'connected' && <CheckCircleIcon className="m-0 size-4" />}
+				<Tran text={state} defaultValue={state} />
+			</div>
+			<Divider />
+			<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
+				<Suspense>
+					<LineChart
+						label="cpu"
+						unit="%"
+						metrics={
+							data?.map(({ createdAt, value }) => ({
+								createdAt: new Date(createdAt),
+								value: value.cpuUsage,
+							})) ?? []
+						}
+					/>
+				</Suspense>
+				<Suspense>
+					<LineChart
+						label="ram"
+						unit="Mb"
+						metrics={
+							data?.map(({ createdAt, value }) => ({
+								createdAt: new Date(createdAt),
+								value: value.ramUsage,
+							})) ?? []
+						}
+					/>
+				</Suspense>
+				<Suspense>
+					<LineChart
+						label="tps"
+						unit="Tick per second"
+						metrics={
+							data?.map(({ createdAt, value }) => ({
+								createdAt: new Date(createdAt),
+								value: value.tps,
+							})) ?? []
+						}
+					/>
+				</Suspense>
+				<Suspense>
+					<LineChart
+						label="player"
+						metrics={
+							data?.map(({ createdAt, value }) => ({
+								createdAt: new Date(createdAt),
+								value: value.players,
+							})) ?? []
+						}
+					/>
+				</Suspense>
+				<Suspense>
+					<LineChart
+						label="kick"
+						metrics={
+							data?.map(({ createdAt, value }) => ({
+								createdAt: new Date(createdAt),
+								value: value.kicks,
+							})) ?? []
+						}
+					/>
+				</Suspense>
+			</div>
 		</div>
 	);
 }
