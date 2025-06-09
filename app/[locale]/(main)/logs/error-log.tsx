@@ -22,7 +22,7 @@ export default function ErrorLog() {
 				{errorStatus.map((t) => (
 					<button
 						key={t}
-						className={cn('px-2 py-1 cursor-pointer capitalize', {
+						className={cn('px-2 py-1 cursor-pointer capitalize h-10 min-h-10', {
 							[statusColor[t]]: status.includes(t),
 						})}
 						onClick={() => (status.includes(t) ? setStatus(status.filter((s) => s !== t)) : setStatus([...status, t]))}
@@ -58,7 +58,7 @@ function ErrorCard({ error: { content, createdAt, status } }: { error: ErrorRepo
 	return (
 		<div className="flex gap-2 justify-between p-2 rounded-md border">
 			<ColorText text={content} />
-			<div className="flex gap-1 items-center">
+			<div className="flex gap-1">
 				<span className={cn('rounded-full px-2.5 py-0.5 text-xs', statusColor[status])}>{status.toLowerCase()}</span>
 				<RelativeTime className="ml-auto text-sm text-muted-foreground" date={new Date(createdAt)} />
 			</div>
