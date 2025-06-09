@@ -18,8 +18,6 @@ export default function Page() {
 		limit: 25,
 	});
 
-	console.log(data);
-
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 p-2">
 			<Suspense>
