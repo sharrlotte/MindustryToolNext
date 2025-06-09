@@ -41,12 +41,7 @@ export default function MismatchPanel() {
 		<Popover>
 			<PopoverTrigger asChild>
 				<div className="text-sm text-destructive-foreground overflow-hidden text-ellipsis flex gap-2">
-					<p>{data[0]}</p>
-					{data.length > 1 && (
-						<p className="inline-flex min-w-4 bg-destructive-foreground text-white p-0.5 text-xs rounded-full">
-							{data.length - 1}+
-						</p>
-					)}
+					<p>{data[0]}</p>{data.length > 1 && <p>({data.length - 1}+)</p>}
 				</div>
 			</PopoverTrigger>
 			<PopoverContent>
