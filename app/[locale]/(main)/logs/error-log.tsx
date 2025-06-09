@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import ColorText from '@/components/common/color-text';
 import InfinitePage from '@/components/common/infinite-page';
+import JsonDisplay from '@/components/common/json-display';
 import { RelativeTime } from '@/components/common/relative-time';
 import ScrollContainer from '@/components/common/scroll-container';
 import Divider from '@/components/ui/divider';
@@ -18,11 +18,11 @@ export default function ErrorLog() {
 	const [status, setStatus] = useState<ErrorStatus[]>(['PENDING', 'INSPECTING']);
 	return (
 		<div className="flex flex-col h-full w-full overflow-hidden p-2 gap-2">
-			<section className="flex overflow-x-auto divide-x border w-fit rounded-md">
+			<section className="flex divide-x border w-fit rounded-md">
 				{errorStatus.map((t) => (
 					<button
 						key={t}
-						className={cn('px-2 py-1 cursor-pointer capitalize h-10 min-h-10', {
+						className={cn('px-2 py-1 cursor-pointer capitalize h-9 min-h-9', {
 							[statusColor[t]]: status.includes(t),
 						})}
 						onClick={() => (status.includes(t) ? setStatus(status.filter((s) => s !== t)) : setStatus([...status, t]))}
@@ -57,7 +57,7 @@ const statusColor: Record<ErrorStatus, string> = {
 function ErrorCard({ error: { content, createdAt, status } }: { error: ErrorReport }) {
 	return (
 		<div className="flex gap-2 justify-between p-4 rounded-md border">
-			<ColorText text={content} />
+			<JsonDisplay json={JSON.stringify(content)} />
 			<div className="flex gap-1">
 				<span className={cn('rounded-full px-2.5 py-0.5 text-xs h-fit', statusColor[status])}>{status.toLowerCase()}</span>
 				<RelativeTime className="ml-auto text-sm text-muted-foreground" date={new Date(createdAt)} />
