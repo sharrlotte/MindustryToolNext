@@ -267,7 +267,7 @@ export default function ServerUpdateForm({ server }: Props) {
 					/>
 					<div
 						className={cn(
-							'flex w-full border-brand border justify-end gap-2 transition-all translate-y-full opacity-0 absolute bottom-0 right-0 p-2 backdrop-blur backdrop-brightness-50',
+							'flex w-full z-50 border-brand border justify-end gap-2 transition-all translate-y-full opacity-0 absolute bottom-0 right-0 p-2 backdrop-blur backdrop-brightness-50',
 							{
 								'opacity-100 translate-y-0': isChanged,
 							},
