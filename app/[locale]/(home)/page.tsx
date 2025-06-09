@@ -464,7 +464,7 @@ async function NewSchematics({ queryParam }: { queryParam: ItemPaginationQueryTy
 						<Tran className="text-base" text="see-all" /> {'->'}
 					</InternalLink>
 				</div>
-				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
 					<Suspense>
 						<InternalHomeSchematicPreview queryParam={queryParam} />
 					</Suspense>
@@ -485,7 +485,7 @@ async function NewMaps({ queryParam }: { queryParam: ItemPaginationQueryType }) 
 						<Tran className="text-base" text="see-all" /> {'->'}
 					</InternalLink>
 				</div>
-				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
 					<Suspense>
 						<InternalHomeMapPreview queryParam={queryParam} />
 					</Suspense>

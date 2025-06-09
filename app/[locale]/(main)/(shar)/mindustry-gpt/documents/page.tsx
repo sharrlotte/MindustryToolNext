@@ -27,7 +27,7 @@ export default function Page() {
 		<div className="flex h-full flex-col justify-between gap-2 p-2">
 			<ScrollContainer className="relative flex h-full flex-col">
 				<InfinitePage
-					className="grid w-full  gap-2 md:grid-cols-2 lg:grid-cols-3"
+					className="grid w-full  gap-2 md:grid-cols-2 xl:grid-cols-3"
 					queryKey={['documents']}
 					queryFn={getDocuments}
 					paramSchema={ItemPaginationQuery}

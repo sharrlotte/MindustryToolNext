@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useInterval } from 'usehooks-ts';
+
+type SseState = 'connected' | 'disconnected' | 'connecting';
 
 export default function useSse<T = string>(
 	url: string,
@@ -6,12 +9,41 @@ export default function useSse<T = string>(
 		limit?: number;
 	},
 ) {
+	const [eventSource, setEventSource] = useState<EventSource>();
 	const [messages, setMessages] = useState<T[]>([]);
+	const [state, setState] = useState<SseState>('disconnected');
+	const [error, setError] = useState<Event>();
 
 	useEffect(() => {
-		const eventSource = new EventSource(url, {
-			withCredentials: true,
-		});
+		if (eventSource === undefined) {
+			setEventSource(
+				new EventSource(url, {
+					withCredentials: true,
+				}),
+			);
+			setState('connecting');
+		}
+	}, [eventSource]);
+
+	useInterval(() => {
+		if (state === 'disconnected' || eventSource === undefined) {
+			setEventSource(
+				new EventSource(url, {
+					withCredentials: true,
+				}),
+			);
+			setState('connecting');
+		}
+	}, 5000);
+
+	useEffect(() => {
+		if (!eventSource) {
+			return;
+		}
+
+		eventSource.onopen = () => {
+			setState('connected');
+		};
 
 		eventSource.onmessage = (event) => {
 			setMessages((prevMessages) => {
@@ -27,13 +59,16 @@ export default function useSse<T = string>(
 
 		eventSource.onerror = (err) => {
 			console.error('SSE error:', err);
+			setState('disconnected');
+			setError(err);
 			eventSource.close();
 		};
 
 		return () => {
+			setState('disconnected');
 			eventSource.close();
 		};
-	}, [url]);
+	}, [eventSource]);
 
-	return messages;
+	return { data: messages, state, error };
 }

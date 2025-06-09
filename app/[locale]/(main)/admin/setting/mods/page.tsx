@@ -49,7 +49,7 @@ function ModList() {
 	}
 
 	return (
-		<section className="overflow-y-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+		<section className="overflow-y-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xl:grid-cols-4 gap-2">
 			{data?.map((mod) => <ModCard key={mod.id} mod={mod} />)}
 		</section>
 	);

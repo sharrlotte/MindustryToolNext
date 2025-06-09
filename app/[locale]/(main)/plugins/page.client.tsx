@@ -21,7 +21,7 @@ export default function Client() {
 			<NameTagSearch type="plugin" useSort={false} />
 			<ScrollContainer className="relative flex h-full flex-col">
 				<InfinitePage
-					className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-3"
+					className="grid w-full gap-2 md:grid-cols-2 xl:grid-cols-3"
 					queryKey={['plugins']}
 					queryFn={getPlugins}
 					paramSchema={ItemPaginationQuery}
