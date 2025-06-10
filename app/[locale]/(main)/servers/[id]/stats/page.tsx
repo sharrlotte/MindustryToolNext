@@ -175,6 +175,9 @@ function LineChart({
 }) {
 	const { t } = useI18n('metric');
 	const avg = Math.round((100 * metrics.reduce((acc, { value }) => acc + value, 0)) / metrics.length) / 100;
+	const min = metrics.reduce((acc, { value }) => Math.min(acc, value), Infinity);
+	const max = metrics.reduce((acc, { value }) => Math.max(acc, value), -Infinity);
+
 	const unitLabel = unit ? `(${unit})` : '';
 
 	return (
@@ -210,7 +213,7 @@ function LineChart({
 					),
 					datasets: [
 						{
-							label: `${t(label)} ${unitLabel} avg: ${avg} ${unitLabel}`,
+							label: `${t(label)} ${unitLabel} avg: ${avg} ${unitLabel} min: ${min} ${unitLabel} max: ${max} ${unitLabel}`,
 							data: metrics.map(({ value }) => value),
 							fill,
 							borderColor,

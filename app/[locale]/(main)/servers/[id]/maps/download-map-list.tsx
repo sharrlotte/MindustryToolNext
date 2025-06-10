@@ -14,7 +14,6 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
@@ -109,34 +108,30 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 	});
 
 	return (
-		<motion.div layout className="relative h-full w-full overflow-hidden p-0">
-			<Dialog>
-				<DialogTrigger asChild>
-					<Preview className="group relative flex flex-col justify-between hover:border-brand">
-						<PreviewImage
-							className="h-full"
-							src={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
-							errorSrc={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
-							alt={name}
-						/>
-						<PreviewDescription>
-							<PreviewHeader className="h-12">
-								<ColorText text={name} />
-							</PreviewHeader>
-						</PreviewDescription>
-					</Preview>
-				</DialogTrigger>
-				<DialogContent>
-					<DialogClose disabled={isPending} onClick={() => mutate(map.id)}>
-						<Tran text="server.install-map" />
-					</DialogClose>
-				</DialogContent>
-			</Dialog>
+		<motion.button
+			layout
+			className="relative h-full w-full overflow-hidden p-0"
+			disabled={isPending}
+			onClick={() => mutate(map.id)}
+		>
+			<Preview className="group relative flex flex-col justify-between hover:border-brand">
+				<PreviewImage
+					className="h-full"
+					src={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
+					errorSrc={`${env.url.image}/map-previews/${map.id}${env.imageFormat}`}
+					alt={name}
+				/>
+				<PreviewDescription>
+					<PreviewHeader className="h-12">
+						<ColorText text={name} />
+					</PreviewHeader>
+				</PreviewDescription>
+			</Preview>
 			{isPending && (
 				<div className="absolute inset-0 z-10 backdrop-brightness-50 flex items-center justify-center">
 					<LoadingSpinner className="m-auto" />
 				</div>
 			)}
-		</motion.div>
+		</motion.button>
 	);
 }
