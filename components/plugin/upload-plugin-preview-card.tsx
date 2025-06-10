@@ -64,7 +64,7 @@ function UploadPluginCard({ plugin }: Props) {
 				<span className="text-muted-foreground">{description}</span>
 				<IdUserCard id={userId} />
 			</InternalLink>
-			<div className="flex gap-2">
+			<div className="flex gap-2 mt-auto">
 				<DeleteButton
 					description={<Tran text="delete-alert" args={{ name }} />}
 					isLoading={isDeleting}

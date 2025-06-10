@@ -66,7 +66,7 @@ export default function PluginCard({ plugin: { id, name, description, url, userI
 	return (
 		<ContextMenu>
 			<ContextMenuTrigger asChild>
-				<div className="relative flex h-32 flex-col gap-2 overflow-hidden rounded-md bg-card p-4 border">
+				<div className="relative flex h-40 flex-col gap-2 overflow-hidden rounded-md bg-card p-4 border">
 					<Link href={githubUrl} className="flex gap-1 items-center">
 						<FallbackImage
 							width={20}
