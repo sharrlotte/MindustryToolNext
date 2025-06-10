@@ -120,7 +120,7 @@ function RedownloadPlugin({ serverId, pluginId }: { serverId: string; pluginId: 
 	});
 
 	return (
-		<Button variant="outline" disabled={isPending} onClick={() => mutate(pluginId)}>
+		<Button variant="secondary" disabled={isPending} onClick={() => mutate(pluginId)}>
 			{isPending ? <LoadingSpinner className="w-fit size-5" /> : <ArrowDownToLine />}
 		</Button>
 	);

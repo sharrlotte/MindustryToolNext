@@ -135,7 +135,7 @@ function AddServerPluginCard({ plugin }: AddServerPluginCardProps) {
 				<FallbackImage
 					width={20}
 					height={20}
-					className="size-5 rounded-sm overflow-hidden"
+					className="size-5 min-w-5 rounded-sm overflow-hidden"
 					src={`https://raw.githubusercontent.com/${user}/${repo}/master/icon.png`}
 					errorSrc="https://raw.githubusercontent.com/Anuken/Mindustry/master/core/assets/sprites/error.png"
 					alt={''}
