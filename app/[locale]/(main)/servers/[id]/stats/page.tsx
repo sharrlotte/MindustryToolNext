@@ -174,6 +174,8 @@ function LineChart({
 	}[];
 }) {
 	const { t } = useI18n('metric');
+	const avg = metrics.reduce((acc, { value }) => acc + value, 0) / metrics.length;
+	const unitLabel = unit ? '' : `(${unit})`;
 
 	return (
 		<div className="aspect-video h-auto w-full flex overflow-hidden rounded-lg border bg-card">
@@ -208,7 +210,7 @@ function LineChart({
 					),
 					datasets: [
 						{
-							label: unit ? `${t(label)} (${unit})` : t(label),
+							label: `${t(label)} ${unitLabel} avg: ${avg} ${unitLabel}`,
 							data: metrics.map(({ value }) => value),
 							fill,
 							borderColor,
