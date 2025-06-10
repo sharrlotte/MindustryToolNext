@@ -177,18 +177,18 @@ export function hasAccess(session: Session | ApiError | undefined | null, filter
 
 	if ('role' in filter) {
 		if (Array.isArray(filter.role)) {
-			return filter.role.every((f) => session.roles?.map((r) => r.name).includes(f));
+			return filter.role.every((f) => session.roles?.map((r) => r.name.toLowerCase()).includes(f.toLowerCase()));
 		}
 
-		return session.roles?.map((r) => r.name).includes(filter.role);
+		return session.roles?.map((r) => r.name.toLowerCase()).includes(filter.role.toLowerCase());
 	}
 
 	if ('authority' in filter) {
 		if (Array.isArray(filter.authority)) {
-			return filter.authority.every((f) => session.authorities?.includes(f));
+			return filter.authority.every((f) => session.authorities?.includes(f.toLowerCase()));
 		}
 
-		return session.authorities?.includes(filter.authority);
+		return session.authorities?.includes(filter.authority.toLowerCase());
 	}
 
 	return session.id === filter.authorId;

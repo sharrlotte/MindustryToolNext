@@ -45,10 +45,8 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 		placeholderData: [],
 	});
 
-	const filteredAuthority = useMemo(
-		() => data?.filter((a) => (a.authorityGroup === 'Shar' ? session?.roles.map((r) => r.name).includes('SHAR') : true)) || [],
-		[data, session?.roles],
-	);
+	const filteredAuthority = useMemo(() => data || [], [data]);
+	
 	const { mutate } = useMutation({
 		mutationFn: async (authorityIds: string[]) => changeAuthorities(axios, { roleId, authorityIds }),
 		onSuccess: () => {
