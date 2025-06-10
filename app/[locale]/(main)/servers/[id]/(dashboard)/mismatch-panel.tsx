@@ -13,9 +13,7 @@ import { getServerMismatch } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
 
-const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button'), {
-	ssr: false,
-});
+const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button'));
 
 export default function MismatchPanel() {
 	const id = usePathId();
