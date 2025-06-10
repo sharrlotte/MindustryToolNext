@@ -174,7 +174,7 @@ function LineChart({
 	}[];
 }) {
 	const { t } = useI18n('metric');
-	const avg = metrics.reduce((acc, { value }) => acc + value, 0) / metrics.length;
+	const avg = Math.round((100 * metrics.reduce((acc, { value }) => acc + value, 0)) / metrics.length) / 100;
 	const unitLabel = unit ? `(${unit})` : '';
 
 	return (
