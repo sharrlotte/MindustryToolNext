@@ -84,6 +84,19 @@ function GridDetailSwipeToNavigate<T extends { id: any }, P extends QuerySchema>
 		queryKey: [{ ...p, page }, ...queryKey],
 		queryFn: () => queryFn(axios, { ...p, page }),
 	});
+
+	if (page > 0) {
+		queryClient.prefetchQuery({
+			queryKey: [{ ...p, page: page - 1 }, ...queryKey],
+			queryFn: () => queryFn(axios, { ...p, page }),
+		});
+	}
+
+	queryClient.prefetchQuery({
+		queryKey: [{ ...p, page: page + 1 }, ...queryKey],
+		queryFn: () => queryFn(axios, { ...p, page }),
+	});
+
 	const { page: _, ...paramWithoutPage } = p;
 
 	const data =
