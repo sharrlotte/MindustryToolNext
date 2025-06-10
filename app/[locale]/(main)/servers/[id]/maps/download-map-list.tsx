@@ -125,12 +125,12 @@ function AddServerMapCard({ map }: AddServerMapCardProps) {
 							</PreviewHeader>
 						</PreviewDescription>
 					</Preview>
-					<DialogContent>
-						<DialogClose disabled={isPending} onClick={() => mutate(map.id)}>
-							<Tran text="server.install-map" />
-						</DialogClose>
-					</DialogContent>
 				</DialogTrigger>
+				<DialogContent>
+					<DialogClose disabled={isPending} onClick={() => mutate(map.id)}>
+						<Tran text="server.install-map" />
+					</DialogClose>
+				</DialogContent>
 			</Dialog>
 			{isPending && (
 				<div className="absolute inset-0 z-10 backdrop-brightness-50 flex items-center justify-center">
