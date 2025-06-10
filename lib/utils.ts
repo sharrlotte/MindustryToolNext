@@ -185,10 +185,10 @@ export function hasAccess(session: Session | ApiError | undefined | null, filter
 
 	if ('authority' in filter) {
 		if (Array.isArray(filter.authority)) {
-			return filter.authority.every((f) => session.authorities?.includes(f.toLowerCase()));
+			return filter.authority.every((f) => session.authorities.map((a) => a.toLowerCase())?.includes(f.toLowerCase()));
 		}
 
-		return session.authorities?.includes(filter.authority.toLowerCase());
+		return session.authorities?.map((a) => a.toLowerCase()).includes(filter.authority.toLowerCase());
 	}
 
 	return session.id === filter.authorId;
