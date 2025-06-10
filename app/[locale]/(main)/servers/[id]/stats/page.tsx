@@ -1,6 +1,16 @@
 'use client';
 
-import { CategoryScale, Chart as ChartJS, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
+import {
+	CategoryScale,
+	Chart as ChartJS,
+	Filler,
+	Legend,
+	LineElement,
+	LinearScale,
+	PointElement,
+	Title,
+	Tooltip,
+} from 'chart.js';
 import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
 import { RefreshCwIcon } from 'lucide-react';
 import { Suspense } from 'react';
@@ -31,7 +41,7 @@ import { useQuery } from '@tanstack/react-query';
 
 type Filter = (typeof metricFilters)[number];
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Title, Tooltip, Legend);
 
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
 	const { id } = use(params);
@@ -89,6 +99,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 						<LineChart
 							label="ram"
 							unit="Mb"
+							fill
 							metrics={
 								data?.map(({ createdAt, value }) => ({
 									createdAt: new Date(createdAt),
@@ -148,9 +159,15 @@ function LineChart({
 	metrics,
 	label,
 	unit,
+	fill = false,
+	borderColor = 'rgb(255, 99, 132)',
+	backgroundColor = 'rgba(255, 99, 132, 0.5)',
 }: {
 	label: string;
 	unit?: string;
+	fill?: boolean;
+	borderColor?: string;
+	backgroundColor?: string;
 	metrics: {
 		createdAt: Date;
 		value: number;
@@ -159,7 +176,7 @@ function LineChart({
 	const { t } = useI18n('metric');
 
 	return (
-		<div className="aspect-video h-auto w-full flex bg-card overflow-hidden rounded-lg">
+		<div className="aspect-video h-auto w-full flex overflow-hidden rounded-lg border bg-card">
 			<Line
 				className="p-2"
 				options={{
@@ -193,8 +210,9 @@ function LineChart({
 						{
 							label: unit ? `${t(label)} (${unit})` : t(label),
 							data: metrics.map(({ value }) => value),
-							borderColor: 'rgb(255, 99, 132)',
-							backgroundColor: 'rgba(255, 99, 132, 0.5)',
+							fill,
+							borderColor,
+							backgroundColor,
 						},
 					],
 				}}
@@ -244,7 +262,7 @@ function LoginLogChart({ serverId, filter }: { serverId: string; filter: Filter 
 	}
 
 	return (
-		<div className="aspect-video h-auto w-full flex bg-card overflow-hidden rounded-lg">
+		<div className="aspect-video h-auto w-full flex bg-card overflow-hidden rounded-lg border">
 			<Line
 				className="p-2"
 				options={{

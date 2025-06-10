@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
+import { LogPathIcon } from '@/app/[locale]/(main)/log-path';
 import LiveLog from '@/app/[locale]/(main)/logs/live-log';
 
 import Tran from '@/components/common/tran';
@@ -22,18 +23,20 @@ export default function PageClient() {
 					<Tran text="log.static" />
 				</ServerTabsTrigger>
 				<ServerTabsTrigger value="error">
-					<Tran text="log.error" />
+					<LogPathIcon>
+						<Tran text="log.error" />
+					</LogPathIcon>
 				</ServerTabsTrigger>
 			</ServerTabsList>
-			<ServerTabsContent value="live">
+			<ServerTabsContent value="live" className="overflow-hidden">
 				<LiveLog />
 			</ServerTabsContent>
-			<ServerTabsContent value="static">
+			<ServerTabsContent value="static" className="overflow-hidden">
 				<Suspense>
 					<StaticLog />
 				</Suspense>
 			</ServerTabsContent>
-			<ServerTabsContent value="error">
+			<ServerTabsContent value="error" className="overflow-hidden">
 				<Suspense>
 					<ErrorLog />
 				</Suspense>

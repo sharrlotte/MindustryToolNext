@@ -127,8 +127,10 @@ function PlanCard({
 				border,
 				bg,
 				textAll,
-				isSelected ? 'opacity-100' : 'opacity-50',
-				canAccess ? 'cursor-pointer hover:opacity-100 hover:-translate-y-2 transition-all duration-300' : 'cursor-not-allowed',
+				isSelected ? 'opacity-100 cursor-not-allowed' : 'opacity-50',
+				canAccess
+					? ['cursor-pointer transition-all duration-300', !isSelected && 'hover:opacity-100 hover:-translate-y-2']
+					: 'cursor-not-allowed',
 			)}
 			disabled={isPending || !hasAccess || isSelected}
 			onClick={() => mutate()}
