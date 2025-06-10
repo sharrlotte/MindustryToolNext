@@ -209,7 +209,9 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 									) : (
 										<Accordion type="single" collapsible>
 											<AccordionItem value={key}>
-												<AccordionTrigger className="h-fit p-0">{key}:</AccordionTrigger>
+												<AccordionTrigger className="h-fit p-0">
+													{key}: {Array.isArray(value) ? '[...]' : typeof value === 'object' ? '{...}' : ''}
+												</AccordionTrigger>
 												<AccordionContent>
 													<JsonDisplay json={value} depth={++depth} />
 												</AccordionContent>
