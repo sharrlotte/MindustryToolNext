@@ -16,7 +16,7 @@ export function LogPathIcon({ children }: { children: React.ReactNode }) {
 				size: 100,
 				status: ['INSPECTING', 'PENDING'],
 			}),
-		queryKey: ['error'],
+		queryKey: ['errors'],
 	});
 
 	const total = data?.length ?? 0;

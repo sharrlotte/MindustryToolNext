@@ -22,3 +22,13 @@ export async function getError(
 
 	return result.data;
 }
+
+export async function updateErrorStatus(axios: AxiosInstance, id: string, status: ErrorStatus) {
+	const result = await axios.put(`/error-report/${id}`, status, {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+
+	return result.data;
+}
