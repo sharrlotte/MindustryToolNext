@@ -57,7 +57,9 @@ const statusColor: Record<ErrorStatus, string> = {
 function ErrorCard({ error: { content, createdAt, status } }: { error: ErrorReport }) {
 	return (
 		<div className="flex gap-2 justify-between p-4 rounded-md border">
-			<JsonDisplay json={JSON.stringify(content)} />
+			<div className="text-sm">
+				<JsonDisplay json={content} />
+			</div>
 			<div className="flex gap-1">
 				<span className={cn('rounded-full px-2.5 py-0.5 text-xs h-fit', statusColor[status])}>{status.toLowerCase()}</span>
 				<RelativeTime className="ml-auto text-sm text-muted-foreground" date={new Date(createdAt)} />

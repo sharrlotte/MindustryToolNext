@@ -1,5 +1,5 @@
 import { SendIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 import Tran from '@/components/common/tran';
 import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
@@ -25,7 +25,7 @@ Any error messages you saw
 The more details you provide, the easier it is for us to solve the problem. Thank you!`;
 
 export default function ReportErrorForm() {
-	const [message, setMessage] = useState('');
+	const [message, setMessage] = useLocalStorage('error-message', '');
 	const axios = useClientApi();
 	const { mutate, isPending } = useMutation({
 		mutationFn: () => {
@@ -38,6 +38,7 @@ export default function ReportErrorForm() {
 			errors.length = 0;
 
 			return axios.post('/error-report', data, {
+				data,
 				headers: {
 					'Content-Type': 'application/json',
 				},

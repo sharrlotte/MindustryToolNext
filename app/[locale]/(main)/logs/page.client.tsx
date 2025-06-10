@@ -28,15 +28,15 @@ export default function PageClient() {
 					</LogPathIcon>
 				</ServerTabsTrigger>
 			</ServerTabsList>
-			<ServerTabsContent value="live">
+			<ServerTabsContent value="live" className="overflow-hidden">
 				<LiveLog />
 			</ServerTabsContent>
-			<ServerTabsContent value="static">
+			<ServerTabsContent value="static" className="overflow-hidden">
 				<Suspense>
 					<StaticLog />
 				</Suspense>
 			</ServerTabsContent>
-			<ServerTabsContent value="error">
+			<ServerTabsContent value="error" className="overflow-hidden">
 				<Suspense>
 					<ErrorLog />
 				</Suspense>
