@@ -1,6 +1,5 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import { FileIcon, FolderIcon, LayoutGrid } from 'lucide-react';
 import { PlusIcon, SearchIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -78,24 +77,15 @@ export default function SideBar() {
 					</button>
 				))}
 			</div>
-			<AnimatePresence>
-				{tabs
-					.filter(({ id }) => id === currentTab)
-					.map(({ id, item }) => (
-						<div key={id} className="p-2 border-r h-full overflow-hidden min-w-72">
-							<motion.div
-								className="h-full overflow-hidden"
-								initial={{ y: -10, opacity: 0 }}
-								animate={{ y: 0, opacity: 1 }}
-								transition={{ delay: 0.1 }}
-							>
-								<CatchError>
-									<Suspense>{item}</Suspense>
-								</CatchError>
-							</motion.div>
-						</div>
-					))}
-			</AnimatePresence>
+			{tabs
+				.filter(({ id }) => id === currentTab)
+				.map(({ id, item }) => (
+					<div key={id} className="p-2 border-r h-full overflow-hidden min-w-72 w-72">
+						<CatchError>
+							<Suspense>{item}</Suspense>
+						</CatchError>
+					</div>
+				))}
 		</div>
 	);
 }

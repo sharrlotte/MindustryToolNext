@@ -495,7 +495,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 						>
 							<Suspense>
 								{children}
-								<div className="absolute z-50 top-1 left-1 space-x-0.5 text-xs text-muted-foreground">
+								<div className="absolute z-50 top-1 left-1 space-x-1 text-xs text-muted-foreground">
 									<span>x: {Math.round(viewport.x)}</span>
 									<span>y: {Math.round(viewport.y)}</span>
 								</div>
