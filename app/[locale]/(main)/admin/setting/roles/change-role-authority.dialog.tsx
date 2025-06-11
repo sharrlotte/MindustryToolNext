@@ -46,7 +46,7 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 	});
 
 	const filteredAuthority = useMemo(() => data || [], [data]);
-	
+
 	const { mutate } = useMutation({
 		mutationFn: async (authorityIds: string[]) => changeAuthorities(axios, { roleId, authorityIds }),
 		onSuccess: () => {
@@ -108,21 +108,23 @@ export default function ChangeRoleAuthorityDialog({ role }: Props) {
 						{groups.map(({ key, value }) => (
 							<Fragment key={key}>
 								<span className="font-bold">{key}</span>
-								{value.map(({ id, name, description }) => (
-									<ToggleGroupItem
-										key={id}
-										className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent"
-										value={name}
-									>
-										<div className="w-full space-y-1">
-											<div className="flex w-full justify-between gap-1">
-												<span className="text-sm lowercase">{name}</span>
-												{selectedAuthorities.map((r) => r.id).includes(id) ? <CheckSquare2 /> : <SquareIcon />}
+								{value
+									.sort((a, b) => a.name.localeCompare(b.name))
+									.map(({ id, name, description }) => (
+										<ToggleGroupItem
+											key={id}
+											className="w-full justify-start space-x-2 p-1 px-0 capitalize hover:bg-transparent data-[state=on]:bg-transparent"
+											value={name}
+										>
+											<div className="w-full space-y-1">
+												<div className="flex w-full justify-between gap-1">
+													<span className="text-sm lowercase">{name}</span>
+													{selectedAuthorities.map((r) => r.id).includes(id) ? <CheckSquare2 /> : <SquareIcon />}
+												</div>
+												<p className="text-start text-xs lowercase">{description}</p>
 											</div>
-											<p className="text-start text-xs lowercase">{description}</p>
-										</div>
-									</ToggleGroupItem>
-								))}
+										</ToggleGroupItem>
+									))}
 							</Fragment>
 						))}
 					</ToggleGroup>
