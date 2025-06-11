@@ -67,7 +67,7 @@ function AllCard({ translation }: AllCardProps) {
 
 	return (
 		<div className="flex flex-col gap-1 bg-card p-2 rounded-md border">
-			<div className="uppercase">
+			<div className="font-semibold">
 				{keyGroup}.{key}
 			</div>
 			{locales.map((locale) => (
@@ -121,13 +121,13 @@ function ValueCard({ keyId, tKey: key, keyGroup, value, locale }: ValueCardProps
 	return (
 		<div className="w-full flex justify-between text-xs p-2 bg-secondary rounded-md">
 			<div className="flex gap-1 items-start w-full" onClick={() => setEdit(true)}>
-				{currentValue.isTranslated ? <Pencil className="size-4" /> : <LanguagesIcon />}
+				<div className='min-w-4'>{currentValue.isTranslated ? <Pencil className="size-4" /> : <LanguagesIcon />}</div>
 				<Tran className="text-nowrap text-foreground uppercase" text={locale} />
 				{isEdit ? ( //
 					<Textarea
 						className="border-transparent p-0 outline-none ring-0 focus-visible:outline-none focus-visible:ring-0 w-full h-fit min-h-fit"
 						autoFocus
-						defaultValue={currentValue?.value ?? key}
+						defaultValue={currentValue?.value ?? ''}
 						onChange={(event) => setCurrentValue((prev) => ({ ...prev, value: event.target.value }))}
 						onBlur={() => {
 							setEdit(false);
@@ -144,7 +144,7 @@ function ValueCard({ keyId, tKey: key, keyGroup, value, locale }: ValueCardProps
 				<TranslationStatus status={status} />
 				{currentValue.id && (
 					<Suspense>
-						<DeleteTranslationDialog variant='ghost' value={{ key, id: keyId }} />
+						<DeleteTranslationDialog value={{ key, id: keyId }} />
 					</Suspense>
 				)}
 			</div>

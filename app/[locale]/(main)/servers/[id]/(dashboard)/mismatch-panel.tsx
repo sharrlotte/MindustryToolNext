@@ -12,6 +12,7 @@ import usePathId from '@/hooks/use-path-id';
 import { getServerMismatch } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
 
 const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button'));
 
@@ -46,7 +47,9 @@ export default function MismatchPanel() {
 			<PopoverContent>
 				<section className="flex mt-2 gap-2 text-sm w-full overflow-hidden flex-col max-h-[50vh] overflow-y-auto p-2">
 					<Tran text="server.restart-required" />
-					<ShutdownServerButton id={id} />
+					<Suspense>
+						<ShutdownServerButton id={id} />
+					</Suspense>
 					<Divider />
 					{data.map((mismatch) => (
 						<p className="rounded-md text-destructive-foreground p-2 bg-destructive text-wrap wrap break-words" key={mismatch}>
