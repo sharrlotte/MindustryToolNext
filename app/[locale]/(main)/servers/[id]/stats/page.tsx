@@ -1,22 +1,14 @@
 'use client';
 
-import {
-	CategoryScale,
-	Chart as ChartJS,
-	Filler,
-	Legend,
-	LineElement,
-	LinearScale,
-	PointElement,
-	Title,
-	Tooltip,
-} from 'chart.js';
+import { CategoryScale, Chart as ChartJS, Filler, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
 import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
 import { RefreshCwIcon } from 'lucide-react';
 import { Suspense } from 'react';
 import { use, useMemo, useRef, useState } from 'react';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
+
+
 
 import ComboBox from '@/components/common/combo-box';
 import ErrorMessage from '@/components/common/error-message';
@@ -25,6 +17,8 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
+
+
 
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
@@ -37,7 +31,10 @@ import { cn } from '@/lib/utils';
 import { getServerLoginMetrics } from '@/query/server';
 import { ServerLiveStats } from '@/types/response/ServerLiveStats';
 
+
+
 import { useQuery } from '@tanstack/react-query';
+
 
 type Filter = (typeof metricFilters)[number];
 
@@ -109,6 +106,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 						<LineChart
 							label="tps"
 							unit="Tick per second"
+							maxTick={60}
 							metrics={
 								data?.map(({ createdAt, value }) => ({
 									createdAt: new Date(createdAt),
@@ -130,15 +128,17 @@ function LineChart({
 	metrics,
 	label,
 	unit,
+	maxTick,
 	fill = false,
 	borderColor = 'rgb(255, 99, 132)',
-	backgroundColor = 'rgba(255, 99, 132, 0.5)',
+	backgroundColor = 'rgba(255, 99, 132, 0.2)',
 }: {
 	label: string;
 	unit?: string;
 	fill?: boolean;
 	borderColor?: string;
 	backgroundColor?: string;
+	maxTick?: number;
 	metrics: {
 		createdAt: Date;
 		value: number;
@@ -170,6 +170,7 @@ function LineChart({
 							},
 						},
 						y: {
+							max: maxTick,
 							beginAtZero: true,
 							ticks: {
 								precision: 0,
