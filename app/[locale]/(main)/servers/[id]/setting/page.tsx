@@ -60,9 +60,7 @@ export default async function Page({ params }: Props) {
 				<ServerUpdateForm server={server} />
 			</CatchError>
 			<CatchError>
-				<ProtectedElement session={session} filter={{ authority: 'EDIT_ADMIN_SERVER' }}>
-					<ServerUpdateAdminForm server={server} />
-				</ProtectedElement>
+				<ServerUpdateAdminForm server={server} />
 			</CatchError>
 			<CatchError>
 				<ServerPlanList server={server} />
