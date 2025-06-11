@@ -4,7 +4,7 @@ import React, { cache } from 'react';
 import ErrorScreen from '@/components/common/error-screen';
 import MapDetailCard from '@/components/map/map-detail-card';
 
-import { serverApi } from '@/action/common';
+import { getCachedUser, serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
@@ -12,7 +12,6 @@ import { getErrorMessage, isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
 import { getMap } from '@/query/map';
-import { getUser } from '@/query/user';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;
@@ -23,14 +22,16 @@ const getCachedMap = cache((id: string) => serverApi((axios) => getMap(axios, { 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id, locale } = await params;
 	const { t } = await getTranslation(locale, ['tags']);
+
 	const map = await getCachedMap(id);
+
 	if (isError(map)) {
 		return { title: 'Error' };
 	}
 
 	const { name, description, downloadCount, likes, dislikes, userId, tags, createdAt } = map;
 
-	const user = await serverApi((axios) => getUser(axios, { id: userId }));
+	const user = await getCachedUser(userId);
 
 	if (isError(user)) {
 		return { title: 'Error', description: getErrorMessage(user) };

@@ -1,3 +1,4 @@
+import { AxiosInstance } from 'axios';
 import { useCallback } from 'react';
 
 import InternalLink from '@/components/common/internal-link';
@@ -7,6 +8,20 @@ import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import { isError } from '@/lib/error';
 import { getUser } from '@/query/user';
+import { User } from '@/types/response/User';
+
+const cache: Record<string, User> = {};
+
+async function getCachedUser(axios: AxiosInstance, id: string) {
+	const cached = cache[id];
+
+	if (cached) return cached;
+
+	return getUser(axios, { id }).then((user) => {
+		cache[id] = user;
+		return user;
+	});
+}
 
 export default function useNotification() {
 	const { session } = useSession();
@@ -17,10 +32,11 @@ export default function useNotification() {
 			if (isError(session)) {
 				return;
 			}
+
 			if (sender === session?.id) return;
 
 			if (isGranted) {
-				getUser(axios, { id: sender }).then((user) => new Notification(user.name, { body: message, icon: '/favicon.ico' }));
+				getCachedUser(axios, sender).then((user) => new Notification(user.name, { body: message, icon: '/favicon.ico' }));
 			} else {
 				toast(<InternalLink href="/chat">{message}</InternalLink>);
 			}
