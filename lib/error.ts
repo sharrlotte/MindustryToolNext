@@ -32,11 +32,6 @@ export type ApiError = {
 	error: any;
 };
 
-const DEFAULT_NEXTJS_ERROR_MESSAGE =
-	'An error occurred in the Server Components render. The specific message is omitted in production builds to avoid leaking sensitive details. A digest property is included on this error instance which may provide additional details about the nature of the error.';
-
-const INTERNAL_ERROR_MESSAGE = 'Request failed with status code 500';
-
 export function getErrorMessage(error: TError) {
 	if (!error) {
 		return 'Something is wrong';
@@ -57,10 +52,6 @@ export function getErrorMessage(error: TError) {
 	}
 
 	if ('message' in error) {
-		if (error?.message === DEFAULT_NEXTJS_ERROR_MESSAGE) return '500 Internal server error';
-
-		if (error?.message === INTERNAL_ERROR_MESSAGE) return '500 Internal server error';
-
 		return error?.message;
 	}
 

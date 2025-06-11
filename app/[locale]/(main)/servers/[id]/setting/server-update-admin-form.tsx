@@ -12,9 +12,10 @@ import { toast } from '@/components/ui/sonner';
 import { Switch } from '@/components/ui/switch';
 
 import { revalidate } from '@/action/common';
+import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { cn } from '@/lib/utils';
+import { cn, hasAccess } from '@/lib/utils';
 import { updateServerPort } from '@/query/server';
 import { PutServerPortRequest, PutServerPortSchema } from '@/types/request/UpdateServerRequest';
 import Server from '@/types/response/Server';
@@ -28,6 +29,7 @@ type Props = {
 
 export default function ServerUpdateAdminForm({ server }: Props) {
 	const { id, port, isOfficial, isAutoTurnOff, isHub } = server;
+	const { session } = useSession();
 
 	const form = useForm<PutServerPortRequest>({
 		resolver: zodResolver(PutServerPortSchema),
@@ -53,6 +55,8 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 		},
 	});
 
+	const canAccess = hasAccess(session, { authority: 'EDIT_ADMIN_SERVER' });
+
 	const isChanged = form.formState.isDirty;
 
 	return (
@@ -74,7 +78,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 										<Tran text="server.port" />
 									</FormLabel>
 									<FormControl>
-										<Input placeholder="6568" {...field} />
+										<Input placeholder="6568" {...field} disabled={!canAccess} />
 									</FormControl>
 									<FormDescription>
 										<Tran text="server.port-description" />
@@ -90,7 +94,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 								<FormItem>
 									<div className="flex gap-1 items-center">
 										<FormControl>
-											<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+											<Switch disabled={!canAccess} checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
 										</FormControl>
 										<FormLabel>
 											<Tran text="server.is-official" />
@@ -107,7 +111,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 								<FormItem>
 									<div className="flex gap-1 items-center">
 										<FormControl>
-											<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+											<Switch disabled={!canAccess} checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
 										</FormControl>
 										<FormLabel>
 											<Tran text="server.is-hub" />
@@ -124,7 +128,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 								<FormItem>
 									<div className="flex gap-1 items-center">
 										<FormControl>
-											<Switch checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
+											<Switch disabled={!canAccess} checked={field.value} onCheckedChange={(value) => field.onChange(value)} />
 										</FormControl>
 										<FormLabel>
 											<Tran text="server.is-auto-turn-off" />
@@ -148,7 +152,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 							variant="secondary"
 							title="reset"
 							onClick={() => form.reset()}
-							disabled={!isChanged || isPending}
+							disabled={!isChanged || isPending || !canAccess}
 						>
 							<Tran text="reset" />
 						</Button>
