@@ -39,7 +39,7 @@ export default function MismatchPanel() {
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<div className="text-sm text-destructive-foreground overflow-hidden text-ellipsis flex gap-2">
+				<div className="text-sm text-destructive-foreground overflow-hidden text-ellipsis space-x-1">
 					<span>{data[0]}</span>
 					{data.length > 1 && <p>({data.length - 1}+)</p>}
 				</div>
@@ -52,9 +52,9 @@ export default function MismatchPanel() {
 					</Suspense>
 					<Divider />
 					{data.map((mismatch) => (
-						<p className="rounded-md text-destructive-foreground p-2 bg-destructive text-wrap wrap break-words" key={mismatch}>
+						<span className="rounded-md text-destructive-foreground p-2 bg-destructive text-wrap wrap break-words" key={mismatch}>
 							{mismatch}
-						</p>
+						</span>
 					))}
 				</section>
 			</PopoverContent>
