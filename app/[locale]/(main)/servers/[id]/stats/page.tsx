@@ -79,9 +79,6 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 			</div>
 			<Divider />
 			<ScrollContainer className="p-2 flex flex-col gap-2">
-				<h2 className="text-base font-semibold">
-					<Tran text="metric.live" asChild />
-				</h2>
 				<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
 					<Suspense>
 						<LineChart
@@ -121,34 +118,8 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 						/>
 					</Suspense>
 					<Suspense>
-						<LineChart
-							label="player"
-							metrics={
-								data?.map(({ createdAt, value }) => ({
-									createdAt: new Date(createdAt),
-									value: value.players,
-								})) ?? []
-							}
-						/>
+						<LoginLogChart serverId={id} filter={filter} />
 					</Suspense>
-					<Suspense>
-						<LineChart
-							label="kick"
-							metrics={
-								data?.map(({ createdAt, value }) => ({
-									createdAt: new Date(createdAt),
-									value: value.kicks,
-								})) ?? []
-							}
-						/>
-					</Suspense>
-				</div>
-				<Divider className="col-span-full" />
-				<h2 className="text-base font-semibold">
-					<Tran text="metric.static" asChild />
-				</h2>
-				<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
-					<LoginLogChart serverId={id} filter={filter} />
 				</div>
 			</ScrollContainer>
 		</div>
