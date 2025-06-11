@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/constant/constant';
 import { ApiError } from '@/lib/error';
 import axiosInstance from '@/query/config/config';
+import { getUser } from '@/query/user';
 import { Session } from '@/types/response/Session';
 import { QuerySchema } from '@/types/schema/search-query';
 
@@ -70,6 +71,9 @@ export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError>
 	});
 }
 
+export const getCachedUser = async (id: string) =>
+	unstable_cache(() => catchError(axiosInstance, (axios) => getUser(axios, { id })));
+
 const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> = cache(
 	unstable_cache(
 		async (cookie: string) => {
@@ -104,8 +108,6 @@ export async function getAuthSession() {
 
 	return session;
 }
-
-
 
 export const getServerApi = async (): Promise<AxiosInstance> => {
 	const cookie = await cookies();

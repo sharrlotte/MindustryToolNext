@@ -4,7 +4,7 @@ import React, { cache } from 'react';
 import ErrorScreen from '@/components/common/error-screen';
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
 
-import { serverApi } from '@/action/common';
+import { getCachedUser, serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
@@ -12,7 +12,6 @@ import { getErrorMessage, isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
 import { getSchematic } from '@/query/schematic';
-import { getUser } from '@/query/user';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;
@@ -31,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 	const { name, description, downloadCount, likes, dislikes, userId, tags, createdAt } = schematic;
 
-	const user = await serverApi((axios) => getUser(axios, { id: userId }));
+	const user = await getCachedUser(userId);
 
 	if (isError(user)) {
 		return { title: 'Error', description: getErrorMessage(user) };
