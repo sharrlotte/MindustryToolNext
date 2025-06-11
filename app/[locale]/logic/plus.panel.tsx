@@ -34,7 +34,7 @@ function InstructionList() {
 				</h2>
 				<Input placeholder="Search" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} />
 			</div>
-			<section className="h-full overflow-y-auto pr-2">
+			<section className="h-full overflow-y-auto pr-2 space-y-2">
 				{nodeGroups.map((group) => (
 					<InstructionGroup key={group.key} group={group} />
 				))}
@@ -45,7 +45,7 @@ function InstructionList() {
 
 function InstructionGroup({ group: { key, value } }: { group: { key: string; value: NodeData[] } }) {
 	return (
-		<div className="space-y-2">
+		<div className="space-y-1">
 			<h3 className="text-base capitalize">{key}</h3>
 			{value.map((node) => (
 				<InstructionItem key={node.name} item={node} />
