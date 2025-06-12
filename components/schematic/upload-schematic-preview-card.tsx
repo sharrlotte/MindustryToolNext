@@ -45,7 +45,7 @@ function UploadSchematicPreviewCard({ schematic: { id, name } }: UploadSchematic
 				<Share2Icon />
 			</CopyButton>
 			<BulkActionSelector value={id}>
-				<InternalLink className="flex" href={detailLink}>
+				<InternalLink className="flex" href={detailLink} prefetch={false}>
 					<PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
 				</InternalLink>
 				<PreviewDescription>

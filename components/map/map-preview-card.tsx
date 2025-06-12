@@ -33,7 +33,7 @@ function MapPreviewCard({ map: { id, name, likes, dislikes, downloadCount, itemI
 			<CopyButton position="absolute" variant="ghost" data={link} content={link}>
 				<Share2Icon />
 			</CopyButton>
-			<InternalLink href={detailLink}>
+			<InternalLink href={detailLink} prefetch={false}>
 				<PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
 			</InternalLink>
 			<PreviewDescription>

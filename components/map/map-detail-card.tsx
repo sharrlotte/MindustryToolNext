@@ -1,7 +1,4 @@
-'use client';
-
 import { Share2Icon } from 'lucide-react';
-import { useParams } from 'next/navigation';
 
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
@@ -21,6 +18,7 @@ import {
 	Verifier,
 } from '@/components/common/detail';
 import DetailSwipeToNavigate from '@/components/common/detail-swipe-to-navigate';
+import ErrorScreen from '@/components/common/error-screen';
 import JsonDisplay from '@/components/common/json-display';
 import ScrollContainer from '@/components/common/scroll-container';
 import SizeCard from '@/components/common/size-card';
@@ -31,20 +29,27 @@ import { TakeDownMapButton } from '@/components/map/take-down-map.button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+import { getCachedMap } from '@/action/query';
 import env from '@/constant/env';
-import { useSession } from '@/context/session.context';
-import ProtectedElement from '@/layout/protected-element';
+import { Locale } from '@/i18n/config';
+import ClientProtectedElement from '@/layout/client-protected-element';
+import { isError } from '@/lib/error';
 import { getMaps } from '@/query/map';
-import { MapDetail } from '@/types/response/MapDetail';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 type MapDetailCardProps = {
-	map: MapDetail;
+	id: string;
+	locale: Locale;
 };
 
-export default function MapDetailCard({
-	map: {
-		id,
+export default async function MapDetailCard({ id, locale }: MapDetailCardProps) {
+	const map = await getCachedMap(id);
+
+	if (isError(map)) {
+		return <ErrorScreen error={map} />;
+	}
+
+	const {
 		name,
 		description,
 		tags,
@@ -59,10 +64,7 @@ export default function MapDetailCard({
 		downloadCount,
 		createdAt,
 		meta,
-	},
-}: MapDetailCardProps) {
-	const { session } = useSession();
-	const { locale } = useParams();
+	} = map;
 
 	const link = `${env.url.base}/${locale}/maps/${id}`;
 	const imageUrl = `${env.url.image}/maps/${id}${env.imageFormat}`;
@@ -115,8 +117,7 @@ export default function MapDetailCard({
 							<DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
 							<LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
 							<EllipsisButton>
-								<ProtectedElement
-									session={session}
+								<ClientProtectedElement
 									filter={{
 										all: [
 											{
@@ -127,15 +128,14 @@ export default function MapDetailCard({
 									}}
 								>
 									<TakeDownMapButton id={id} name={name} />
-								</ProtectedElement>
-								<ProtectedElement
-									session={session}
+								</ClientProtectedElement>
+								<ClientProtectedElement
 									filter={{
 										any: [{ authorId: userId }, { authority: 'DELETE_MAP' }],
 									}}
 								>
 									<DeleteMapButton variant="command" id={id} name={name} />
-								</ProtectedElement>
+								</ClientProtectedElement>
 							</EllipsisButton>
 						</DetailActions>
 					</DetailHeader>
