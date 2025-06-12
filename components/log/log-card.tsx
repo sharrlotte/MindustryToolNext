@@ -5,6 +5,7 @@ import RemoveButton from '@/components/button/remove.button';
 import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
+import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import { deleteImage } from '@/query/image';
 import { Log } from '@/types/Log';
@@ -36,7 +37,7 @@ export default function LogCard({ log: { requestUrl, ip, userId, content, create
 						height={256}
 						alt={content}
 					/>
-					<DeleteImage path={content} />
+					<DeleteImage path={content.replaceAll(env.url.image, '')} />
 				</div>
 			) : (
 				<div>
