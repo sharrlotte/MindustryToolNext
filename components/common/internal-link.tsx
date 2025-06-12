@@ -31,7 +31,7 @@ export type InternalLinkProps = Omit<React.ButtonHTMLAttributes<HTMLAnchorElemen
 		shallow?: boolean;
 	} & {
 		href: string;
-	};
+	} & React.ComponentProps<typeof Link>;
 
 export default function InternalLink({ className, variant, title, href, shallow, children, ...props }: InternalLinkProps) {
 	const { currentLocale } = useLocaleStore();

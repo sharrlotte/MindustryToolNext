@@ -17,6 +17,7 @@ type Props = {
 	path: string;
 	regex: string[];
 	filter?: Filter;
+	prefetch?: boolean;
 };
 export default function NavbarLink({ name, icon, path, regex, filter }: Props) {
 	const { session } = useSession();

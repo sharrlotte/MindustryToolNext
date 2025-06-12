@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import MediumNavFooter from '@/app/[locale]/(main)/medium-nav.footer';
 import MediumNavbarCollapse from '@/app/[locale]/(main)/medium-navbar-collapse';
@@ -7,7 +7,7 @@ import NavbarLink from '@/app/[locale]/(main)/navbar-link';
 import NavbarVisible from '@/app/[locale]/(main)/navbar-visible';
 import NestedPathElement from '@/app/[locale]/(main)/nested-path-element';
 import { ProtectedPathElement } from '@/app/[locale]/(main)/protected-path-element';
-import { PathGroup, groups } from '@/app/[locale]/(main)/routes';
+import { PathGroup, SinglePath, groups } from '@/app/[locale]/(main)/routes';
 import NavHeader from '@/app/[locale]/(main)/small-nav.header';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 
@@ -18,7 +18,6 @@ import Divider from '@/components/ui/divider';
 import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
-import { Filter } from '@/lib/utils';
 
 export default function MediumScreenNavigationBar() {
 	return (
@@ -101,15 +100,7 @@ export function PathGroupElement({ group }: PathGroupElementProps) {
 }
 
 export type PathElementProps = {
-	segment: {
-		id: string;
-		path: string;
-		name: ReactNode;
-		icon: ReactNode;
-		enabled?: boolean;
-		filter?: Filter;
-		regex: string[];
-	};
+	segment: SinglePath;
 };
 export function PathElement({ segment }: PathElementProps) {
 	return <NavbarLink {...segment} />;
