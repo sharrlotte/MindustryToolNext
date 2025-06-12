@@ -113,7 +113,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 	const { setViewport } = useReactFlow();
 	const ref = useRef<HTMLDivElement>(null);
 	const viewport = useViewport();
-
+	const { saved } = useLogicFile();
 	const { readLogicFromLocalStorageByName, writeLogicToLocalStorage } = useLogicFile();
 
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
@@ -182,6 +182,13 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 		},
 		[readLogicFromLocalStorageByName, setViewport],
 	);
+
+	useEffect(() => {
+		if (saved.currentFile) {
+			load(saved.currentFile);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const { screenToFlowPosition } = useReactFlow();
 
@@ -495,7 +502,7 @@ export function LogicEditorProvider({ children }: { children: React.ReactNode })
 						>
 							<Suspense>
 								{children}
-								<div className="absolute z-50 top-1 left-1 space-x-0.5 text-xs text-muted-foreground">
+								<div className="absolute z-50 top-1 left-1 space-x-1 text-xs text-muted-foreground">
 									<span>x: {Math.round(viewport.x)}</span>
 									<span>y: {Math.round(viewport.y)}</span>
 								</div>

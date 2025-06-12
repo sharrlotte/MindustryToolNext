@@ -24,4 +24,5 @@ export type ServerDto = {
 	isPaused: boolean;
 	hostCommand?: string;
 	kicks: number;
+	errors: string[];
 };

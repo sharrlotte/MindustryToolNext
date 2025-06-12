@@ -92,6 +92,7 @@ export default async function Page({ params }: Props) {
 		userId,
 		address,
 		mapName,
+		errors,
 		ramUsage,
 		cpuUsage,
 		totalRam,
@@ -100,7 +101,7 @@ export default async function Page({ params }: Props) {
 	const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
 
 	return (
-		<div className='flex h-full w-full overflow-auto p-2'>
+		<div className="flex h-full w-full overflow-auto p-2">
 			<ScrollContainer className="flex flex-col gap-2 h-full">
 				<div className="flex flex-col gap-2 w-full h-full">
 					<div className="flex flex-col gap-2 p-2 w-full rounded-md border bg-card">
@@ -169,6 +170,11 @@ export default async function Page({ params }: Props) {
 									<MismatchPanel />
 								</Suspense>
 							</ProtectedElement>
+							<section className="space-x-2 text-destructive-foreground">
+								{errors.map((error, index) => (
+									<span key={index}>{error}</span>
+								))}
+							</section>
 						</div>
 						<Divider />
 						<footer className="flex gap-8 flex-wrap justify-between h-9 w-full overflow-x-auto">
