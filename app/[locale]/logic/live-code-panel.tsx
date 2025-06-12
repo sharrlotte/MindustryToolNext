@@ -28,9 +28,9 @@ export default function LiveCodePanel() {
 				{show && (
 					<div className="space-y-1 overflow-y-auto h-full">
 						{code.map((line, index) => (
-							<div className="space-x-1" key={index}>
-								<span className="font-semibold">{index}</span>
-								<span>{line}</span>
+							<div className="flex rounded-lg border bg-card py-1 text-card-foreground gap-1" key={index}>
+								<span className="font-semibold aspect-square size-6 text-center pl-1">{index}</span>
+								<span className="border-l pl-1"> {line}</span>
 							</div>
 						))}
 					</div>

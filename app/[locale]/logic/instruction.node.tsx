@@ -24,13 +24,13 @@ export default function InstructionNodeComponent({ id, data }: InstructionNodeDa
 	const node = instructionNodes[type];
 	const { label, color, inputs, outputs, items, condition } = node;
 
-	const filterdItems = items.filter(
+	const filteredItems = items.filter(
 		(item) => 'name' in item && (!condition || !condition?.[item.name] || condition?.[item.name]?.(state)),
 	);
 
 	return (
 		<div
-			className={cn('p-1.5 rounded-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[540px] lg:[w-650px]', {
+			className={cn('p-1.5 rounded-sm text-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[540px] lg:[w-650px]', {
 				'w-fit min-h-0 sm:w-fit md:w-fit lg:w-fit px-6': items.length === 0,
 			})}
 			style={{ backgroundColor: color }}
@@ -39,21 +39,21 @@ export default function InstructionNodeComponent({ id, data }: InstructionNodeDa
 				.fill(1)
 				.map((_, i) => (
 					<Handle
-						style={{ marginLeft: 20 * i - ((inputs - 1) / 2) * 20 + 'px' }}
+						style={{ marginTop: 20 * i - ((inputs - 1) / 2) * 20 + 'px' }}
 						key={i}
 						type={'target'}
-						position={Position.Top}
+						position={Position.Left}
 						isConnectable={true}
 					/>
 				))}
 			{outputs.map((output, i) => (
 				<OutputHandle
 					id={`${id}-source-handle-${i}`}
-					style={{ marginLeft: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }}
+					style={{ marginTop: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }}
 					label={output.label}
 					key={i}
 					type={'source'}
-					position={Position.Bottom}
+					position={Position.Right}
 				/>
 			))}
 			<div
@@ -66,7 +66,7 @@ export default function InstructionNodeComponent({ id, data }: InstructionNodeDa
 			</div>
 			{items.length > 0 && (
 				<div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
-					{filterdItems.map((item, i) => (
+					{filteredItems.map((item, i) => (
 						<NodeItemComponent key={i} nodeId={id} color={color} data={item} state={state} />
 					))}
 				</div>

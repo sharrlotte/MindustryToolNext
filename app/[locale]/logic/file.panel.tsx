@@ -7,6 +7,7 @@ import { useLogicEditor } from '@/app/[locale]/logic/logic-editor.context';
 import RemoveButton from '@/components/button/remove.button';
 import Tran from '@/components/common/tran';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
+import Divider from '@/components/ui/divider';
 import { Input } from '@/components/ui/input';
 
 import useLogicFile from '@/hooks/use-logic-file';
@@ -35,6 +36,7 @@ export default function FilePanel() {
 			<Input placeholder="Search" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} />
 			<section className="flex flex-col gap-2 w-full overflow-y-auto">
 				<AddFileDialog />
+				<Divider />
 				{saved.files
 					.filter(({ name }) => name.includes(filter))
 					.map(({ name }) => (
