@@ -2,6 +2,7 @@ import React from 'react';
 
 import FallbackImage from '@/components/common/fallback-image';
 
+import env from '@/constant/env';
 import { ItemRequirement } from '@/types/response/ItemRequirement';
 
 type Props = {
@@ -19,7 +20,7 @@ export default function ItemRequirementCard({ requirements }: Props) {
 						className="size-5"
 						width={24}
 						height={24}
-						src={`/assets/items/item-${r.name}.png`}
+						src={`${env.url.image}/items/item-${r.name}.png`}
 						errorSrc="https://raw.githubusercontent.com/Anuken/Mindustry/master/core/assets/sprites/error.png"
 						alt={r.name}
 					/>
