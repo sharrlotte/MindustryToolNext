@@ -1,21 +1,16 @@
 import React, { HTMLAttributes, Suspense, useMemo } from 'react';
 
+import AuthorCard from '@/components/common/author-card';
 import ColorText from '@/components/common/color-text';
-import ErrorMessage from '@/components/common/error-message';
 import FallbackImage from '@/components/common/fallback-image';
-import InternalLink from '@/components/common/internal-link';
 import MindustryIcon, { parseIconString } from '@/components/common/mindustry-icon';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import TagContainer from '@/components/tag/tag-container';
-import { Skeleton } from '@/components/ui/skeleton';
-import ColorAsRole from '@/components/user/color-as-role';
 import IdUserCard from '@/components/user/id-user-card';
-import UserAvatar from '@/components/user/user-avatar';
 
 import { TagType } from '@/constant/constant';
-import useUser from '@/hooks/use-user';
-import { cn, findBestRole } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { DetailTagDto } from '@/types/response/Tag';
 import { TagGroups } from '@/types/response/TagGroup';
 
@@ -152,41 +147,4 @@ export function DetailAuthor({ authorId }: AuthorProps) {
 	if (authorId) {
 		return <AuthorCard id={authorId} />;
 	}
-}
-function AuthorCard({ id }: { id: string }) {
-	const { data, isLoading, isError, error } = useUser(id);
-
-	if (isLoading) {
-		return (
-			<div className="flex overflow-hidden gap-2 items-center h-10 min-h-10">
-				<Skeleton className="rounded-full size-8" />
-				<div className="space-y-1">
-					<Skeleton className="w-32 h-3" />
-					<Skeleton className="w-20 h-3" />
-				</div>
-			</div>
-		);
-	}
-
-	if (isError) {
-		return <ErrorMessage error={error} />;
-	}
-
-	if (!data) {
-		return;
-	}
-
-	const { name, roles } = data;
-
-	return (
-		<div className="flex gap-2 items-center min-h-10">
-			<UserAvatar user={data} url />
-			<InternalLink className="flex flex-col gap-0 cursor-pointer hover:underline" href={`/users/${data.id}`}>
-				<span>{name}</span>
-				<ColorAsRole className="text-xs font-semibold capitalize" roles={roles}>
-					{findBestRole(roles)?.name}
-				</ColorAsRole>
-			</InternalLink>
-		</div>
-	);
 }

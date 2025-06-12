@@ -11,7 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
 import { toast } from '@/components/ui/sonner';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -67,7 +67,6 @@ export default function ServerPlanList({ server }: Props) {
 }
 
 function Plans({ server }: { server: ServerSetting }) {
-
 	const axios = useClientApi();
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ['server', 'plan'],

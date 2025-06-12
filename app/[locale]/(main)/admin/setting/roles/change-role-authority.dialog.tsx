@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { toast } from '@/components/ui/sonner';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';

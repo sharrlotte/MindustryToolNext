@@ -1,27 +1,7 @@
-import {
-	BookIcon,
-	BookOpenIcon,
-	BotIcon,
-	BoxIcon,
-	ClipboardList,
-	CrownIcon,
-	FileIcon,
-	Folder,
-	HistoryIcon,
-	HomeIcon,
-	ImageIcon,
-	LineChart,
-	LogIn,
-	MapIcon,
-	MessageSquareIcon,
-	PlugIcon,
-	ServerIcon,
-	Sigma,
-	SquareKanbanIcon,
-	TerminalIcon,
-	UploadIcon,
-} from 'lucide-react';
+import { BookIcon, BookOpenIcon, BotIcon, BoxIcon, ClipboardList, CrownIcon, FileIcon, Folder, HistoryIcon, HomeIcon, ImageIcon, LineChart, LogIn, MapIcon, MessageSquareIcon, PlugIcon, ServerIcon, Sigma, SquareKanbanIcon, TerminalIcon, UploadIcon } from 'lucide-react';
 import { ReactNode } from 'react';
+
+
 
 import { MessageCircleIconPath } from '@/app/[locale]/(main)/chat-icon-path';
 import { LogPathIcon } from '@/app/[locale]/(main)/log-path';
@@ -32,10 +12,15 @@ import { SchematicPath } from '@/app/[locale]/(main)/schematic-path';
 import { TranslationPathIcon } from '@/app/[locale]/(main)/translation-path-icon';
 import { VerifyPathIcon } from '@/app/[locale]/(main)/verify-path-icon';
 
+
+
 import Tran from '@/components/common/tran';
+
+
 
 import { locales } from '@/i18n/config';
 import { Filter } from '@/lib/utils';
+
 
 const localesRegex = `/(${locales.join('|')})`;
 
@@ -46,29 +31,34 @@ export type PathGroup = {
 	filter?: Filter;
 };
 
-export type Path = {
+type BasePath = {
 	id: string;
 	name: ReactNode;
 	icon: ReactNode;
 	enabled?: boolean;
 	filter?: Filter;
 	regex: string[];
-} & (
-	| {
-			path: string;
-	  }
-	| {
-			path: Array<{
-				id: string;
-				path: string;
-				name: ReactNode;
-				icon: ReactNode;
-				enabled?: boolean;
-				filter?: Filter;
-				regex: string[];
-			}>;
-	  }
-);
+};
+
+export type SinglePath = BasePath & {
+	prefetch?: boolean;
+	path: string;
+};
+
+export type NestedPath = BasePath & {
+	path: Array<{
+		id: string;
+		path: string;
+		name: ReactNode;
+		icon: ReactNode;
+		enabled?: boolean;
+		filter?: Filter;
+		regex: string[];
+		prefetch?: boolean;
+	}>;
+};
+
+export type Path = NestedPath | SinglePath;
 
 export const groups: readonly PathGroup[] = [
 	{
@@ -109,6 +99,7 @@ export const groups: readonly PathGroup[] = [
 				name: <Tran asChild text="plugin" />,
 				icon: <PlugIcon />,
 				regex: [`^${localesRegex}/plugins`],
+				prefetch: false,
 			},
 			{
 				id: 'posts',
@@ -123,6 +114,7 @@ export const groups: readonly PathGroup[] = [
 				name: <Tran asChild text="documents" />,
 				icon: <BookIcon />,
 				regex: [`^${localesRegex}/documents`],
+				prefetch: false,
 			},
 			{
 				id: 'chat',
@@ -130,6 +122,7 @@ export const groups: readonly PathGroup[] = [
 				name: <Tran asChild text="chat" />,
 				icon: <MessageCircleIconPath />,
 				regex: [`^${localesRegex}/chat`],
+				prefetch: false,
 			},
 			{
 				id: 'mindustry-gpt',
@@ -137,6 +130,7 @@ export const groups: readonly PathGroup[] = [
 				name: <Tran asChild text="mindustry-gpt" />,
 				icon: <BotIcon />,
 				regex: [`^${localesRegex}/mindustry-gpt$`],
+				prefetch: false,
 			},
 			{
 				id: 'rank',
@@ -144,6 +138,7 @@ export const groups: readonly PathGroup[] = [
 				name: <Tran asChild text="rank" />,
 				icon: <CrownIcon />,
 				regex: [`^${localesRegex}/rank`],
+				prefetch: false,
 			},
 			{
 				id: 'ratio',
@@ -151,6 +146,7 @@ export const groups: readonly PathGroup[] = [
 				name: <Tran asChild text="ratio" />,
 				icon: <Sigma />,
 				regex: [`^${localesRegex}/ratio`],
+				prefetch: false,
 			},
 			{
 				id: 'logic',
@@ -158,6 +154,7 @@ export const groups: readonly PathGroup[] = [
 				name: <Tran asChild text="logic" />,
 				icon: <TerminalIcon />,
 				regex: [`^${localesRegex}/logic`],
+				prefetch: false,
 			},
 			{
 				id: '/image-generator',
@@ -171,6 +168,7 @@ export const groups: readonly PathGroup[] = [
 						name: <Tran asChild text="image-logic-generator" />,
 						icon: <LogIn />,
 						regex: [`^${localesRegex}/image-generator/logic$`],
+						prefetch: false,
 					},
 					{
 						id: 'router',
@@ -178,6 +176,7 @@ export const groups: readonly PathGroup[] = [
 						name: <Tran asChild text="image-sorter-generator" />,
 						icon: <LogIn />,
 						regex: [`^${localesRegex}/image-generator/sorter$`],
+						prefetch: false,
 					},
 					{
 						id: 'canvas',
@@ -185,6 +184,7 @@ export const groups: readonly PathGroup[] = [
 						name: <Tran asChild text="image-canvas-generator" />,
 						icon: <LogIn />,
 						regex: [`^${localesRegex}/image-generator/canvas$`],
+						prefetch: false,
 					},
 					{
 						id: 'map',
@@ -192,6 +192,7 @@ export const groups: readonly PathGroup[] = [
 						name: <Tran asChild text="image-map-generator" />,
 						icon: <LogIn />,
 						regex: [`^${localesRegex}/image-generator/map$`],
+						prefetch: false,
 					},
 				],
 			},
@@ -223,6 +224,7 @@ export const groups: readonly PathGroup[] = [
 					],
 				},
 				regex: [`^${localesRegex}/admin/setting`],
+				prefetch: false,
 			},
 			{
 				id: 'logs',
@@ -235,6 +237,7 @@ export const groups: readonly PathGroup[] = [
 				),
 				filter: { authority: 'VIEW_LOG' },
 				regex: [`^${localesRegex}/logs$`],
+				prefetch: false,
 			},
 			{
 				id: 'admin-comments',
@@ -243,6 +246,7 @@ export const groups: readonly PathGroup[] = [
 				icon: <MessageSquareIcon />,
 				filter: { authority: 'MANAGE_COMMENT' },
 				regex: [`^${localesRegex}/admin/comments$`],
+				prefetch: false,
 			},
 			{
 				id: 'verify',
@@ -291,6 +295,7 @@ export const groups: readonly PathGroup[] = [
 				icon: <TranslationPathIcon />,
 				filter: { authority: 'VIEW_TRANSLATION' },
 				regex: [`^${localesRegex}/translation`],
+				prefetch: false,
 			},
 			{
 				id: 'files',
@@ -299,6 +304,7 @@ export const groups: readonly PathGroup[] = [
 				icon: <FileIcon />,
 				filter: { authority: 'VIEW_FILE' },
 				regex: [`^${localesRegex}/files$`],
+				prefetch: false,
 			},
 			{
 				id: 'upload-admin',
@@ -307,6 +313,7 @@ export const groups: readonly PathGroup[] = [
 				icon: <UploadIcon />,
 				filter: { authority: 'VIEW_FILE' },
 				regex: [`^${localesRegex}/upload/admin$`],
+				prefetch: false,
 			},
 			{
 				id: 'analytic',
@@ -317,6 +324,7 @@ export const groups: readonly PathGroup[] = [
 						path: 'https://analytic.mindustry-tool.com',
 						icon: <GrafanaIcon />,
 						regex: [`^${localesRegex}/analytic/grafana`],
+						prefetch: false,
 					},
 					{
 						id: 'google',
@@ -324,12 +332,14 @@ export const groups: readonly PathGroup[] = [
 						path: 'https://analytics.google.com/analytics/web/#/p376179457/reports/intelligenthome',
 						icon: <GoogleIcon />,
 						regex: [`^${localesRegex}/analytic/google`],
+						prefetch: false,
 					},
 				],
 				name: <Tran asChild text="analytic" />,
 				icon: <LineChart />,
 				filter: { authority: 'VIEW_DASH_BOARD' },
 				regex: [`^${localesRegex}/analytic`],
+				prefetch: false,
 			},
 
 			{
@@ -339,6 +349,7 @@ export const groups: readonly PathGroup[] = [
 				icon: <BookIcon />,
 				filter: { role: 'ADMIN' },
 				regex: [`^${localesRegex}/admin/documents`],
+				prefetch: false,
 			},
 			{
 				id: 'mindustry-gpt-documents',
@@ -353,6 +364,7 @@ export const groups: readonly PathGroup[] = [
 						path: '/mindustry-gpt/documents',
 						icon: <Folder />,
 						regex: [`^${localesRegex}/mindustry-gpt/documents`],
+						prefetch: false,
 					},
 				],
 			},

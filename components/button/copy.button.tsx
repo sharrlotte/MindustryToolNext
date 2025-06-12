@@ -6,7 +6,9 @@ import React, { ReactNode } from 'react';
 
 import Tran from '@/components/common/tran';
 import { ButtonProps } from '@/components/ui/button';
+import { toast } from '@/components/ui/sonner';
 
+import useClientApi from '@/hooks/use-client';
 import useClipboard from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 
@@ -36,15 +38,27 @@ export type CopyButtonProps = Omit<ButtonProps, 'title' | 'variant'> &
 	VariantProps<typeof copyButtonVariants> & {
 		title?: ReactNode;
 		content?: ReactNode;
-		data: string | (() => Promise<string>);
+		data:
+			| string
+			| (() => Promise<string>)
+			| {
+					url: string;
+			  };
 	};
 export default function CopyButton({ className, title, content, data, children, variant, position, ...props }: CopyButtonProps) {
 	const copy = useClipboard();
+	const axios = useClientApi();
 
 	const { mutate } = useMutation({
-		mutationFn: async () => (data instanceof Function ? await data() : data),
+		mutationFn: async () =>
+			data instanceof Function
+				? await data()
+				: typeof data === 'string'
+					? data
+					: await axios.get(data.url).then((res) => res.data),
 		onSuccess: (data) => {
 			copy({ data, title, content });
+			toast(<Tran text="copied" />);
 		},
 	});
 

@@ -6,7 +6,7 @@ import DeleteButton from '@/components/button/delete.button';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { useI18n } from '@/i18n/client';

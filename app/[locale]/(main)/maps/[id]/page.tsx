@@ -4,7 +4,7 @@ import React, { cache } from 'react';
 import ErrorScreen from '@/components/common/error-screen';
 import MapDetailCard from '@/components/map/map-detail-card';
 
-import { getCachedUser, serverApi } from '@/action/common';
+import { serverApi } from '@/action/common';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
@@ -12,6 +12,7 @@ import { getErrorMessage, isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
 import { getMap } from '@/query/map';
+import { getCachedUser } from '@/action/query';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;

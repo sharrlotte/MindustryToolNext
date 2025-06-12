@@ -14,7 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/sonner';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { deleteServer } from '@/query/server';

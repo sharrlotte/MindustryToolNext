@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Switch } from '@/components/ui/switch';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';

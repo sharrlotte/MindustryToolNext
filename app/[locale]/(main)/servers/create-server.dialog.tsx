@@ -16,7 +16,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { createServer } from '@/query/server';

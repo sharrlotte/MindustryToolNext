@@ -171,9 +171,7 @@ export default async function Page({ params }: Props) {
 								</Suspense>
 							</ProtectedElement>
 							<section className="space-x-2 text-destructive-foreground">
-								{errors.map((error, index) => (
-									<span key={index}>{error}</span>
-								))}
+								{errors?.map((error, index) => <span key={index}>{error}</span>)}
 							</section>
 						</div>
 						<Divider />
