@@ -17,7 +17,7 @@ const getTranslationCached = cache((url: string) =>
 			revalidate: 3600,
 			tags: ['translations'],
 		},
-		signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 100),
+		signal: AbortSignal.timeout(5000),
 	}).then(async (res) => {
 		if (!res.ok) {
 			throw new Error('Failed to fetch data');

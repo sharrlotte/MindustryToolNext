@@ -6,7 +6,7 @@ import Backend, { ChainedBackendOptions } from 'i18next-chained-backend';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
 import LocalStorageBackend from 'i18next-localstorage-backend';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { cache, useCallback, useEffect, useState } from 'react';
+import { cache, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
@@ -23,7 +23,7 @@ const getTranslationCached = cache((url: string) =>
 			revalidate: 3600,
 			tags: ['translations'],
 		},
-		signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 100),
+		signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 1000),
 	}).then(async (res) => {
 		if (!res.ok) {
 			throw new Error('Failed to fetch data');

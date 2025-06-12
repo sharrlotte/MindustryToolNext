@@ -16,7 +16,7 @@ import { QuerySchema } from '@/types/schema/search-query';
 
 export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
 	if (path) {
-		revalidatePath(path);
+		revalidatePath(path, 'page');
 	}
 
 	if (tag) {
