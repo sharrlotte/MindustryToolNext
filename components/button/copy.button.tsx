@@ -6,7 +6,6 @@ import React, { ReactNode } from 'react';
 
 import Tran from '@/components/common/tran';
 import { ButtonProps } from '@/components/ui/button';
-import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
 import useClipboard from '@/hooks/use-clipboard';
@@ -58,7 +57,6 @@ export default function CopyButton({ className, title, content, data, children, 
 					: await axios.get(data.url).then((res) => res.data),
 		onSuccess: (data) => {
 			copy({ data, title, content });
-			toast(<Tran text="copied" />);
 		},
 	});
 

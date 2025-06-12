@@ -1,24 +1,20 @@
 import { Metadata } from 'next/dist/types';
-import React, { cache } from 'react';
+import React, { Suspense } from 'react';
 
-import ErrorScreen from '@/components/common/error-screen';
 import MapDetailCard from '@/components/map/map-detail-card';
+import DetailSkeleton from '@/components/skeleton/detail.skeleton';
 
-import { serverApi } from '@/action/common';
+import { getCachedMap, getCachedUser } from '@/action/query';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { getErrorMessage, isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
-import { getMap } from '@/query/map';
-import { getCachedUser } from '@/action/query';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;
 };
-
-const getCachedMap = cache((id: string) => serverApi((axios) => getMap(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id, locale } = await params;
@@ -57,12 +53,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-	const { id } = await params;
-	const map = await getCachedMap(id);
+	const { id, locale } = await params;
 
-	if (isError(map)) {
-		return <ErrorScreen error={map} />;
-	}
-
-	return <MapDetailCard map={map} />;
+	return (
+		<Suspense fallback={<DetailSkeleton />}>
+			<MapDetailCard id={id} locale={locale} />
+		</Suspense>
+	);
 }

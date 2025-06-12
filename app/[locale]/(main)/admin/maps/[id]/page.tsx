@@ -1,24 +1,21 @@
 import { Metadata } from 'next';
-import React, { cache } from 'react';
+import React from 'react';
 
 import ErrorScreen from '@/components/common/error-screen';
 import Tran from '@/components/common/tran';
 import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
 import BackButton from '@/components/ui/back-button';
 
-import { serverApi } from '@/action/common';
+import { getCachedMapUpload } from '@/action/query';
 import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
-import { formatTitle } from '@/lib/utils';
-import { getMapUpload } from '@/query/map';
 import { isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
+import { formatTitle } from '@/lib/utils';
 
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;
 };
-
-const getCachedMapUpload = cache((id: string) => serverApi((axios) => getMapUpload(axios, { id })));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id } = await params;
