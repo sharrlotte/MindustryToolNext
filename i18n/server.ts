@@ -1,30 +1,38 @@
 import { createInstance } from 'i18next';
 import { InitOptions } from 'i18next';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
+import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
 import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
 
-const getTranslationCached = cache((url: string) =>
-	fetch(url, {
-		headers: {
-			Server: 'true',
-		},
-		cache: 'force-cache',
-		next: {
-			revalidate: 3600,
-			tags: ['translations'],
-		},
-		signal: AbortSignal.timeout(5000),
-	}).then(async (res) => {
-		if (!res.ok) {
-			throw new Error('Failed to fetch data');
-		}
+const getTranslationCached = cache(
+	unstable_cache(
+		(url: string) =>
+			fetch(url, {
+				headers: {
+					Server: 'true',
+				},
+				cache: 'force-cache',
+				next: {
+					revalidate: 3600,
+					tags: ['translations'],
+				},
+				signal: AbortSignal.timeout(5000),
+			}).then(async (res) => {
+				if (!res.ok) {
+					throw new Error('Failed to fetch data');
+				}
 
-		return await res.json();
-	}),
+				return await res.json();
+			}),
+		['translations', 'server'],
+		{
+			revalidate: 60 * 10,
+		},
+	),
 );
 
 export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
