@@ -18,13 +18,13 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { cn, hasAccess } from '@/lib/utils';
 import { updateServerPort } from '@/query/server';
 import { PutServerPortRequest, PutServerPortSchema } from '@/types/request/UpdateServerRequest';
-import Server from '@/types/response/ServerSetting';
+import { ServerSetting } from '@/types/response/ServerSetting';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 type Props = {
-	server: Server;
+	server: ServerSetting;
 };
 
 export default function ServerUpdateAdminForm({ server }: Props) {

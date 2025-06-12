@@ -18,12 +18,12 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { cn, hasAccess } from '@/lib/utils';
 import { getServerPlans, updateServerPlan } from '@/query/server';
 import { ServerPlan } from '@/types/response/ServerPlan';
-import Server from '@/types/response/ServerSetting';
+import { ServerSetting } from '@/types/response/ServerSetting';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 type Props = {
-	server: Server;
+	server: ServerSetting;
 };
 
 const colors = [
@@ -66,7 +66,8 @@ export default function ServerPlanList({ server }: Props) {
 	);
 }
 
-function Plans({ server }: { server: Server }) {
+function Plans({ server }: { server: ServerSetting }) {
+
 	const axios = useClientApi();
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ['server', 'plan'],
