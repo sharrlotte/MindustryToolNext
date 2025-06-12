@@ -11,7 +11,6 @@ import { KickInfo } from '@/types/response/KickInfo';
 import { Player } from '@/types/response/Player';
 import { PlayerInfo } from '@/types/response/PlayerInfo';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
-import Server from '@/types/response/Server';
 import ServerAdmin from '@/types/response/ServerAdmin';
 import { ServerBuildLog } from '@/types/response/ServerBuildLog';
 import { ServerCommandDto } from '@/types/response/ServerCommand';
@@ -23,6 +22,7 @@ import { ServerMap } from '@/types/response/ServerMap';
 import { ServerMetric } from '@/types/response/ServerMetric';
 import { ServerPlan } from '@/types/response/ServerPlan';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
+import { ServerSetting } from '@/types/response/ServerSetting';
 import { ServerStats } from '@/types/response/ServerStats';
 import { PaginationQuery } from '@/types/schema/search-query';
 
@@ -142,7 +142,7 @@ export async function getServerStats(axios: AxiosInstance, { id }: { id: string 
 	return result.data;
 }
 
-export async function getServerSetting(axios: AxiosInstance, { id }: { id: string }): Promise<Server> {
+export async function getServerSetting(axios: AxiosInstance, { id }: { id: string }): Promise<ServerSetting> {
 	const result = await axios.get(`/servers/${id}/setting`);
 
 	return result.data;

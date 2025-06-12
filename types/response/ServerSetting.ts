@@ -2,7 +2,8 @@ import { ServerStatus } from '@/constant/constant';
 import { ServerMode } from '@/types/request/UpdateServerRequest';
 import { ServerPlan } from '@/types/response/ServerPlan';
 
-export default interface Server {
+
+export type ServerSetting = {
 	id: string;
 	userId: string;
 	managerId: string;

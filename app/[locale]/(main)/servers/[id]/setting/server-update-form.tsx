@@ -22,13 +22,13 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { cn } from '@/lib/utils';
 import { updateServer } from '@/query/server';
 import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/UpdateServerRequest';
-import Server from '@/types/response/Server';
+import { ServerSetting } from '@/types/response/ServerSetting';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 type Props = {
-	server: Server;
+	server: ServerSetting;
 };
 
 export default function ServerUpdateForm({ server }: Props) {

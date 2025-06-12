@@ -17,8 +17,8 @@ import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { cn, hasAccess } from '@/lib/utils';
 import { getServerPlans, updateServerPlan } from '@/query/server';
-import Server from '@/types/response/Server';
 import { ServerPlan } from '@/types/response/ServerPlan';
+import Server from '@/types/response/ServerSetting';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
