@@ -76,7 +76,7 @@ export default function UserAvatar({ className, url, user }: UserAvatarProps) {
 	if (typeof url === 'string') {
 		return (
 			<UserAvatarContextMenu>
-				<InternalLink className="cursor-pointer h-fit" href={url}>
+				<InternalLink className="cursor-pointer h-fit" href={url} prefetch={false}>
 					<AvatarImage className={className} user={user} />
 				</InternalLink>
 			</UserAvatarContextMenu>
@@ -86,7 +86,7 @@ export default function UserAvatar({ className, url, user }: UserAvatarProps) {
 	if (url === true) {
 		return (
 			<UserAvatarContextMenu>
-				<InternalLink className="cursor-pointer h-fit" href={`/users/${user.id}`}>
+				<InternalLink className="cursor-pointer h-fit" href={`/users/${user.id}`} prefetch={false}>
 					<AvatarImage className={className} user={user} />
 				</InternalLink>
 			</UserAvatarContextMenu>

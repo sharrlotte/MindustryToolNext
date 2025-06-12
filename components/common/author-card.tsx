@@ -35,9 +35,9 @@ export default function AuthorCard({ id }: { id: string }) {
 	const { name, roles } = data;
 
 	return (
-		<div className="flex gap-2 items-center min-h-10">
+		<div className="flex gap-2 min-h-10">
 			<UserAvatar user={data} url />
-			<InternalLink className="flex flex-col gap-0 cursor-pointer hover:underline" href={`/users/${data.id}`}>
+			<InternalLink className="flex flex-col gap-0 cursor-pointer hover:underline" href={`/users/${data.id}`} prefetch={false}>
 				<span>{name}</span>
 				<ColorAsRole className="text-xs font-semibold capitalize" roles={roles}>
 					{findBestRole(roles)?.name}
