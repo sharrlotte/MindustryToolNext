@@ -54,7 +54,7 @@ export default function MismatchPanel() {
 					{data.map((mismatch) => (
 						<span className="rounded-md text-destructive-foreground p-2 bg-destructive text-wrap wrap break-words" key={mismatch}>
 							{mismatch}
-						</span>l
+						</span>
 					))}
 				</section>
 			</PopoverContent>
