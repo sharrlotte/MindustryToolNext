@@ -14,7 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { UpdateRoleRequest, UpdateRoleSchema, updateRole } from '@/query/role';

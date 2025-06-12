@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { cn } from '@/lib/utils';

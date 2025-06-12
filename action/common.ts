@@ -1,7 +1,5 @@
-'use server';
-
 import { AxiosInstance, isAxiosError } from 'axios';
-import { revalidatePath, revalidateTag, unstable_cache, unstable_noStore } from 'next/cache';
+import { unstable_cache, unstable_noStore } from 'next/cache';
 import { cookies } from 'next/headers';
 import { cache } from 'react';
 import 'server-only';
@@ -10,19 +8,8 @@ import { z } from 'zod';
 import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/constant/constant';
 import { ApiError } from '@/lib/error';
 import axiosInstance from '@/query/config/config';
-import { getUser } from '@/query/user';
 import { Session } from '@/types/response/Session';
 import { QuerySchema } from '@/types/schema/search-query';
-
-export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
-	if (path) {
-		revalidatePath(path, 'page');
-	}
-
-	if (tag) {
-		revalidateTag(tag);
-	}
-}
 
 export async function getQuery<T extends QuerySchema>(params: any, schema: T): Promise<z.infer<typeof schema>> {
 	const result = schema.parse(params);
@@ -70,9 +57,6 @@ export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError>
 		return data;
 	});
 }
-
-export const getCachedUser = async (id: string) =>
-	unstable_cache(() => catchError(axiosInstance, (axios) => getUser(axios, { id })));
 
 const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> = cache(
 	unstable_cache(

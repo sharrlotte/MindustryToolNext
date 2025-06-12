@@ -47,7 +47,7 @@ export default function SchematicPreviewCard({
 			<CopyButton position="absolute" variant="ghost" data={link} content={link}>
 				<Share2Icon />
 			</CopyButton>
-			<InternalLink href={detailLink}>
+			<InternalLink href={detailLink} prefetch={false}>
 				<PreviewImage src={imageLink} errorSrc={errorImageLink} alt={name} />
 			</InternalLink>
 			<PreviewDescription>

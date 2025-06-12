@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import env from '@/constant/env';
 import useHttpStream from '@/hooks/use-http-stream';
 import useQueriesData from '@/hooks/use-queries-data';

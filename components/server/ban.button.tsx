@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
-import { revalidate } from '@/action/common';
+import { revalidate } from '@/action/server-action';
 import { useSocket } from '@/context/socket.context';
 import useMessage from '@/hooks/use-message';
 
