@@ -27,7 +27,7 @@ export default function LogCard({ log: { requestUrl, ip, userId, content, create
 			<span>IP: {ip}</span>
 			Env: {environment === 1 ? 'Prod' : 'Dev'}
 			{type === 11 ? (
-				<div>
+				<div className="space-y-1">
 					<div>{content}</div>
 					<Image
 						className="size-64 rounded-md overflow-hidden object-contain"
