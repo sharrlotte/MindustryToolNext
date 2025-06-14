@@ -33,6 +33,7 @@ export default function useConfig() {
 			locale,
 			paginationSize: DEFAULT_PAGINATION_SIZE,
 			paginationType: DEFAULT_PAGINATION_TYPE,
+			setConfig,
 		};
 	}
 
