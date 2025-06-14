@@ -6,6 +6,7 @@ import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
+import { Suspense } from 'react';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale } = await params;
@@ -23,5 +24,9 @@ type Props = {
 };
 
 export default async function Page() {
-	return <Client />;
+	return (
+		<Suspense>
+			<Client />
+		</Suspense>
+	);
 }

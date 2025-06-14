@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { Suspense } from 'react';
 
 import ChatPage from '@/app/[locale]/(main)/chat/page.client';
 
@@ -26,9 +25,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function Page() {
-	return (
-		<Suspense>
-			<ChatPage />
-		</Suspense>
-	);
+	return <ChatPage />;
 }

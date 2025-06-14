@@ -3,6 +3,7 @@
 import { FilterIcon, SearchIcon, XIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
+import { debounce } from 'throttle-debounce';
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
@@ -169,12 +170,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		setChanged(true);
 	}, []);
 
-	const handleEditName = useCallback(
-		(value: any) => {
-			handleNameChange(value);
-		},
-		[handleNameChange],
-	);
+	const handleEditName = debounce(100, handleNameChange);
 
 	const handleResetName = useCallback(() => {
 		handleNameChange('');

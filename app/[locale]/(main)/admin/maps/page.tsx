@@ -1,5 +1,4 @@
 import { Metadata } from 'next/dist/types';
-import { Suspense } from 'react';
 
 import Client from '@/app/[locale]/(main)/admin/maps/page.client';
 
@@ -26,9 +25,5 @@ type Props = {
 };
 
 export default async function Page() {
-	return (
-		<Suspense>
-			<Client />
-		</Suspense>
-	);
+	return <Client />;
 }
