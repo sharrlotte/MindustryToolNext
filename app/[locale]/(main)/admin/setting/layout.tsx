@@ -1,7 +1,7 @@
 'use client';
 
 import { BellIcon, ChevronsLeftRight, GanttChartSquareIcon, ImageIcon, SettingsIcon, TagIcon, UsersIcon } from 'lucide-react';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import React from 'react';
 
 import { CatchError } from '@/components/common/catch-error';
@@ -92,7 +92,7 @@ export default function ServerLayout({ children }: LayoutProps) {
 			</NavLinkProvider>
 			<CatchError>
 				<div className="h-full w-full overflow-hidden flex flex-col" key="child">
-					{children}
+					<Suspense>{children}</Suspense>
 				</div>
 			</CatchError>
 		</div>

@@ -1,8 +1,7 @@
 'use client';
 
 import { FileIcon, HardDriveIcon, LayoutDashboardIcon, MapIcon, PlugIcon, SettingsIcon, TerminalIcon } from 'lucide-react';
-import { useParams, usePathname } from 'next/navigation';
-import React, { ReactNode, use, useMemo } from 'react';
+import React, { ReactNode, Suspense, use, useMemo } from 'react';
 
 import { CatchError } from '@/components/common/catch-error';
 import ErrorMessage from '@/components/common/error-message';
@@ -21,6 +20,8 @@ import ProtectedRoute from '@/layout/protected-route';
 import { Filter } from '@/lib/utils';
 
 import { useQuery } from '@tanstack/react-query';
+
+import { useParams, usePathname } from 'next/navigation';
 
 type LayoutProps = {
 	params: Promise<{
@@ -59,7 +60,7 @@ function PluginLabel() {
 	);
 }
 
-export default function ServerLayout({ params, children }: LayoutProps) {
+export default function Layout({ params, children }: LayoutProps) {
 	const { id } = use(params);
 	const { session } = useSession();
 	const { data: server, isError, error } = useServer(id);
@@ -172,7 +173,9 @@ export default function ServerLayout({ params, children }: LayoutProps) {
 			</NavLinkProvider>
 			<div className="flex overflow-hidden flex-col w-full h-full relative" key="child">
 				<CatchError>
-					<ProtectedRoute filter={filter}>{children}</ProtectedRoute>
+					<Suspense>
+						<ProtectedRoute filter={filter}>{children}</ProtectedRoute>
+					</Suspense>
 				</CatchError>
 			</div>
 		</div>
