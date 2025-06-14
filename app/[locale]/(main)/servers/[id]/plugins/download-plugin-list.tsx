@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useParams } from 'next/navigation';
 
 import ColorText from '@/components/common/color-text';
 import FallbackImage from '@/components/common/fallback-image';
@@ -27,6 +26,8 @@ import { Plugin } from '@/types/response/Plugin';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 import { useMutation } from '@tanstack/react-query';
+
+import { useParams } from 'next/navigation';
 
 export default function DownloadPluginList() {
 	return (
