@@ -1,6 +1,6 @@
+import { NestedPath } from '@/app/[locale]/(main)/medium-navigation-items';
 import NavbarLink from '@/app/[locale]/(main)/navbar-link';
 import { NestedPathElementContainer } from '@/app/[locale]/(main)/nested-path-element-container';
-import { NestedPath } from '@/app/[locale]/(main)/routes';
 
 export type NestedPathElementProps = {
 	segment: NestedPath;
