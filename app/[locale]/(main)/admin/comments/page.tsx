@@ -1,11 +1,7 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 
 import PageClient from '@/app/[locale]/(main)/admin/comments/page.client';
 
 export default function Page() {
-  return (
-    <Suspense>
-      <PageClient />;
-    </Suspense>
-  );
+	return <PageClient />;
 }
