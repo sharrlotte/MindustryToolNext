@@ -1,18 +1,15 @@
 'use client';
 
 import ErrorMessage from '@/components/common/error-message';
-import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import ServerPluginCard from '@/components/server/server-plugin-card';
+import { Skeleton } from '@/components/ui/skeleton';
+import Skeletons from '@/components/ui/skeletons';
 
 import useServerPlugins from '@/hooks/use-server-plugins';
 
 export default function PluginList({ id }: { id: string }) {
 	const { data, isLoading, isError, error } = useServerPlugins(id);
-
-	if (isLoading) {
-		return <LoadingSpinner className="col-span-full" />;
-	}
 
 	if (isError) {
 		return <ErrorMessage className="col-span-full" error={error} />;
@@ -20,7 +17,13 @@ export default function PluginList({ id }: { id: string }) {
 
 	return (
 		<ScrollContainer className="grid w-full gap-2 md:grid-cols-2 xl:grid-cols-3 grid-flow-row">
-			{data?.map((plugin) => <ServerPluginCard serverId={id} key={plugin.filename} plugin={plugin} />)}
+			{isLoading ? (
+				<Skeletons number={20}>
+					<Skeleton className="flex overflow-hidden relative flex-col gap-1 p-2 h-48 rounded-md border min-h-48 bg-card" />
+				</Skeletons>
+			) : (
+				data?.map((plugin) => <ServerPluginCard serverId={id} key={plugin.filename} plugin={plugin} />)
+			)}
 		</ScrollContainer>
 	);
 }

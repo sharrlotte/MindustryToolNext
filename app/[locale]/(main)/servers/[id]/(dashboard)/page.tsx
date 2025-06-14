@@ -1,6 +1,4 @@
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import React, { Fragment, Suspense } from 'react';
 
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
@@ -28,8 +26,8 @@ import { isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { byteToSize, formatTitle, hasAccess } from '@/lib/utils';
 
-const MismatchPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/mismatch-panel'));
-const PauseServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/pause-server-button'));
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
 
 export const experimental_ppr = true;
 
@@ -37,6 +35,8 @@ type Props = {
 	params: Promise<{ id: string; locale: string }>;
 };
 
+const MismatchPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/mismatch-panel'));
+const PauseServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/pause-server-button'));
 const HostServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/host-server-button'));
 const InitServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/init-server-button'));
 const ShutdownServerButton = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/shutdown-server-button'));

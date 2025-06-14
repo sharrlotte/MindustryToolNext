@@ -109,7 +109,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 	}
 	return (
 		<form
-			className={cn('flex min-h-12 border-t h-fit flex-col gap-1', className)}
+			className={cn('flex border-t h-fit flex-col gap-1', className)}
 			name="text"
 			onSubmit={(event) => {
 				handleFormSubmit();

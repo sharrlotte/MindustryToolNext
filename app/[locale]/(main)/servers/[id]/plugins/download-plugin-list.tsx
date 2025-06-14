@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useParams } from 'next/navigation';
 
 import ColorText from '@/components/common/color-text';
 import FallbackImage from '@/components/common/fallback-image';
@@ -28,11 +27,13 @@ import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 import { useMutation } from '@tanstack/react-query';
 
+import { useParams } from 'next/navigation';
+
 export default function DownloadPluginList() {
 	return (
 		<div className="flex h-full flex-col gap-2 overflow-hidden">
 			<NameTagSearch type="plugin" />
-			<ScrollContainer className="flex h-full w-full flex-col gap-2">
+			<ScrollContainer className="flex h-full w-full flex-col gap-2" id="download-plugin">
 				<ListLayout>
 					<InfinitePage
 						paramSchema={ItemPaginationQuery}

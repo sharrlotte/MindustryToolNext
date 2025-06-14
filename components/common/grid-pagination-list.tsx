@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, Suspense, useMemo } from 'react';
 import { z } from 'zod';
 
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -98,16 +98,18 @@ const GridPaginationList = <T, P extends QuerySchema>({
 					className,
 				)}
 			>
-				<Render
-					isLoading={isLoading}
-					loader={loader}
-					skeletonElements={skeletonElements}
-					error={error}
-					data={data}
-					noResult={noResult}
-				>
-					{children}
-				</Render>
+				<Suspense fallback={skeletonElements}>
+					<Render
+						isLoading={isLoading}
+						loader={loader}
+						skeletonElements={skeletonElements}
+						error={error}
+						data={data}
+						noResult={noResult}
+					>
+						{children}
+					</Render>
+				</Suspense>
 			</section>
 		</div>
 	);

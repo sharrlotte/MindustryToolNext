@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useParams } from 'next/navigation';
 
 import ColorText from '@/components/common/color-text';
 import GridPaginationList from '@/components/common/grid-pagination-list';
@@ -27,6 +26,8 @@ import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 import { useMutation } from '@tanstack/react-query';
 
+import { useParams } from 'next/navigation';
+
 export default function DownloadMapList() {
 	const { id } = useParams() as { id: string };
 	const maps = useServerMaps(id);
@@ -35,7 +36,7 @@ export default function DownloadMapList() {
 	return (
 		<div className="flex h-full flex-col gap-2 overflow-hidden">
 			<NameTagSearch type="map" />
-			<ScrollContainer className="flex h-full w-full flex-col gap-2">
+			<ScrollContainer className="flex h-full w-full flex-col gap-2" id="download-map">
 				<ListLayout>
 					<InfinitePage
 						paramSchema={ItemPaginationQuery}

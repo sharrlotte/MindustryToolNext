@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useInterval } from 'usehooks-ts';
 
 import ErrorMessage from '@/components/common/error-message';
+import { Visibility, VisibilityOff, VisibilityOn } from '@/components/common/visibility';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
 
@@ -91,7 +92,14 @@ function KickCard({ currentTime, kick: { ip, untilTime } }: KickCardProps) {
 			layout="position"
 			className="flex items-center justify-between gap-2 bg-secondary rounded-md overflow-hidden px-2 py-1 h-10"
 		>
-			<span>{ip}</span>
+			<Visibility>
+				<VisibilityOff>
+					<span>{ip.replace(/\d/g, '*')}</span>
+				</VisibilityOff>
+				<VisibilityOn>
+					<span>{ip}</span>
+				</VisibilityOn>
+			</Visibility>
 			<TimeFrom time={untilTime} currentTime={currentTime} />
 		</motion.div>
 	);
@@ -119,5 +127,5 @@ function TimeFrom({ time, currentTime }: { time: number; currentTime: number }) 
 		relative = `Expired`;
 	}
 
-	return <span>{relative}</span>;
+	return <span className="text-sm text-muted-foreground">{relative}</span>;
 }

@@ -1,9 +1,12 @@
+import Tran from '@/components/common/tran';
+import { Skeleton } from '@/components/ui/skeleton';
+
 import dynamic from 'next/dynamic';
 
-import Tran from '@/components/common/tran';
-import ChatInput from '@/components/messages/chat-input';
-import Divider from '@/components/ui/divider';
-import { Skeleton } from '@/components/ui/skeleton';
+const ChatInput = dynamic(() => import('@/components/messages/chat-input'), {
+	loading: () => <div className="border relative border-border flex gap-1 rounded-md w-full bg-card min-h-[46px]" />,
+});
+const Divider = dynamic(() => import('@/components/ui/divider'));
 
 const ServerConsolePage = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-list'), {
 	loading: () => <Skeleton className="h-full w-full" />,

@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import React, { JSXElementConstructor, ReactElement, ReactNode, useCallback, useMemo, useRef } from 'react';
+import React, { JSXElementConstructor, ReactElement, ReactNode, Suspense, useCallback, useMemo, useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { z } from 'zod';
 
@@ -132,9 +132,11 @@ const InfinitePage = <T, P extends QuerySchema, P2 extends Record<string, any> =
 				}}
 				isReverse={reversed}
 			>
-				{children(data.pages.flatMap((page) => page))}
-				{isFetching && skeleton && loadingSkeleton}
-				{!hasNextPage && end}
+				<Suspense fallback={skeleton && loadingSkeleton}>
+					{children(data.pages.flatMap((page) => page))}
+					{isFetching && skeleton && loadingSkeleton}
+					{!hasNextPage && end}
+				</Suspense>
 			</InfiniteScroll>
 		</div>
 	);
