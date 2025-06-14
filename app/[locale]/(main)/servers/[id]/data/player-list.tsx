@@ -45,7 +45,6 @@ export default function PlayerList() {
 				<Input value={filter} onChange={(event) => setFilter(event.target.value)} placeholder="Player1" />
 				<ComboBox
 					searchBar={false}
-					chevron={false}
 					value={{
 						label: state[String(banned) as keyof typeof state],
 						value: banned,
