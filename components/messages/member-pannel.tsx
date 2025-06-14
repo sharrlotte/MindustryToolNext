@@ -46,7 +46,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				<Tran text="member" />
 			</div>
 			<InfinitePage
-				className="p-4 grid gap-2 w-full"
+				className="p-4 grid gap-4 w-full"
 				queryKey={['room', room, 'members']}
 				paramSchema={PaginationQuerySchema} //
 				queryFn={(axios: AxiosInstance, params: { page: number; size: number }) =>
@@ -56,7 +56,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				{(page) =>
 					groupUserByRole(page).map(([name, group]) => (
 						<div key={name} className="grid gap-1">
-							<h4 className="font-semibold capitalize">
+							<h4 className="capitalize text-muted-foreground">
 								<Tran text={name} asChild />
 							</h4>
 							{group.users.map((user) => (
