@@ -1,5 +1,6 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
+import Tran from '@/components/common/tran';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const KEY_PATTERN = /[a-zA-Z0-9_-]+/;
@@ -159,6 +160,8 @@ function parseCustomJsonNested(json: any) {
 }
 
 export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: number }) {
+	const [show, setShow] = useState(0);
+
 	if (json === null) {
 		return null;
 	}
@@ -181,12 +184,24 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 					<div>
 						[{isObjectArray && <br />}
 						<div className="pl-4">
-							{json.map((item, index) => (
-								<Fragment key={index}>
-									<JsonDisplay key={index} depth={++depth} json={item} />
-									{isObjectArray && <br />}
-								</Fragment>
-							))}
+							{json
+								.filter((_, index) => index < show)
+								.map((item, index) => (
+									<Fragment key={index}>
+										<JsonDisplay key={index} depth={++depth} json={item} />
+										{isObjectArray && <br />}
+									</Fragment>
+								))}
+							{show < json.length && (
+								<span
+									className="text-center underline font-semibold"
+									onClick={() => {
+										setShow((prev) => prev + 50);
+									}}
+								>
+									<Tran text="show-more" />
+								</span>
+							)}
 						</div>
 						]
 					</div>
@@ -199,6 +214,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 					<div className="pl-4 divide-y">
 						{Object.entries(json)
 							.sort(([a], [b]) => b.localeCompare(a))
+							.filter((_, index) => index < show)
 							.map(([key, value]) => (
 								<div className="py-2" key={key}>
 									{typeof value === 'string' || typeof value === 'number' || value === '{}' || value === '' ? (
@@ -231,6 +247,16 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 									)}
 								</div>
 							))}
+						{show < json.length && (
+							<span
+								className="text-center underline font-semibold"
+								onClick={() => {
+									setShow((prev) => prev + 50);
+								}}
+							>
+								<Tran text="show-more" />
+							</span>
+						)}
 					</div>
 					<span>{'}'}</span>
 				</>
