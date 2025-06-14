@@ -33,7 +33,7 @@ export default function DownloadPluginList() {
 	return (
 		<div className="flex h-full flex-col gap-2 overflow-hidden">
 			<NameTagSearch type="plugin" />
-			<ScrollContainer className="flex h-full w-full flex-col gap-2">
+			<ScrollContainer className="flex h-full w-full flex-col gap-2" id="download-plugin">
 				<ListLayout>
 					<InfinitePage
 						paramSchema={ItemPaginationQuery}
