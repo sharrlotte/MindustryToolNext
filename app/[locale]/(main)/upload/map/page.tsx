@@ -222,7 +222,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 						control={form.control}
 						name="isPrivate"
 						render={({ field }) => (
-							<FormItem>
+							<FormItem className="space-x-2">
 								<FormControl>
 									<Switch checked={field.value} onCheckedChange={field.onChange} />
 								</FormControl>
