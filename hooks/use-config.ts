@@ -1,8 +1,14 @@
 import { useParams } from 'next/navigation';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
-import { Config, PAGINATION_SIZE_PERSISTENT_KEY, PAGINATION_TYPE_PERSISTENT_KEY } from '@/constant/constant';
+import {
+	Config,
+	DEFAULT_PAGINATION_SIZE,
+	DEFAULT_PAGINATION_TYPE,
+	PAGINATION_SIZE_PERSISTENT_KEY,
+	PAGINATION_TYPE_PERSISTENT_KEY,
+} from '@/constant/constant';
 import { cookieName } from '@/i18n/config';
 
 export default function useConfig() {
@@ -13,10 +19,22 @@ export default function useConfig() {
 		cookieName,
 	]);
 
+	const [hydrated, setHydrated] = useState(false);
+
+	useEffect(() => setHydrated(true), []);
+
 	const setConfig = useCallback(
 		<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }),
 		[_setConfig],
 	);
+
+	if (!hydrated) {
+		return {
+			locale,
+			paginationSize: DEFAULT_PAGINATION_SIZE,
+			paginationType: DEFAULT_PAGINATION_TYPE,
+		};
+	}
 
 	return {
 		locale: Locale ?? locale,
