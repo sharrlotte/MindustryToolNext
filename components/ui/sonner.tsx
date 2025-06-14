@@ -41,6 +41,7 @@ type ToastOptions = {
 	description?: ReactNode;
 	icon?: ReactNode;
 	className?: string;
+	id?: number | string;
 } & Record<string, any>;
 
 function toast(title: ReactNode, options?: ToastOptions) {
