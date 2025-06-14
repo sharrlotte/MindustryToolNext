@@ -84,21 +84,21 @@ export default async function Root({ children, params }: RootProps) {
 	}
 
 	return (
-		<SessionProvider>
-			<html
-				className={cn(
-					'h-full w-full overflow-hidden bg-background text-foreground antialiased',
-					noto.className,
-					icon.className,
-					noto.variable,
-					icon.variable,
-					'font-noto',
-				)}
-				lang={locale}
-				data-color-mode="dark"
-				suppressHydrationWarning
-			>
-				<body className="overflow-hidden w-full h-full">
+		<html
+			className={cn(
+				'h-full w-full overflow-hidden bg-background text-foreground antialiased',
+				noto.className,
+				icon.className,
+				noto.variable,
+				icon.variable,
+				'font-noto',
+			)}
+			lang={locale}
+			data-color-mode="dark"
+			suppressHydrationWarning
+		>
+			<body className="overflow-hidden w-full h-full">
+				<SessionProvider>
 					<QueryProvider>
 						<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
 							<SocketProvider>
@@ -109,8 +109,8 @@ export default async function Root({ children, params }: RootProps) {
 							</SocketProvider>
 						</ThemeProvider>
 					</QueryProvider>
-				</body>
-			</html>
-		</SessionProvider>
+				</SessionProvider>
+			</body>
+		</html>
 	);
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 import env from '@/constant/env';
 import { ApiError, isError } from '@/lib/error';
@@ -80,14 +80,16 @@ function preloadSession() {
 export function SessionProvider({ children }: { children: ReactNode }) {
 	const [session, setSession] = useState<SessionState>(defaultContextValue);
 
-	preloadSession()
-		?.then((data) => setSession(data ? { session: data, state: 'authenticated' } : { session: null, state: 'unauthenticated' }))
-		.catch(() =>
-			setSession({
-				session: null,
-				state: 'unauthenticated',
-			}),
-		);
+	useEffect(() => {
+		preloadSession()
+			?.then((data) => setSession(data ? { session: data, state: 'authenticated' } : { session: null, state: 'unauthenticated' }))
+			.catch(() =>
+				setSession({
+					session: null,
+					state: 'unauthenticated',
+				}),
+			);
+	}, []);
 
 	return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;
 }
