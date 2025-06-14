@@ -1,7 +1,29 @@
-import { BookIcon, BookOpenIcon, BotIcon, BoxIcon, ClipboardList, CrownIcon, FileIcon, Folder, HistoryIcon, HomeIcon, ImageIcon, LineChart, LogIn, MapIcon, MessageSquareIcon, PlugIcon, ServerIcon, Sigma, SquareKanbanIcon, TerminalIcon, UploadIcon } from 'lucide-react';
+'use client';
+
+import {
+	BookIcon,
+	BookOpenIcon,
+	BotIcon,
+	BoxIcon,
+	ClipboardList,
+	CrownIcon,
+	FileIcon,
+	Folder,
+	HistoryIcon,
+	HomeIcon,
+	ImageIcon,
+	LineChart,
+	LogIn,
+	MapIcon,
+	MessageSquareIcon,
+	PlugIcon,
+	ServerIcon,
+	Sigma,
+	SquareKanbanIcon,
+	TerminalIcon,
+	UploadIcon,
+} from 'lucide-react';
 import { ReactNode } from 'react';
-
-
 
 import { MessageCircleIconPath } from '@/app/[locale]/(main)/chat-icon-path';
 import { LogPathIcon } from '@/app/[locale]/(main)/log-path';
@@ -12,15 +34,10 @@ import { SchematicPath } from '@/app/[locale]/(main)/schematic-path';
 import { TranslationPathIcon } from '@/app/[locale]/(main)/translation-path-icon';
 import { VerifyPathIcon } from '@/app/[locale]/(main)/verify-path-icon';
 
-
-
 import Tran from '@/components/common/tran';
-
-
 
 import { locales } from '@/i18n/config';
 import { Filter } from '@/lib/utils';
-
 
 const localesRegex = `/(${locales.join('|')})`;
 
