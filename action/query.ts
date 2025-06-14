@@ -9,7 +9,9 @@ import { getSchematic, getSchematicUpload } from '@/query/schematic';
 import { getUser } from '@/query/user';
 
 export const getCachedUser = async (id: string) =>
-	unstable_cache(() => catchError(axiosInstance, (axios) => getUser(axios, { id })));
+	unstable_cache(() => catchError(axiosInstance, (axios) => getUser(axios, { id })), ['user', id], {
+		revalidate: 60 * 60 * 24,
+	});
 
 export const getCachedSchematic = cache((id: string) => serverApi((axios) => getSchematic(axios, { id })));
 
