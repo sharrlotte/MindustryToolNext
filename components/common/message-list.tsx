@@ -216,7 +216,7 @@ export default function MessageList({
 
 	return (
 		<div className={cn('flex h-full w-full overflow-x-hidden', className)} ref={container}>
-			<section className="h-fit w-full" ref={(ref) => setList(ref)}>
+			<section className="h-fit w-full space-y-2" ref={(ref) => setList(ref)}>
 				{!hasNextPage && end}
 				{isFetching && loader}
 				{pages}
