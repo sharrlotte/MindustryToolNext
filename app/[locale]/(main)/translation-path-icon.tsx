@@ -31,8 +31,10 @@ export function TranslationPathIcon() {
 		placeholderData: 0,
 	});
 
+	const value = diff + search;
+
 	return (
-		<NotificationNumber number={diff + search}>
+		<NotificationNumber number={Number.isNaN(value) ? 0 : value}>
 			<Globe />
 		</NotificationNumber>
 	);
