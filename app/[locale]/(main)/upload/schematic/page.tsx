@@ -165,7 +165,7 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 	const { mutate, isPending } = useMutation({
 		mutationFn: async (data: CreateSchematicRequest) => createSchematic(axios, data),
 		onMutate: () => toast.loading(<Tran text="upload.uploading" />),
-		onSuccess: (data, _variables, id) => {
+		onSuccess: (_data, _variables, id) => {
 			setData(undefined);
 			setPreview(undefined);
 			form.reset();
