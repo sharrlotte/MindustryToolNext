@@ -10,5 +10,5 @@ export const TAG_GROUP_SCHEMA = z
 			position: z.number(),
 		}),
 	)
-	.min(0, { message: 'tag.min-tags-size' })
-	.max(20, { message: 'tag.max-tags-size' });
+	.min(1)
+	.max(20);
