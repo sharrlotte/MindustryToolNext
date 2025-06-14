@@ -1,9 +1,9 @@
 'use client';
 
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
+import env from '@/constant/env';
 import { ApiError, isError } from '@/lib/error';
-import axiosInstance from '@/query/config/config';
 import { Session } from '@/types/response/Session';
 
 type SessionState =
@@ -55,29 +55,37 @@ export function useMe() {
 	return { highestRole };
 }
 
+let sessionPromise: Promise<Session> | null = null;
+
+function preloadSession() {
+	if (!sessionPromise)
+		sessionPromise = fetch(`${env.url.api}/auth/session`, {
+			credentials: 'include',
+			next: {
+				revalidate: 60,
+			},
+		}).then((res) => {
+			if (res.ok) {
+				return res.json();
+			}
+
+			return null;
+		});
+
+	return sessionPromise;
+}
+
 export function SessionProvider({ children }: { children: ReactNode }) {
 	const [session, setSession] = useState<SessionState>(defaultContextValue);
 
-	const fetch = useCallback(
-		() =>
-			axiosInstance
-				.get('/auth/session')
-				.then((r) => r.data)
-				.then((data) =>
-					setSession(data ? { session: data, state: 'authenticated' } : { session: null, state: 'unauthenticated' }),
-				)
-				.catch(() =>
-					setSession({
-						session: null,
-						state: 'unauthenticated',
-					}),
-				),
-		[],
-	);
-
-	useEffect(() => {
-		fetch();
-	}, [fetch]);
+	preloadSession()
+		.then((data) => setSession(data ? { session: data, state: 'authenticated' } : { session: null, state: 'unauthenticated' }))
+		.catch(() =>
+			setSession({
+				session: null,
+				state: 'unauthenticated',
+			}),
+		);
 
 	return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;
 }
