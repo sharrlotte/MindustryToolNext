@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import z from 'zod';
 
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
@@ -24,25 +23,15 @@ import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import { isError } from '@/lib/error';
-import { createSchematic, getSchematicPreview } from '@/query/schematic';
+import { CreateSchematicRequest, CreateSchematicSchema, createSchematic, getSchematicPreview } from '@/query/schematic';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';
-import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
-
-const CreateSchematicSchema = z.object({
-	name: z.string().min(1).max(128),
-	description: z.string().max(1024).optional(),
-	data: z.any(),
-	tags: TAG_GROUP_SCHEMA,
-});
-
-type CreateSchematicRequest = z.infer<typeof CreateSchematicSchema>;
 
 export default function Page() {
 	return <Preview />;

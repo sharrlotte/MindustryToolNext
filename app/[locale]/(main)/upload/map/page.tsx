@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
@@ -24,26 +23,15 @@ import { IMAGE_PREFIX } from '@/constant/constant';
 import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import { isError } from '@/lib/error';
-import { createMap, getMapPreview } from '@/query/map';
+import { CreateMapRequest, CreateMapSchema, createMap, getMapPreview } from '@/query/map';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import TagGroup from '@/types/response/TagGroup';
-import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 
 /* eslint-disable @next/next/no-img-element */
-
-const CreateMapSchema = z.object({
-	name: z.string().min(1).max(128),
-	description: z.string().max(1024).optional(),
-	file: z.any(),
-	isPrivate: z.boolean().default(false),
-	tags: TAG_GROUP_SCHEMA,
-});
-
-type CreateMapRequest = z.infer<typeof CreateMapSchema>;
 
 export default function Page() {
 	const axios = useClientApi();

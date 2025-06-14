@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { z } from 'zod';
 
 import { toForm } from '@/lib/utils';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
@@ -8,7 +9,7 @@ import { MapDetail } from '@/types/response/MapDetail';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import { TagGroups } from '@/types/response/TagGroup';
 import { CountItemPaginationQueryType, ItemPaginationQueryType } from '@/types/schema/search-query';
-import { CreateMapRequest } from '@/types/schema/zod-schema';
+import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
 
 export async function getMapCount(axios: AxiosInstance, params: CountItemPaginationQueryType): Promise<number> {
 	const result = await axios.get('/maps/total', { params });
@@ -54,7 +55,10 @@ export async function getMaps(axios: AxiosInstance, params: ItemPaginationQueryT
 	return result.data;
 }
 
-export async function getMapUploadCount(axios: AxiosInstance, params: Omit<ItemPaginationQueryType, 'page' | 'size'>): Promise<number> {
+export async function getMapUploadCount(
+	axios: AxiosInstance,
+	params: Omit<ItemPaginationQueryType, 'page' | 'size'>,
+): Promise<number> {
 	const result = await axios.get('/maps/upload/total', {
 		params,
 	});
@@ -85,15 +89,15 @@ export async function createMap(axios: AxiosInstance, { tags, ...data }: CreateM
 	});
 }
 
-export async function createMultipleMap(axios: AxiosInstance, { tags, ...data }: CreateMapRequest): Promise<void> {
-	const form = toForm(data);
+export const CreateMapSchema = z.object({
+	name: z.string().min(1).max(128),
+	description: z.string().max(1024).optional(),
+	file: z.any(),
+	isPrivate: z.boolean().default(false),
+	tags: TAG_GROUP_SCHEMA,
+});
 
-	form.append('tags', TagGroups.toString(tags));
-
-	return await axios.post('/maps/multiple', form, {
-		data: form,
-	});
-}
+export type CreateMapRequest = z.infer<typeof CreateMapSchema>;
 
 export async function verifyMap(axios: AxiosInstance, { id, tags }: VerifyMapRequest): Promise<void> {
 	return axios.post(
