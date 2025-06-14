@@ -247,14 +247,20 @@ function Upload({ data, preview, setData, setPreview }: UploadProps) {
 					<FormField
 						control={form.control}
 						name="tags"
-						render={({ field }) => (
+						render={({ field, fieldState }) => (
 							<FormItem>
 								<FormLabel>
 									<Tran text="tags" />
 								</FormLabel>
 								<FormControl>
-									<TagSelector type="schematic" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+									<TagSelector
+										invalid={fieldState.invalid}
+										type="schematic"
+										value={field.value}
+										onChange={(fn) => field.onChange(fn(field.value))}
+									/>
 								</FormControl>
+								<span className="text-destructive-foreground text-sm">{fieldState.error?.message}</span>
 								<FormMessage />
 							</FormItem>
 						)}

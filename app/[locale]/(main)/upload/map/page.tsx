@@ -26,7 +26,6 @@ import { isError } from '@/lib/error';
 import { CreateMapRequest, CreateMapSchema, createMap, getMapPreview } from '@/query/map';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
-import TagGroup from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -105,7 +104,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 
 	const axios = useClientApi();
 
-	const form = useForm<Omit<CreateMapRequest, 'tags'> & { tags: TagGroup[] }>({
+	const form = useForm<CreateMapRequest>({
 		resolver: zodResolver(CreateMapSchema),
 		defaultValues: {
 			name: preview.name,
@@ -214,6 +213,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 										onChange={(fn) => field.onChange(fn(field.value))}
 									/>
 								</FormControl>
+								<span className="text-destructive-foreground text-sm">{fieldState.error?.message}</span>
 								<FormMessage />
 							</FormItem>
 						)}

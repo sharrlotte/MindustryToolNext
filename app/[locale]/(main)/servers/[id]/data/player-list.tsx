@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useDebounceValue } from 'usehooks-ts';
 
 import ColorText from '@/components/common/color-text';
 import ComboBox from '@/components/common/combo-box';
@@ -30,6 +31,7 @@ export default function PlayerList() {
 	const [banned, setBanned] = useState<boolean | undefined>(undefined);
 	const id = usePathId();
 	const status = useServerStatus(id);
+	const [debounced] = useDebounceValue(filter, 100);
 
 	if (status === 'UNAVAILABLE') {
 		return (
@@ -70,7 +72,7 @@ export default function PlayerList() {
 			<InfinitePage
 				className="grid grid-cols-1 gap-2"
 				queryKey={['server', id, 'player-info']}
-				params={{ banned, filter }}
+				params={{ banned, filter: debounced }}
 				paramSchema={PlayerInfoQuerySchema}
 				queryFn={(axios, params) => getServerPlayerInfos(axios, id, params)}
 			>

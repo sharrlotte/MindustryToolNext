@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, Suspense } from 'react';
 
 import ProtectedRoute from '@/layout/protected-route';
 
@@ -11,7 +11,9 @@ type LayoutProps = {
 export default function Layout({ children }: LayoutProps) {
 	return (
 		<div className="flex h-full w-full flex-col gap-2 overflow-hidden">
-			<ProtectedRoute filter={{ role: 'ADMIN' }}>{children}</ProtectedRoute>
+			<ProtectedRoute filter={{ role: 'ADMIN' }}>
+				<Suspense>{children}</Suspense>
+			</ProtectedRoute>
 		</div>
 	);
 }
