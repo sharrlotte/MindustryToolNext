@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 import ComboBox from '@/components/common/combo-box';
 
-import { useSession } from '@/context/session.context';
+import useConfig from '@/hooks/use-config';
 
 type SizeSelectorProps = {
 	sizes: number[];
@@ -13,10 +13,7 @@ export default function SizeSelector({ sizes }: SizeSelectorProps) {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
-	const {
-		config: { paginationSize: size },
-		setConfig,
-	} = useSession();
+	const { paginationSize: size, setConfig } = useConfig();
 
 	const handleSizeChange = useCallback(
 		(size: number | undefined) => {

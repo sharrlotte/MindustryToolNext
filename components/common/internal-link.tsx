@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import env from '@/constant/env';
-import useLocaleStore from '@/hooks/use-current-locale';
+import useConfig from '@/hooks/use-config';
 import { cn } from '@/lib/utils';
 
 const linkVariants = cva('inline-flex gap-2 items-center', {
@@ -34,7 +34,7 @@ export type InternalLinkProps = Omit<React.ButtonHTMLAttributes<HTMLAnchorElemen
 	} & React.ComponentProps<typeof Link>;
 
 export default function InternalLink({ className, variant, title, href, shallow, children, ...props }: InternalLinkProps) {
-	const { currentLocale } = useLocaleStore();
+	const { locale: currentLocale } = useConfig();
 	href = href.replace(env.url.base, '');
 
 	const hrefWithoutLocale = (() => {

@@ -5,11 +5,11 @@ import { Globe } from 'lucide-react';
 import { NotificationNumber } from '@/components/common/notification-number';
 
 import useClientQuery from '@/hooks/use-client-query';
-import useLocaleStore from '@/hooks/use-current-locale';
+import useConfig from '@/hooks/use-config';
 import { getTranslationDiffCount, getTranslationSearchCount } from '@/query/translation';
 
 export function TranslationPathIcon() {
-	const { currentLocale } = useLocaleStore();
+	const { locale: currentLocale } = useConfig();
 
 	const { data: search } = useClientQuery({
 		queryKey: ['translations', 'search', 'total', currentLocale],

@@ -1,22 +1,10 @@
 'use client';
 
-import React, { ReactNode, useCallback, useMemo } from 'react';
-import { useCookies } from 'react-cookie';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
-import {
-	Config,
-	DEFAULT_PAGINATION_SIZE,
-	DEFAULT_PAGINATION_TYPE,
-	PAGINATION_SIZE_PERSISTENT_KEY,
-	PAGINATION_TYPE_PERSISTENT_KEY,
-	SESSION_ID_PERSISTENT_KEY,
-} from '@/constant/constant';
-import { Locale, cookieName, defaultLocale } from '@/i18n/config';
 import { ApiError, isError } from '@/lib/error';
 import axiosInstance from '@/query/config/config';
 import { Session } from '@/types/response/Session';
-
-import { useQuery } from '@tanstack/react-query';
 
 type SessionState =
 	| {
@@ -31,27 +19,15 @@ type SessionState =
 			session: ApiError;
 			state: 'unauthenticated';
 	  };
-export type SessionContextType = SessionState & {
-	createdAt: number;
-	config: Config;
-	setConfig: <T extends keyof Config>(config: T, value: Config[T]) => void;
-};
 
-const defaultContextValue: SessionContextType = {
+const defaultContextValue: SessionState = {
 	session: null,
 	state: 'loading',
-	createdAt: 0,
-	config: {
-		paginationType: DEFAULT_PAGINATION_TYPE,
-		paginationSize: DEFAULT_PAGINATION_SIZE,
-		Locale: defaultLocale,
-	},
-	setConfig: () => {},
 };
 
-export const SessionContext = React.createContext<SessionContextType>(defaultContextValue);
+export const SessionContext = React.createContext<SessionState>(defaultContextValue);
 
-export function useSession(): SessionContextType {
+export function useSession(): SessionState {
 	const context = React.useContext(SessionContext);
 
 	if (!context) {
@@ -79,50 +55,29 @@ export function useMe() {
 	return { highestRole };
 }
 
-export function SessionProvider({ locale, children }: { locale: Locale; children: ReactNode }) {
-	const [{ Locale, paginationSize, paginationType }, _setConfig] = useCookies([
-		PAGINATION_TYPE_PERSISTENT_KEY,
-		PAGINATION_SIZE_PERSISTENT_KEY,
-		SESSION_ID_PERSISTENT_KEY,
-		cookieName,
-	]);
+export function SessionProvider({ children }: { children: ReactNode }) {
+	const [session, setSession] = useState<SessionState>(defaultContextValue);
 
-	const setConfig = useCallback(
-		<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }),
-		[_setConfig],
-	);
-
-	const { data, status, error } = useQuery({
-		queryKey: ['session'],
-		queryFn: () =>
+	const fetch = useCallback(
+		() =>
 			axiosInstance
 				.get('/auth/session')
 				.then((r) => r.data)
-				.then((data) => data ?? null)
-				.catch(() => null),
-	});
+				.then((data) =>
+					setSession(data ? { session: data, state: 'authenticated' } : { session: null, state: 'unauthenticated' }),
+				)
+				.catch(() =>
+					setSession({
+						session: null,
+						state: 'unauthenticated',
+					}),
+				),
+		[],
+	);
 
-	const session = useMemo(() => {
-		const d: SessionState =
-			status === 'error'
-				? { session: { error }, state: 'unauthenticated' }
-				: status === 'success'
-					? data
-						? { session: data, state: 'authenticated' }
-						: { session: null, state: 'unauthenticated' }
-					: { session: null, state: 'loading' };
-
-		return {
-			...d,
-			createdAt: Date.now(),
-			config: {
-				paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
-				paginationSize: paginationSize ? Number(paginationSize) : DEFAULT_PAGINATION_SIZE,
-				Locale: locale ?? Locale ?? defaultLocale,
-			},
-			setConfig: setConfig,
-		};
-	}, [Locale, data, error, locale, paginationSize, paginationType, setConfig, status]);
+	useEffect(() => {
+		fetch();
+	}, [fetch]);
 
 	return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;
 }
