@@ -179,6 +179,10 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 			return <p className="text-wrap w-full">{json}</p>;
 
 		case 'object': {
+			if (json === null) {
+				return 'null';
+			}
+
 			if (Array.isArray(json)) {
 				const isObjectArray = json.some((item) => typeof item === 'object');
 
@@ -250,7 +254,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 								</div>
 							))}
 					</div>
-					{show < json.length && (
+					{show < Object.entries(json).length && (
 						<span
 							className="text-center underline font-semibold text-sm"
 							onClick={() => {
