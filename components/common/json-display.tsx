@@ -162,7 +162,7 @@ function parseCustomJsonNested(json: any) {
 }
 
 export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: number }) {
-	const [show, setShow] = useState(0);
+	const [show, setShow] = useState(50);
 
 	if (json === null) {
 		return null;
@@ -196,7 +196,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 								))}
 							{show < json.length && (
 								<span
-									className="text-center underline font-semibold"
+									className="text-center underline font-semibold text-sm"
 									onClick={() => {
 										setShow((prev) => prev + 50);
 									}}
@@ -249,17 +249,17 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 									)}
 								</div>
 							))}
-						{show < json.length && (
-							<span
-								className="text-center underline font-semibold"
-								onClick={() => {
-									setShow((prev) => prev + 50);
-								}}
-							>
-								<Tran text="show-more" />
-							</span>
-						)}
 					</div>
+					{show < json.length && (
+						<span
+							className="text-center underline font-semibold text-sm"
+							onClick={() => {
+								setShow((prev) => prev + 50);
+							}}
+						>
+							<Tran text="show-more" />
+						</span>
+					)}
 					<span>{'}'}</span>
 				</>
 			);
