@@ -58,6 +58,8 @@ export function useMe() {
 let sessionPromise: Promise<Session> | null = null;
 
 function preloadSession() {
+	if (typeof window === 'undefined') return null;
+
 	if (!sessionPromise)
 		sessionPromise = fetch(`${env.url.api}/auth/session`, {
 			credentials: 'include',
@@ -79,7 +81,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 	const [session, setSession] = useState<SessionState>(defaultContextValue);
 
 	preloadSession()
-		.then((data) => setSession(data ? { session: data, state: 'authenticated' } : { session: null, state: 'unauthenticated' }))
+		?.then((data) => setSession(data ? { session: data, state: 'authenticated' } : { session: null, state: 'unauthenticated' }))
 		.catch(() =>
 			setSession({
 				session: null,
