@@ -18,7 +18,7 @@ import {
 	DetailTitle,
 	Verifier,
 } from '@/components/common/detail';
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import SizeCard from '@/components/common/size-card';
 import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';
@@ -46,7 +46,7 @@ export default async function SchematicDetailCard({ id, locale }: SchematicDetai
 	const session = await getSession();
 
 	if (isError(schematic)) {
-		return <ErrorScreen error={schematic} />;
+		return <ErrorMessage error={schematic} />;
 	}
 
 	const {

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import React from 'react';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import Tran from '@/components/common/tran';
 import UploadMapDetailCard from '@/components/map/upload-map-detail-card';
 import BackButton from '@/components/ui/back-button';
@@ -45,7 +45,7 @@ export default async function Page({ params }: Props) {
 	const map = await getCachedMapUpload(id);
 
 	if (isError(map)) {
-		return <ErrorScreen error={map} />;
+		return <ErrorMessage error={map} />;
 	}
 
 	if (map.isVerified === true) {

@@ -16,7 +16,7 @@ import SmallNavbarToggle from '@/app/[locale]/(main)/small-navbar-toggle';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 
 import LoginButton from '@/components/button/login.button';
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import Hydrated from '@/components/common/hydrated';
 import InternalLink from '@/components/common/internal-link';
 import { MindustryToolIcon } from '@/components/common/mindustrytool-icon';
@@ -556,7 +556,7 @@ async function InternalHomeSchematicPreview({ queryParam }: { queryParam: ItemPa
 	const result = await serverApi((axios) => findSchematics(axios, queryParam));
 
 	if (isError(result)) {
-		return <ErrorScreen error={result} />;
+		return <ErrorMessage error={result} />;
 	}
 
 	return result.slice(0, 3).map((schematic, index) => (
@@ -572,7 +572,7 @@ async function InternalHomeMapPreview({ queryParam }: { queryParam: ItemPaginati
 	const result = await serverApi((axios) => findMaps(axios, queryParam));
 
 	if (isError(result)) {
-		return <ErrorScreen error={result} />;
+		return <ErrorMessage error={result} />;
 	}
 
 	return result.slice(0, 3).map((map, index) => (
@@ -588,7 +588,7 @@ async function InternalHomeServerPreview() {
 	const result = await serverApi((axios) => findServers(axios));
 
 	if (isError(result)) {
-		return <ErrorScreen error={result} />;
+		return <ErrorMessage error={result} />;
 	}
 
 	return result.slice(0, 1).map((server, index) => <ServerCard key={index} server={server} />);

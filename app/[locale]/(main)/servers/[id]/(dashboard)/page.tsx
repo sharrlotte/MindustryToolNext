@@ -10,7 +10,7 @@ import ServerImage from '@/app/[locale]/(main)/servers/[id]/(dashboard)/server-i
 import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
 import ColorText from '@/components/common/color-text';
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
@@ -72,11 +72,11 @@ export default async function Page({ params }: Props) {
 	const [server, session] = await Promise.all([getCachedServer(id), getSession()]);
 
 	if (isError(server)) {
-		return <ErrorScreen error={server} />;
+		return <ErrorMessage error={server} />;
 	}
 
 	if (isError(session)) {
-		return <ErrorScreen error={session} />;
+		return <ErrorMessage error={session} />;
 	}
 
 	const {

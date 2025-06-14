@@ -17,7 +17,7 @@ import {
 	DetailTitle,
 	Verifier,
 } from '@/components/common/detail';
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import JsonDisplay from '@/components/common/json-display';
 import ScrollContainer from '@/components/common/scroll-container';
 import SizeCard from '@/components/common/size-card';
@@ -43,7 +43,7 @@ export default async function MapDetailCard({ id, locale }: MapDetailCardProps) 
 	const map = await getCachedMap(id);
 
 	if (isError(map)) {
-		return <ErrorScreen error={map} />;
+		return <ErrorMessage error={map} />;
 	}
 
 	const {

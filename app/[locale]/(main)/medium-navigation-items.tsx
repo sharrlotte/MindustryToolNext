@@ -44,7 +44,7 @@ import { TranslationPathIcon } from '@/app/[locale]/(main)/translation-path-icon
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
 import { VerifyPathIcon } from '@/app/[locale]/(main)/verify-path-icon';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
 import Divider from '@/components/ui/divider';
@@ -141,7 +141,7 @@ function ProtectedPathGroupElement({ group }: PathGroupElementProps) {
 	const { filter } = group;
 
 	if (isError(session)) {
-		return <ErrorScreen error={session} />;
+		return <ErrorMessage error={session} />;
 	}
 
 	return (
