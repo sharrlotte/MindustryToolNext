@@ -8,8 +8,8 @@ import { z } from 'zod';
 
 import SwipeToNavigate from '@/components/common/swipe-to-navigate';
 
-import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
+import useConfig from '@/hooks/use-config';
 import useInfinitePageQuery from '@/hooks/use-infinite-page-query';
 import useSearchQuery from '@/hooks/use-search-query';
 import { QuerySchema } from '@/types/schema/search-query';
@@ -26,9 +26,7 @@ type Props<T, P extends QuerySchema> = {
 };
 
 export default function DetailSwipeToNavigate<T extends { id: any }, P extends QuerySchema>({ ...props }: Props<T, P>) {
-	const {
-		config: { paginationType },
-	} = useSession();
+	const { paginationType } = useConfig();
 
 	return (
 		<Suspense>

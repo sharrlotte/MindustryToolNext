@@ -2,14 +2,12 @@ import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
 import { z } from 'zod';
 
-import { useSession } from '@/context/session.context';
+import useConfig from '@/hooks/use-config';
 import { groupParamsByKey } from '@/lib/utils';
 import { QuerySchema } from '@/types/schema/search-query';
 
 export default function useSearchQuery<T extends QuerySchema>(schema: T, additional?: Record<string, any>): z.infer<T> {
-	const {
-		config: { paginationSize },
-	} = useSession();
+	const { paginationSize } = useConfig();
 	const query = useSearchParams();
 	const data = groupParamsByKey(query);
 

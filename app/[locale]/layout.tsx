@@ -85,33 +85,33 @@ export default async function Root({ children, params }: RootProps) {
 	}
 
 	return (
-		<html
-			className={cn(
-				'h-full w-full overflow-hidden bg-background text-foreground antialiased',
-				noto.className,
-				icon.className,
-				noto.variable,
-				icon.variable,
-				'font-noto',
-			)}
-			lang={locale}
-			data-color-mode="dark"
-			suppressHydrationWarning
-		>
-			<body className="overflow-hidden w-full h-full">
-				<QueryProvider>
-					<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-						<SessionProvider locale={locale}>
+		<SessionProvider>
+			<html
+				className={cn(
+					'h-full w-full overflow-hidden bg-background text-foreground antialiased',
+					noto.className,
+					icon.className,
+					noto.variable,
+					icon.variable,
+					'font-noto',
+				)}
+				lang={locale}
+				data-color-mode="dark"
+				suppressHydrationWarning
+			>
+				<body className="overflow-hidden w-full h-full">
+					<QueryProvider>
+						<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
 							<SocketProvider>
 								{process.env.NODE_ENV === 'production' && <GoogleAnalytics gaId="G-CGKXS6096G" />}
 								<Toaster />
 								<ClientInit />
 								{children}
 							</SocketProvider>
-						</SessionProvider>
-					</ThemeProvider>
-				</QueryProvider>
-			</body>
-		</html>
+						</ThemeProvider>
+					</QueryProvider>
+				</body>
+			</html>
+		</SessionProvider>
 	);
 }

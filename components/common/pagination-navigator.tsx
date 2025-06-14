@@ -12,8 +12,8 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { Input } from '@/components/ui/input';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '@/components/ui/pagination';
 
-import { useSession } from '@/context/session.context';
 import useClientQuery from '@/hooks/use-client-query';
+import useConfig from '@/hooks/use-config';
 import useSearchQuery from '@/hooks/use-search-query';
 import { cn, groupParamsByKey, omit } from '@/lib/utils';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
@@ -80,9 +80,7 @@ function PaginationNavigatorInternal({ numberOfItems, sizes }: InternalProps) {
 	const [selectedPage, setSelectedPage] = useState(0);
 	const params = useSearchQuery(PaginationQuerySchema);
 	const searchParams = useSearchParams();
-	const {
-		config: { paginationSize },
-	} = useSession();
+	const { paginationSize } = useConfig();
 
 	const handlePageChange = useCallback(
 		(page: number) => {

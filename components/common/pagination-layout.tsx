@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 
 import Hydrated from '@/components/common/hydrated';
 
-import { useSession } from '@/context/session.context';
+import useConfig from '@/hooks/use-config';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -13,10 +13,7 @@ type Props = {
 };
 
 export function PaginationLayoutSwitcher() {
-	const {
-		config: { paginationType },
-		setConfig,
-	} = useSession();
+	const { paginationType, setConfig } = useConfig();
 
 	return (
 		<div className="bg-card rounded-md overflow-hidden shadow-md flex">
@@ -45,17 +42,13 @@ export function PaginationLayoutSwitcher() {
 }
 
 export function ListLayout({ children }: Props) {
-	const {
-		config: { paginationType },
-	} = useSession();
+	const { paginationType } = useConfig();
 
 	return paginationType === 'infinite-scroll' ? children : undefined;
 }
 
 export function GridLayout({ children }: Props) {
-	const {
-		config: { paginationType },
-	} = useSession();
+	const { paginationType } = useConfig();
 
 	return paginationType === 'grid' ? children : undefined;
 }
