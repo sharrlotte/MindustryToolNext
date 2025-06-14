@@ -127,5 +127,5 @@ function TimeFrom({ time, currentTime }: { time: number; currentTime: number }) 
 		relative = `Expired`;
 	}
 
-	return <span>{relative}</span>;
+	return <span className="text-sm text-muted-foreground">{relative}</span>;
 }
