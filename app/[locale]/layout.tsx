@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { Arimo } from 'next/font/google';
 import localFont from 'next/font/local';
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import ClientInit from '@/app/[locale]/client-init';
 
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -19,8 +20,6 @@ import QueryProvider from '@/query/config/query-provider';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 import './../globals.css';
-
-const ClientInit = dynamic(() => import('@/app/[locale]/client-init'));
 
 const noto = Arimo({
 	variable: '--font-noto',
