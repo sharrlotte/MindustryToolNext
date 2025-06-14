@@ -3,7 +3,7 @@
 import React, { ReactNode } from 'react';
 
 import LoginButton from '@/components/button/login.button';
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
 
@@ -32,7 +32,7 @@ export default function ProtectedRoute({ filter, children }: Props) {
 	}
 
 	if (isError(session)) {
-		return <ErrorScreen error={session} />;
+		return <ErrorMessage error={session} />;
 	}
 
 	if (!session) {

@@ -3,7 +3,7 @@ import React from 'react';
 import UpdateThumbnail from '@/app/[locale]/(main)/users/[id]/setting/update-thumbnail';
 import UserSettings from '@/app/[locale]/(main)/users/[id]/setting/user-settings';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -17,7 +17,7 @@ export default async function Page() {
 	const session = await getSession();
 
 	if (isError(session)) {
-		return <ErrorScreen error={session} />;
+		return <ErrorMessage error={session} />;
 	}
 
 	if (!session) {

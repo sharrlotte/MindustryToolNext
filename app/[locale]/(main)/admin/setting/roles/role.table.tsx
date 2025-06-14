@@ -4,7 +4,7 @@ import React, { Suspense } from 'react';
 import RoleList from '@/app/[locale]/(main)/admin/setting/roles/role-list';
 import { RoleListSkeleton } from '@/app/[locale]/(main)/admin/setting/roles/role-list.skeleton';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 
 import { getAuthSession, serverApi } from '@/action/common';
 import { isError } from '@/lib/error';
@@ -17,11 +17,11 @@ export async function RoleTable() {
 	const session = await getAuthSession();
 
 	if (isError(data)) {
-		return <ErrorScreen error={data} />;
+		return <ErrorMessage error={data} />;
 	}
 
 	if (isError(session)) {
-		return <ErrorScreen error={session} />;
+		return <ErrorMessage error={session} />;
 	}
 
 	const bestRole =
@@ -31,7 +31,7 @@ export async function RoleTable() {
 
 	if (!bestRole) {
 		// Should never happen
-		return <ErrorScreen error={{ message: 'No available role.' }} />;
+		return <ErrorMessage error={{ message: 'No available role.' }} />;
 	}
 
 	return (

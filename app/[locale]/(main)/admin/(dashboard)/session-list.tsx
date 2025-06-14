@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 
 import { serverApi } from '@/action/common';
 import { isError } from '@/lib/error';
@@ -19,7 +19,7 @@ export default async function SessionList() {
 	);
 
 	if (isError(data)) {
-		return <ErrorScreen error={data} />;
+		return <ErrorMessage error={data} />;
 	}
 
 	return (

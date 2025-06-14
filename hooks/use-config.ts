@@ -11,36 +11,36 @@ import {
 } from '@/constant/constant';
 import { cookieName } from '@/i18n/config';
 
-export default function useConfig() {
-	const { locale } = useParams();
-	const [{ Locale, paginationSize, paginationType }, _setConfig] = useCookies([
-		PAGINATION_TYPE_PERSISTENT_KEY,
-		PAGINATION_SIZE_PERSISTENT_KEY,
-		cookieName,
-	]);
+	export default function useConfig() {
+		const { locale } = useParams();
+		const [{ Locale, paginationSize, paginationType }, _setConfig] = useCookies([
+			PAGINATION_TYPE_PERSISTENT_KEY,
+			PAGINATION_SIZE_PERSISTENT_KEY,
+			cookieName,
+		]);
 
-	const [hydrated, setHydrated] = useState(false);
+		const [hydrated, setHydrated] = useState(false);
 
-	useEffect(() => setHydrated(true), []);
+		useEffect(() => setHydrated(true), []);
 
-	const setConfig = useCallback(
-		<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }),
-		[_setConfig],
-	);
+		const setConfig = useCallback(
+			<T extends keyof Config>(name: T, value: Config[T]) => _setConfig(name, value, { path: '/' }),
+			[_setConfig],
+		);
 
-	if (!hydrated) {
+		if (!hydrated) {
+			return {
+				locale,
+				paginationSize: DEFAULT_PAGINATION_SIZE,
+				paginationType: DEFAULT_PAGINATION_TYPE,
+				setConfig,
+			};
+		}
+
 		return {
-			locale,
-			paginationSize: DEFAULT_PAGINATION_SIZE,
-			paginationType: DEFAULT_PAGINATION_TYPE,
+			locale: Locale ?? locale,
+			paginationSize: paginationSize ?? DEFAULT_PAGINATION_SIZE,
+			paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
 			setConfig,
 		};
 	}
-
-	return {
-		locale: Locale ?? locale,
-		paginationSize: paginationSize ?? DEFAULT_PAGINATION_SIZE,
-		paginationType: paginationType ?? DEFAULT_PAGINATION_TYPE,
-		setConfig,
-	};
-}

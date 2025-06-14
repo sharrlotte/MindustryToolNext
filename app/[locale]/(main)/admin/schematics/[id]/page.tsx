@@ -1,7 +1,7 @@
 import { Metadata } from 'next/dist/types';
 import React from 'react';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import Tran from '@/components/common/tran';
 import UploadSchematicDetailCard from '@/components/schematic/upload-schematic-detail-card';
 import BackButton from '@/components/ui/back-button';
@@ -45,7 +45,7 @@ export default async function Page({ params }: Props) {
 	const schematic = await getCachedSchematicUpload(id);
 
 	if (isError(schematic)) {
-		return <ErrorScreen error={schematic} />;
+		return <ErrorMessage error={schematic} />;
 	}
 
 	if (schematic.isVerified === true) {

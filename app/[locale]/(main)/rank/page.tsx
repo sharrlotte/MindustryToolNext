@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 import { PageClient, RankPaginationNavigator } from '@/app/[locale]/(main)/rank/page.client';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 
 import { serverApi } from '@/action/common';
 import { Locale } from '@/i18n/config';
@@ -33,13 +33,13 @@ export default async function Page({ searchParams }: Props) {
 	const { data, success, error } = ItemPaginationQuery.safeParse(await searchParams);
 
 	if (!success || !data) {
-		return <ErrorScreen error={error} />;
+		return <ErrorMessage error={error} />;
 	}
 
 	const users = await serverApi((axios) => getRank(axios, data));
 
 	if (isError(users)) {
-		return <ErrorScreen error={users} />;
+		return <ErrorMessage error={users} />;
 	}
 
 	return (

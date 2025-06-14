@@ -10,6 +10,7 @@ import { BanButton } from '@/components/server/ban.button';
 import { KickButton } from '@/components/server/kick.button';
 import Divider from '@/components/ui/divider';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
+import { Input } from '@/components/ui/input';
 
 import usePathId from '@/hooks/use-path-id';
 import useServerStatus from '@/hooks/use-server-status';
@@ -25,6 +26,7 @@ const state = {
 };
 
 export default function PlayerList() {
+	const [filter, setFilter] = useState('');
 	const [banned, setBanned] = useState<boolean | undefined>(undefined);
 	const id = usePathId();
 	const status = useServerStatus(id);
@@ -39,10 +41,10 @@ export default function PlayerList() {
 
 	return (
 		<>
-			<div>
+			<div className="flex gap-2 flex-wrap">
+				<Input value={filter} onChange={(event) => setFilter(event.target.value)} placeholder="Player1" />
 				<ComboBox
 					searchBar={false}
-					chevron={false}
 					value={{
 						label: state[String(banned) as keyof typeof state],
 						value: banned,
@@ -68,7 +70,7 @@ export default function PlayerList() {
 			<InfinitePage
 				className="grid grid-cols-1 gap-2"
 				queryKey={['server', id, 'player-info']}
-				params={{ banned }}
+				params={{ banned, filter }}
 				paramSchema={PlayerInfoQuerySchema}
 				queryFn={(axios, params) => getServerPlayerInfos(axios, id, params)}
 			>

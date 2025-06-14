@@ -1,4 +1,4 @@
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import MetricWrapper from '@/components/metric/metric-wrapper';
@@ -20,7 +20,7 @@ async function LoginTable() {
 	const data = await serverApi((axios) => getLoginHistories(axios, { page: 0, size: 20 }));
 
 	if (isError(data)) {
-		return <ErrorScreen error={data} />;
+		return <ErrorMessage error={data} />;
 	}
 
 	return (

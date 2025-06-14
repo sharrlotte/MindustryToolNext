@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import React, { cache } from 'react';
 import removeMd from 'remove-markdown';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import PostDetailCard from '@/components/post/post-detail-card';
 
 import { serverApi } from '@/action/common';
@@ -47,7 +47,7 @@ export default async function Page({ params }: Props) {
 	const post = await getCachedPost(id);
 
 	if (isError(post)) {
-		return <ErrorScreen error={post} />;
+		return <ErrorMessage error={post} />;
 	}
 
 	return <PostDetailCard post={post} />;

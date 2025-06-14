@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import React, { cache } from 'react';
 import removeMd from 'remove-markdown';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import Tran from '@/components/common/tran';
 import UploadPostDetailCard from '@/components/post/upload-post-detail-card';
 import BackButton from '@/components/ui/back-button';
@@ -48,7 +48,7 @@ export default async function Page({ params }: Props) {
 	const post = await getCachedPostUpload(id);
 
 	if (isError(post)) {
-		return <ErrorScreen error={post} />;
+		return <ErrorMessage error={post} />;
 	}
 
 	if (post.isVerified === true) {

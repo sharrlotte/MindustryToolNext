@@ -59,6 +59,7 @@ export async function getServerPlayerInfos(
 		page: number;
 		size: number;
 		banned?: boolean;
+		filter?: string;
 	},
 ): Promise<PlayerInfo[]> {
 	const result = await axios.get(`/servers/${id}/player-infos`, { params });

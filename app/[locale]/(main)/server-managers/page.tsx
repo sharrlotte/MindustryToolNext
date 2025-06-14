@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import InternalLink from '@/components/common/internal-link';
 import Divider from '@/components/ui/divider';
 
@@ -14,7 +14,7 @@ export default async function Page() {
 	const managers = await serverApi((axios) => getMyServerManager(axios));
 
 	if (isError(managers)) {
-		return <ErrorScreen error={managers} />;
+		return <ErrorMessage error={managers} />;
 	}
 
 	return (

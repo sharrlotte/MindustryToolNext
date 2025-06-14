@@ -9,7 +9,7 @@ import ServerUpdateAdminForm from '@/app/[locale]/(main)/servers/[id]/setting/se
 import ServerUpdateForm from '@/app/[locale]/(main)/servers/[id]/setting/server-update-form';
 
 import { CatchError } from '@/components/common/catch-error';
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 import RequireLogin from '@/components/common/require-login';
 import ScrollContainer from '@/components/common/scroll-container';
 
@@ -43,11 +43,11 @@ export default async function Page({ params }: Props) {
 	const [server, session] = await Promise.all([serverApi((axios) => getServerSetting(axios, { id })), getSession()]);
 
 	if (isError(server)) {
-		return <ErrorScreen error={server} />;
+		return <ErrorMessage error={server} />;
 	}
 
 	if (isError(session)) {
-		return <ErrorScreen error={session} />;
+		return <ErrorMessage error={session} />;
 	}
 
 	if (!session) {

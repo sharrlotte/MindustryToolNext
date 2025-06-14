@@ -61,6 +61,7 @@ export const PaginationQuerySchema = z.object({
 export const PlayerInfoQuerySchema = z.object({
 	...PaginationParam,
 	banned: bannedSchema,
+	filter: z.string().optional(),
 });
 
 export const ItemPaginationQuery = z.object({

@@ -4,7 +4,7 @@ import { cache } from 'react';
 import Me from '@/app/[locale]/(main)/users/[id]/me';
 import Other from '@/app/[locale]/(main)/users/[id]/other';
 
-import ErrorScreen from '@/components/common/error-screen';
+import ErrorMessage from '@/components/common/error-message';
 
 import { serverApi } from '@/action/common';
 import { isError } from '@/lib/error';
@@ -61,7 +61,7 @@ export default async function Page({ params }: Props) {
 	const user = await getCachedUser(id);
 
 	if (isError(user)) {
-		return <ErrorScreen error={user} />;
+		return <ErrorMessage error={user} />;
 	}
 
 	return id === '@me' ? <Me me={user} /> : <Other user={user} />;

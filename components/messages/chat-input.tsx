@@ -152,11 +152,13 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 					</Button>
 				</div>
 			</div>
-			<div className="flex justify-end text-sm w-full">
-				<span className={cn('text-muted-foreground', { 'text-destructive-foreground': message.length > maxMessageLength })}>
-					<span>{message.length}</span>/<span className="text-foreground">{maxMessageLength}</span>
-				</span>
-			</div>
+			{message.length >= maxMessageLength * 0.9 && (
+				<div className="flex justify-end text-sm w-full">
+					<span className={cn('text-muted-foreground', { 'text-destructive-foreground': message.length > maxMessageLength })}>
+						<span>{message.length}</span>/<span className="text-foreground">{maxMessageLength}</span>
+					</span>
+				</div>
+			)}
 		</form>
 	);
 }
