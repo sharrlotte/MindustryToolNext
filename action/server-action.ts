@@ -5,7 +5,8 @@ import 'server-only';
 
 export async function revalidate({ path, tag }: { path?: string; tag?: string }) {
 	if (path) {
-		revalidatePath(path);
+		revalidatePath(path, 'page');
+		revalidatePath(path, 'layout');
 	}
 
 	if (tag) {

@@ -57,29 +57,42 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
 					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=1`,
 					addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 					request(options, url, payload, callback) {
-						if (url.includes('create-missing')) {
-							fetch(url, {
-								method: 'POST',
-								cache: 'force-cache',
-								next: {
-									revalidate: 3600,
-									tags: ['translations'],
-								},
-								headers: {
-									'Content-Type': 'application/json',
-								},
-								body: JSON.stringify(payload),
-							})
-								.then(async (response) => {
-									if (!response.ok) throw new Error('Network response was not ok');
-									const result = await response.json();
-									callback(undefined, { status: response.status, data: result });
+						try {
+							if (url.includes('create-missing')) {
+								fetch(url, {
+									method: 'POST',
+									cache: 'force-cache',
+									next: {
+										revalidate: 3600,
+										tags: ['translations'],
+									},
+									headers: {
+										'Content-Type': 'application/json',
+									},
+									body: JSON.stringify(payload),
 								})
-								.catch((error) => callback(error, undefined));
-						} else {
-							getTranslationCached(url)
-								.then((result) => callback(undefined, { status: 200, data: result }))
-								.catch((error) => callback(error, undefined));
+									.then(async (response) => {
+										if (!response.ok) throw new Error('Network response was not ok');
+										const result = await response.json();
+										callback(undefined, { status: response.status, data: result });
+									})
+									.catch((error) => callback(error, undefined));
+							} else {
+								getTranslationCached(url)
+									.then((result) => callback(undefined, { status: 200, data: result }))
+									.catch((error) => callback(error, undefined));
+							}
+						} catch (error) {
+							if (error instanceof Error) {
+								const cause = (error as any).cause;
+								if (cause?.code === 'UND_ERR_CONNECT_TIMEOUT') {
+									console.error('Connection timed out: ' + url);
+								} else {
+									console.error('Fetch error: ' + url, error.message);
+								}
+							} else {
+								console.error('Unknown error: ' + url, error);
+							}
 						}
 					},
 				} as HttpBackendOptions,

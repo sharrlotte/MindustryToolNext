@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { z } from 'zod';
 
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import VerifySchematicRequest from '@/types/request/VerifySchematicRequest';
@@ -7,7 +8,7 @@ import { SchematicDetail } from '@/types/response/SchematicDetail';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import { TagGroups } from '@/types/response/TagGroup';
 import { CountItemPaginationQueryType, ItemPaginationQueryType } from '@/types/schema/search-query';
-import { CreateSchematicRequest } from '@/types/schema/zod-schema';
+import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
 
 export async function getSchematicCount(axios: AxiosInstance, params: CountItemPaginationQueryType): Promise<number> {
 	const result = await axios.get('/schematics/total', { params });
@@ -15,7 +16,10 @@ export async function getSchematicCount(axios: AxiosInstance, params: CountItemP
 	return result.data;
 }
 
-export async function getSchematicPreview(axios: AxiosInstance, { data }: SchematicPreviewRequest): Promise<SchematicPreviewResponse> {
+export async function getSchematicPreview(
+	axios: AxiosInstance,
+	{ data }: SchematicPreviewRequest,
+): Promise<SchematicPreviewResponse> {
 	const form = new FormData();
 
 	if (typeof data === 'string') {
@@ -72,7 +76,10 @@ export async function getSchematics(axios: AxiosInstance, params: ItemPagination
 	return result.data;
 }
 
-export async function getSchematicUploadCount(axios: AxiosInstance, params: Omit<ItemPaginationQueryType, 'page' | 'size'>): Promise<number> {
+export async function getSchematicUploadCount(
+	axios: AxiosInstance,
+	params: Omit<ItemPaginationQueryType, 'page' | 'size'>,
+): Promise<number> {
 	const result = await axios.get('/schematics/upload/total', {
 		params,
 	});
@@ -80,7 +87,19 @@ export async function getSchematicUploadCount(axios: AxiosInstance, params: Omit
 	return result.data;
 }
 
-export async function createSchematic(axios: AxiosInstance, { data, tags, name, description }: CreateSchematicRequest): Promise<void> {
+export const CreateSchematicSchema = z.object({
+	name: z.string().min(1).max(128),
+	description: z.string().max(1024).optional(),
+	data: z.any(),
+	tags: TAG_GROUP_SCHEMA,
+});
+
+export type CreateSchematicRequest = z.infer<typeof CreateSchematicSchema>;
+
+export async function createSchematic(
+	axios: AxiosInstance,
+	{ data, tags, name, description }: CreateSchematicRequest,
+): Promise<void> {
 	const form = new FormData();
 
 	if (typeof data === 'string') {
@@ -95,22 +114,6 @@ export async function createSchematic(axios: AxiosInstance, { data, tags, name, 
 	return axios.post('/schematics', form, {
 		data: form,
 		timeout: 300000,
-	});
-}
-export async function createMultipleSchematic(axios: AxiosInstance, { data, tags, name, description }: CreateSchematicRequest): Promise<void> {
-	const form = new FormData();
-
-	if (typeof data === 'string') {
-		form.append('code', data);
-	} else if (data instanceof File) {
-		form.append('file', data);
-	}
-	form.append('tags', TagGroups.toString(tags));
-	form.append('name', name);
-	form.append('description', description ?? '');
-
-	return axios.post('/schematics/multiple', form, {
-		data: form,
 	});
 }
 

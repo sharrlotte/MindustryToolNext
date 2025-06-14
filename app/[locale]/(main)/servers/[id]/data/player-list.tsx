@@ -42,7 +42,7 @@ export default function PlayerList() {
 	return (
 		<>
 			<div className="flex gap-2 flex-wrap">
-				<Input value={filter} onChange={(event) => setFilter(event.target.value)} placeholder="Player1" />
+				<Input className="max-w-80" value={filter} onChange={(event) => setFilter(event.target.value)} placeholder="Player1" />
 				<ComboBox
 					searchBar={false}
 					value={{

@@ -28,7 +28,7 @@ export default function PauseServerButton({ id }: Props) {
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server'],
 		mutationFn: async () => pauseServer(axios, id),
-		onError: (error, _variable, id) => toast.error(<Tran text="server.pause-fail" />, { error, id }),
+		onError: (error) => toast.error(<Tran text="server.pause-fail" />, { error }),
 		onSettled: () => {
 			revalidate({ path: '/servers' });
 			invalidateByKey(['server']);

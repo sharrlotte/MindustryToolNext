@@ -1,5 +1,5 @@
-import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
+
 import 'server-only';
 
 import { catchError, serverApi } from '@/action/common';
@@ -8,8 +8,12 @@ import { getMap, getMapUpload } from '@/query/map';
 import { getSchematic, getSchematicUpload } from '@/query/schematic';
 import { getUser } from '@/query/user';
 
+import { unstable_cache } from 'next/cache';
+
 export const getCachedUser = async (id: string) =>
-	unstable_cache(() => catchError(axiosInstance, (axios) => getUser(axios, { id })));
+	unstable_cache(() => catchError(axiosInstance, (axios) => getUser(axios, { id })), ['user', id], {
+		revalidate: 60 * 60 * 24,
+	});
 
 export const getCachedSchematic = cache((id: string) => serverApi((axios) => getSchematic(axios, { id })));
 

@@ -29,10 +29,11 @@ type TagSelectorProps = {
 	hideSelectedTag?: boolean;
 	value: TagGroup[];
 	type: PresetType;
+	invalid?: boolean;
 	onChange: (fn: (value: TagGroup[]) => TagGroup[]) => void;
 };
 
-export default function TagSelector({ type, value, onChange, disabled = false, hideSelectedTag }: TagSelectorProps) {
+export default function TagSelector({ type, value, onChange, disabled = false, hideSelectedTag, invalid }: TagSelectorProps) {
 	const [selectedMod, setSelectedMod] = useLocalStorage<Mod[]>('mods', []);
 	const [filter, setFilter] = useState('');
 
@@ -101,7 +102,9 @@ export default function TagSelector({ type, value, onChange, disabled = false, h
 			<div className="flex flex-col gap-2">
 				<div className="flex gap-2">
 					<Button
-						className="w-fit text-nowrap"
+						className={cn('w-fit text-nowrap', {
+							'border-destructive-foreground': invalid,
+						})}
 						variant="primary"
 						title="add-tag"
 						disabled={disabled}

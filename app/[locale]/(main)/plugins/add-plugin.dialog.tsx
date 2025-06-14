@@ -143,13 +143,18 @@ function AddPluginForm() {
 							<FormField
 								control={form.control}
 								name="tags"
-								render={({ field }) => (
+								render={({ field, fieldState }) => (
 									<FormItem>
 										<FormLabel>
 											<Tran text="plugin.tags" />
 										</FormLabel>
 										<FormControl>
-											<TagSelector type="plugin" value={field.value} onChange={(fn) => field.onChange(fn(field.value))} />
+											<TagSelector
+												invalid={fieldState.invalid}
+												type="plugin"
+												value={field.value}
+												onChange={(fn) => field.onChange(fn(field.value))}
+											/>
 										</FormControl>
 										<FormMessage />
 									</FormItem>

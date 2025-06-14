@@ -4,11 +4,12 @@
     ],
     "singleQuote": true,
     "importOrder": [
-        "^@/app/(.*)$",
-        "^@/components/(.*)$",
-        "^@/(.*)$",
-        "^@(.*)$",
-        "^[./]"
+        "server-only",
+        "@/app/(.*)",
+        "@/components/(.*)",
+        "@/(.*)",
+        "@(.*)",
+        "[./]"
     ],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true,

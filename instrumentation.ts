@@ -26,7 +26,7 @@ export function onRequestError(
 				}),
 			});
 		} catch (error) {
-			console.error(error);
+			console.error('Fail to send log back to server', error);
 		}
 	}
 }

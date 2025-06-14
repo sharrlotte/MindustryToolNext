@@ -4,14 +4,18 @@ export const errors: string[] = [];
 
 export function reportError(error: any) {
 	if (process.env.NODE_ENV === 'production') {
-		fetch(`${env.url.api}/error`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ message: getLoggedErrorMessage(error) }),
-		});
-		errors.push(error);
+		try {
+			fetch(`${env.url.api}/error`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ message: getLoggedErrorMessage(error) }),
+			});
+			errors.push(error);
+		} catch (error) {
+			console.error('Fail to report error', error);
+		}
 	}
 }
 
