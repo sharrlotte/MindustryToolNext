@@ -91,7 +91,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 						<LineChart
 							label="cpu"
 							unit="%"
-							maxTick={(server?.plan.cpu ?? 0) * 150}
+							maxTick={(server?.plan.cpu ?? 1) * 150}
 							metrics={
 								data?.map(({ createdAt, value }) => ({
 									createdAt: new Date(createdAt),
@@ -105,7 +105,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 							label="ram"
 							unit="Mb"
 							fill
-							maxTick={server?.plan.ram}
+							maxTick={(server?.plan.ram ?? 1) * 1.2}
 							metrics={
 								data?.map(({ createdAt, value }) => ({
 									createdAt: new Date(createdAt),
