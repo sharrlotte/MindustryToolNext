@@ -39,13 +39,17 @@ export default function useSse<T = string>(
 	}, 5000);
 
 	useEffect(() => {
-		if (!eventSource) {
+		if (eventSource === undefined) {
 			return;
 		}
 
 		eventSource.onopen = () => {
 			setState('connected');
 		};
+
+		if (eventSource.readyState === eventSource.OPEN) {
+			setState('connected');
+		}
 
 		eventSource.onmessage = (event) => {
 			setMessages((prevMessages) => {
@@ -64,6 +68,7 @@ export default function useSse<T = string>(
 			setState('disconnected');
 			setError(err);
 			eventSource.close();
+			setEventSource(undefined);
 		};
 
 		return () => {
