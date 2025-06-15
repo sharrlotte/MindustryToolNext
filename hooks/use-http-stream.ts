@@ -1,6 +1,9 @@
 import { useRef, useState } from 'react';
 
+
+
 import { useMutation } from '@tanstack/react-query';
+
 
 const decoder = new TextDecoder();
 
@@ -43,6 +46,12 @@ async function* getStreamData({ url, method, body }: { url: string; method: Meth
 	}
 }
 
+
+export type StreamData = {
+	data: string;
+	createdAt: number;
+};
+
 export default function useHttpStream({
 	url,
 	mutationKey,
@@ -55,7 +64,7 @@ export default function useHttpStream({
 >) {
 	const requestId = useRef(0);
 
-	const [data, setData] = useState<Map<number, { data: string; createdAt: number }[]>>(new Map());
+	const [data, setData] = useState<Map<number, StreamData[]>>(new Map());
 
 	const mutation = useMutation({
 		mutationKey: [mutationKey],
