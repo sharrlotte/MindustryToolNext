@@ -1,14 +1,11 @@
 'use client';
 
-import { CategoryScale, Chart as ChartJS, Filler, Legend, LineElement, LinearScale, PointElement, Title, Tooltip } from 'chart.js';
 import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
 import { RefreshCwIcon } from 'lucide-react';
 import { Suspense } from 'react';
 import { use, useMemo, useRef, useState } from 'react';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-
-
 
 import ComboBox from '@/components/common/combo-box';
 import ErrorMessage from '@/components/common/error-message';
@@ -18,8 +15,6 @@ import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 
-
-
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
@@ -28,13 +23,22 @@ import { useI18n } from '@/i18n/client';
 import { metricFilters } from '@/lib/metric.utils';
 import { fillMetric } from '@/lib/metric.utils';
 import { cn } from '@/lib/utils';
-import { getServerLoginMetrics } from '@/query/server';
+import { getServer, getServerLoginMetrics } from '@/query/server';
 import { ServerLiveStats } from '@/types/response/ServerLiveStats';
-
-
 
 import { useQuery } from '@tanstack/react-query';
 
+import {
+	CategoryScale,
+	Chart as ChartJS,
+	Filler,
+	Legend,
+	LineElement,
+	LinearScale,
+	PointElement,
+	Title,
+	Tooltip,
+} from 'chart.js';
 
 type Filter = (typeof metricFilters)[number];
 
@@ -44,6 +48,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 	const { id } = use(params);
 	const { data, state } = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
 		limit: 15,
+	});
+
+	const axios = useClientApi();
+	const { data: server } = useQuery({
+		queryKey: ['server', id],
+		queryFn: () => getServer(axios, { id }),
 	});
 
 	const [filter, setFilter] = useState<Filter>(metricFilters[4]);
@@ -81,6 +91,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 						<LineChart
 							label="cpu"
 							unit="%"
+							maxTick={(server?.plan.cpu ?? 0) * 100}
 							metrics={
 								data?.map(({ createdAt, value }) => ({
 									createdAt: new Date(createdAt),
@@ -94,6 +105,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 							label="ram"
 							unit="Mb"
 							fill
+							maxTick={server?.plan.ram}
 							metrics={
 								data?.map(({ createdAt, value }) => ({
 									createdAt: new Date(createdAt),

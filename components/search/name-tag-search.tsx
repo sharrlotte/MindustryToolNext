@@ -1,48 +1,39 @@
 'use client';
 
-import { FilterIcon, SearchIcon, XIcon } from 'lucide-react';
-import dynamic from 'next/dynamic';
+import { FilterIcon, SearchIcon } from 'lucide-react';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { debounce } from 'throttle-debounce';
-import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
+import { useLocalStorage } from 'usehooks-ts';
 
-import ErrorMessage from '@/components/common/error-message';
-import { Hidden } from '@/components/common/hidden';
-import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import ModFilter from '@/components/search/mod-filter';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
-import { SortDropdown } from '@/components/search/sort-dropdown';
-import TagSettingDialog from '@/components/search/tag-setting-dialog';
 import { FilterTag } from '@/components/tag/filter-tags';
-import TagBadgeContainer from '@/components/tag/tag-badge-container';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
 import { Separator } from '@/components/ui/separator';
-import ColorAsRole from '@/components/user/color-as-role';
-import IdUserCard from '@/components/user/id-user-card';
-import UserAvatar from '@/components/user/user-avatar';
 
 import { TagType } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
-import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
 import useTags from '@/hooks/use-tags';
 import { cn } from '@/lib/utils';
 import { QueryParams } from '@/query/config/search-query-params';
-import { getUsers } from '@/query/user';
 import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import Tag from '@/types/response/Tag';
 import TagGroup, { TagGroups } from '@/types/response/TagGroup';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
 
-import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 
+const AuthorFilter = dynamic(() => import('@/components/search/author-filter'));
+const ModFilter = dynamic(() => import('@/components/search/mod-filter'));
+const SortDropdown = dynamic(() => import('@/components/search/sort-dropdown'));
+const TagSettingDialog = dynamic(() => import('@/components/search/tag-setting-dialog'));
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'), { ssr: false });
+const TagBadgeContainer = dynamic(() => import('@/components/tag/tag-badge-container'));
 
 type NameTagSearchProps = {
 	className?: string;
@@ -201,7 +192,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			<div className="flex justify-center gap-1.5 overflow-hidden rounded-sm">
 				<SearchBar className="overflow-hidden bg-card">
 					<SearchIcon className="size-5 shrink-0" />
-					<TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />
+					{filterBy.length > 0 && <TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />}
 					<SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
 				</SearchBar>
 				{useTag && (
@@ -211,12 +202,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 				)}
 			</div>
 			<Suspense>
-				{useTag && (
-					<div
-						className={cn('hidden fixed top-0 right-0 bottom-0 left-0 z-50 justify-center items-center backdrop-blur-sm', {
-							flex: showFilterDialog,
-						})}
-					>
+				{useTag && showFilterDialog && (
+					<div className="fixed top-0 right-0 bottom-0 left-0 z-50 justify-center items-center backdrop-blur-sm">
 						<Card className="flex flex-col gap-2 items-center p-4 w-screen h-screen rounded-none md:h-4/5 md:w-4/5 md:rounded-lg">
 							<div className="flex gap-1 w-full">
 								<SearchBar className="p-1 w-full">
@@ -248,83 +235,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 					</div>
 				)}
 			</Suspense>
-		</div>
-	);
-}
-
-function AuthorFilter({
-	authorId,
-	handleAuthorChange,
-}: {
-	authorId: string | null;
-	handleAuthorChange: (value: string | null) => void;
-}) {
-	const [name, setName] = useState('');
-	const [debounced] = useDebounceValue(name, 100);
-	const axios = useClientApi();
-	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ['users', name],
-		queryFn: () =>
-			getUsers(axios, {
-				page: 0,
-				size: 20,
-				name: debounced,
-			}),
-	});
-
-	if (isError) {
-		return <ErrorMessage error={error} />;
-	}
-
-	return (
-		<div className="flex gap-2 items-center">
-			<Dialog>
-				<DialogTrigger asChild>
-					<div className="flex gap-2 items-center">
-						<Tran className="text-base" text="author" defaultValue="Author" />
-						<Button variant="outline">
-							{authorId ? <IdUserCard id={authorId} /> : <Tran text="select" defaultValue="Select" />}
-						</Button>
-					</div>
-				</DialogTrigger>
-				{authorId && (
-					<Button variant="outline" onClick={() => handleAuthorChange(null)}>
-						<XIcon />
-					</Button>
-				)}
-				<DialogContent className="p-6">
-					<Hidden>
-						<DialogTitle />
-						<DialogDescription />
-					</Hidden>
-					<SearchBar className="mt-4">
-						<SearchIcon />
-						<SearchInput value={name} onChange={setName} />
-					</SearchBar>
-					{isLoading ? (
-						<LoadingSpinner />
-					) : (
-						<ScrollContainer className="space-y-2 max-h-[50dvh]">
-							{data?.map((user) => (
-								<div
-									className={cn('cursor-pointer p-2 rounded-md bg-secondary', {
-										'bg-brand': user.id === authorId,
-									})}
-									key={user.id}
-									onClick={() => handleAuthorChange(user.id === authorId ? null : user.id)}
-								>
-									<div className="flex overflow-hidden gap-2 items-end h-8 min-h-8">
-										<UserAvatar user={user} />
-										<ColorAsRole className="font-semibold capitalize" roles={user.roles}>
-											{user.name}
-										</ColorAsRole>
-									</div>
-								</div>
-							))}
-						</ScrollContainer>
-					)}
-				</DialogContent>
-			</Dialog>
 		</div>
 	);
 }

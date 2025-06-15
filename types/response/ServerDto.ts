@@ -1,5 +1,6 @@
 import { ServerStatus } from '@/constant/constant';
 import { ServerMode } from '@/types/request/UpdateServerRequest';
+import { ServerPlan } from '@/types/response/ServerPlan';
 
 export type ServerDto = {
 	id: string;
@@ -25,4 +26,6 @@ export type ServerDto = {
 	hostCommand?: string;
 	kicks: number;
 	errors: string[];
+	planId: number;
+	plan: ServerPlan;
 };
