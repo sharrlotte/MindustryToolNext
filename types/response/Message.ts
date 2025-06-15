@@ -5,6 +5,7 @@ export type Message = {
 	room: string;
 	userId: string;
 	content: string;
+	contentType: string;
 	attachments: string[];
 	createdAt: string;
 };

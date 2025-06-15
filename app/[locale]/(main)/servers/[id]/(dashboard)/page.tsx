@@ -4,6 +4,7 @@ import React, { Fragment, Suspense } from 'react';
 import { getCachedServer } from '@/app/[locale]/(main)/servers/[id]/(dashboard)/action';
 import ChatPanel from '@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-panel';
 import ServerImage from '@/app/[locale]/(main)/servers/[id]/(dashboard)/server-image';
+import UsagePanel from '@/app/[locale]/(main)/servers/[id]/(dashboard)/usage-panel';
 
 import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
@@ -11,8 +12,6 @@ import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
-import RamUsageChart from '@/components/metric/ram-usage-chart';
-import CpuProgress from '@/components/server/cpu-progress';
 import ServerStatusBadge from '@/components/server/server-status-badge';
 import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -24,7 +23,7 @@ import env from '@/constant/env';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
-import { byteToSize, formatTitle, hasAccess } from '@/lib/utils';
+import { formatTitle, hasAccess } from '@/lib/utils';
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -79,24 +78,7 @@ export default async function Page({ params }: Props) {
 		return <ErrorMessage error={session} />;
 	}
 
-	const {
-		name,
-		avatar,
-		description,
-		port,
-		mode,
-		gamemode,
-		players,
-		kicks,
-		status,
-		userId,
-		address,
-		mapName,
-		errors,
-		ramUsage,
-		cpuUsage,
-		totalRam,
-	} = server;
+	const { name, avatar, description, port, mode, gamemode, players, kicks, status, userId, address, mapName, errors } = server;
 
 	const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
 
@@ -197,24 +179,7 @@ export default async function Page({ params }: Props) {
 								<h3>
 									<Tran text="server.system-status" />
 								</h3>
-								{status === 'HOST' || status === 'UP' ? (
-									<div className="flex flex-col w-full text-sm max-w-[300px] gap-2">
-										<div className="flex gap-2 justify-between w-full">
-											<Tran className="font-bold" text="server.cpu-usage" />
-											<span className="text-muted-foreground">{Math.round(cpuUsage * 100) / 100}%</span>
-										</div>
-										<CpuProgress value={cpuUsage} />
-										<div className="flex gap-2 justify-between w-full">
-											<Tran className="font-bold" text="metric.ram-usage" />
-											<span className="text-muted-foreground">
-												{byteToSize(ramUsage * 1024 * 1024)} / {byteToSize(totalRam * 1024 * 1024)}
-											</span>
-										</div>
-										<RamUsageChart ramUsage={ramUsage * 1024 * 1024} totalRam={totalRam * 1024 * 1024} />
-									</div>
-								) : (
-									<Tran text="server.server-is-not-running" />
-								)}
+								{status === 'HOST' || status === 'UP' ? <UsagePanel {...server} /> : <Tran text="server.server-is-not-running" />}
 							</div>
 							{status === 'HOST' && (
 								<div className="flex min-w-[30vw] h-auto w-full rounded-md overflow-hidden">

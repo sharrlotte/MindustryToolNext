@@ -23,7 +23,7 @@ export default function useSse<T = string>(
 			);
 			setState('connecting');
 		}
-	}, [eventSource]);
+	}, [eventSource, url]);
 
 	useInterval(() => {
 		if (state === 'disconnected' || eventSource === undefined) {
@@ -47,7 +47,7 @@ export default function useSse<T = string>(
 
 		eventSource.onmessage = (event) => {
 			setMessages((prevMessages) => {
-				var newValue = JSON.parse(event.data) as T;
+				const newValue = JSON.parse(event.data) as T;
 
 				if (options?.limit) {
 					return [...prevMessages, newValue].slice(-options.limit);
@@ -68,7 +68,7 @@ export default function useSse<T = string>(
 			setState('disconnected');
 			eventSource.close();
 		};
-	}, [eventSource]);
+	}, [eventSource, options?.limit]);
 
 	return { data: messages, state, error };
 }
