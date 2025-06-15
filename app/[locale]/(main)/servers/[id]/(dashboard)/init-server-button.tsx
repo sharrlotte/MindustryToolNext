@@ -93,11 +93,10 @@ export default function InitServerButton({ id }: Props) {
 					<Divider />
 					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
 						{data?.map((text, index, array) => (
-							<div className="space-x-2 text-sm" key={index}>
-								<span className="font-semibold">
-									<span>{index}</span>(<span>{Math.round((text.createdAt - array[0].createdAt) / 10) / 100}s</span>)
-								</span>
+							<div className="gap-2 flex text-sm" key={index}>
+								<span className="font-semibold">{index.toString().padStart(2, '0')}</span>
 								<ColorText className="text-sm" text={text.data} />
+								<span>{Math.round((text.createdAt - array[0].createdAt) / 10) / 100}s</span>
 							</div>
 						))}
 						{isError && <ErrorMessage error={error} />}
