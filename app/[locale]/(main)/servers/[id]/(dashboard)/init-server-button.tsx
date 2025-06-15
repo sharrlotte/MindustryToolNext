@@ -95,7 +95,7 @@ export default function InitServerButton({ id }: Props) {
 						{data?.map((text, index, array) => (
 							<div className="space-x-2 text-sm" key={index}>
 								<span className="font-semibold">
-									<span>{index}</span>(<span>{(text.createdAt - array[0].createdAt) / 1000}s</span>)
+									<span>{index}</span>(<span>{Math.round((text.createdAt - array[0].createdAt) / 10) / 100}s</span>)
 								</span>
 								<ColorText className="text-sm" text={text.data} />
 							</div>
