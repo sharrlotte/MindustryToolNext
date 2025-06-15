@@ -3,6 +3,7 @@
 import { VariantProps, cva } from 'class-variance-authority';
 import React, { Suspense } from 'react';
 
+import { CatchError } from '@/components/common/catch-error';
 import { Button, ButtonProps } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
@@ -33,7 +34,9 @@ const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
 			</PopoverTrigger>
 			<PopoverContent className="bg-transparent border-transparent p-0">
 				<Suspense>
-					<div className="p-1 text-sm grid border bg-secondary m-1 rounded-md">{children}</div>
+					<CatchError>
+						<div className="p-1 text-sm grid border bg-card m-1 rounded-md">{children}</div>
+					</CatchError>
 				</Suspense>
 			</PopoverContent>
 		</Popover>

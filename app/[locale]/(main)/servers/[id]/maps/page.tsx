@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import React from 'react';
 
@@ -14,6 +13,8 @@ import { Locale } from '@/i18n/config';
 import { getTranslation } from '@/i18n/server';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
+
+import dynamic from 'next/dynamic';
 
 type Props = {
 	params: Promise<{
@@ -51,10 +52,10 @@ export default async function Page({ params }: Props) {
 					</ServerTabsList>
 					<Divider />
 					<ScrollContainer>
-						<ServerTabsContent value="list">
-							<MapList id={id} />
-						</ServerTabsContent>
 						<Suspense>
+							<ServerTabsContent value="list">
+								<MapList id={id} />
+							</ServerTabsContent>
 							<ServerTabsContent value="download">
 								<DownloadMapList />
 							</ServerTabsContent>
