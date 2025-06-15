@@ -11,12 +11,17 @@ const CpuProgress = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
 >(({ className, value, ...props }, ref) => {
 	const [percent, setPercent] = React.useState(0);
+	const [max, setMax] = React.useState(100);
 
 	React.useEffect(() => {
-		const timeout = setTimeout(() => setPercent(Math.min(100, value || 0)), 50);
+		const fixed = value || 0;
+
+		const timeout = setTimeout(() => setPercent((fixed / max) * 100), 50);
+
+		setMax((prev) => (fixed > prev ? fixed : prev));
 
 		return () => clearTimeout(timeout);
-	}, [value]);
+	}, [max, value]);
 
 	return (
 		<ProgressPrimitive.Root
