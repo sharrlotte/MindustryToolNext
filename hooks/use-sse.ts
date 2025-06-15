@@ -64,10 +64,10 @@ export default function useSse<T = string>(
 		};
 
 		eventSource.onerror = (err) => {
-			console.error('SSE error:', err);
+			eventSource.close();
+
 			setState('disconnected');
 			setError(err);
-			eventSource.close();
 			setEventSource(undefined);
 		};
 
