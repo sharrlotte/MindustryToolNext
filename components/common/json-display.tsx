@@ -223,27 +223,28 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 							.filter((_, index) => index < show)
 							.map(([key, value]) => (
 								<div className="py-2" key={key}>
-									{typeof value === 'string' || typeof value === 'number' || value === '{}' || value === '' ? (
+									{value === null ? (
+										<span>
+											{key}:{' null'}
+										</span>
+									) : typeof value === 'string' || typeof value === 'number' || value === '{}' || value === '' ? (
 										<span className="space-x-1">
 											<span>{key}:</span>
 											<span>{value}</span>
+										</span>
+									) : Array.isArray(value) && value.length === 0 ? (
+										<span>
+											{key}:{' []'}
+										</span>
+									) : typeof value === 'object' && Object.entries(value).length === 0 ? (
+										<span>
+											{key}:{' {}'}
 										</span>
 									) : (
 										<Accordion type="single" collapsible>
 											<AccordionItem value={key}>
 												<AccordionTrigger className="h-fit p-0">
-													{key}:{' '}
-													{value === null
-														? 'null'
-														: Array.isArray(value)
-															? value.length === 0
-																? '[]'
-																: '[...]'
-															: typeof value === 'object'
-																? Object.entries(value).length === 0
-																	? '{}'
-																	: '{...}'
-																: ''}
+													{key}: {Array.isArray(value) ? '[...]' : typeof value === 'object' ? '{...}' : ''}
 												</AccordionTrigger>
 												<AccordionContent>
 													<JsonDisplay json={value} depth={++depth} />
