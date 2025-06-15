@@ -150,7 +150,7 @@ export const colours: Record<string, string> = {
 	purple: '#a020f0',
 	violet: '#ee82ee',
 	maroon: '#b03060',
-	white: '#ffffff', // Updated from var(--foreground) for consistency, or keep as is if intended
+	white: '#ffffff',
 	lightGray: '#bfbfbfff',
 	gray: '#7f7f7fff',
 	darkGray: '#3f3f3fff',
