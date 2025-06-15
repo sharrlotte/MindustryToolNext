@@ -28,9 +28,11 @@ export default function useSse<T = string>(
 	useInterval(() => {
 		if (state === 'disconnected' || eventSource === undefined) {
 			setEventSource(
-				new EventSource(url, {
-					withCredentials: true,
-				}),
+				(prev) =>
+					prev ??
+					new EventSource(url, {
+						withCredentials: true,
+					}),
 			);
 			setState('connecting');
 		}
