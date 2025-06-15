@@ -5,7 +5,6 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { toast } from '@/components/ui/sonner';
 
 import env from '@/constant/env';
-import { useSession } from '@/context/session.context';
 import SocketClient, { SocketState } from '@/types/data/SocketClient';
 
 type SocketContextType = {
@@ -33,15 +32,13 @@ export function useSocket(): UseSocket {
 export function SocketProvider({ children }: { children: ReactNode }) {
 	const [socket] = useState<SocketClient>(defaultContextValue.socket);
 	const [state, setState] = useState<SocketState>(defaultContextValue.socket.getState());
-	const { state: authState } = useSession();
 	const isShowDisconnected = useRef(false);
 
 	useEffect(() => {
-		if (authState !== 'authenticated') return;
-
 		if (socket.getState() === 'disconnected') {
 			socket.connect();
 		}
+
 		socket.onDisconnect(() => {
 			setState('disconnected');
 
@@ -53,6 +50,10 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 			}
 		});
 
+		if (socket.getState() === 'connected') {
+			setState('connected');
+		}
+
 		socket.onConnect(() => {
 			setState('connected');
 		});
@@ -60,7 +61,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 		socket.onError(() => {
 			setState(socket.getState());
 		});
-	}, [socket, authState]);
+	}, [socket]);
 
 	useEffect(() => {
 		return () => {
