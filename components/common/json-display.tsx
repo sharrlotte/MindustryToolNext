@@ -205,7 +205,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 										setShow((prev) => prev + 50);
 									}}
 								>
-									<Tran text="show-more" />
+									<Tran text="show-more" />({json.length - show})+
 								</div>
 							)}
 						</div>
@@ -216,7 +216,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 
 			return (
 				<>
-					<span>{'{'}</span>
+					<div>{'{'}</div>
 					<div className="pl-4 divide-y">
 						{Object.entries(json)
 							.sort(([a], [b]) => b.localeCompare(a))
@@ -265,10 +265,10 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 								setShow((prev) => prev + 50);
 							}}
 						>
-							<Tran text="show-more" />
+							<Tran text="show-more" />({Object.entries(json).length - show})+
 						</div>
 					)}
-					<span>{'}'}</span>
+					<div>{'}'}</div>
 				</>
 			);
 		}
