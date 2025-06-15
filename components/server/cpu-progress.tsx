@@ -8,20 +8,19 @@ import * as ProgressPrimitive from '@radix-ui/react-progress';
 
 const CpuProgress = React.forwardRef<
 	React.ElementRef<typeof ProgressPrimitive.Root>,
-	React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => {
+	React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & {
+		maxValue: number;
+	}
+>(({ className, value, maxValue, ...props }, ref) => {
 	const [percent, setPercent] = React.useState(0);
-	const [max, setMax] = React.useState(100);
 
 	React.useEffect(() => {
 		const fixed = value || 0;
 
-		const timeout = setTimeout(() => setPercent((fixed / max) * 100), 50);
-
-		setMax((prev) => (fixed > prev ? fixed : prev));
+		const timeout = setTimeout(() => setPercent(Math.min((fixed / maxValue) * 100, 100)), 50);
 
 		return () => clearTimeout(timeout);
-	}, [max, value]);
+	}, [maxValue, value]);
 
 	return (
 		<ProgressPrimitive.Root
