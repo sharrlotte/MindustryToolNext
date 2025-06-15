@@ -91,7 +91,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 						<LineChart
 							label="cpu"
 							unit="%"
-							maxTick={(server?.plan.cpu ?? 0) * 100}
+							maxTick={(server?.plan.cpu ?? 0) * 150}
 							metrics={
 								data?.map(({ createdAt, value }) => ({
 									createdAt: new Date(createdAt),
