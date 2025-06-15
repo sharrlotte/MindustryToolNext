@@ -199,14 +199,14 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 									</Fragment>
 								))}
 							{show < json.length && (
-								<span
+								<div
 									className="text-center underline font-semibold text-sm"
 									onClick={() => {
 										setShow((prev) => prev + 50);
 									}}
 								>
 									<Tran text="show-more" />
-								</span>
+								</div>
 							)}
 						</div>
 						]
@@ -255,14 +255,14 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 							))}
 					</div>
 					{show < Object.entries(json).length && (
-						<span
+						<div
 							className="text-center underline font-semibold text-sm"
 							onClick={() => {
 								setShow((prev) => prev + 50);
 							}}
 						>
 							<Tran text="show-more" />
-						</span>
+						</div>
 					)}
 					<span>{'}'}</span>
 				</>
