@@ -25,7 +25,7 @@ export default function UsagePanel({ id, cpuUsage, ramUsage, totalRam }: UsagePa
 
 	const { cpu, ram } = useMemo(
 		() => ({
-			cpu: Math.round(data[0]?.value.cpuUsage ?? cpuUsage * 100) / 100,
+			cpu: (Math.round(data[0]?.value.cpuUsage ?? cpuUsage) * 100) / 100,
 			ram: (data[0]?.value.ramUsage ?? ramUsage) * 1024 * 1024,
 		}),
 		[cpuUsage, data, ramUsage],
@@ -37,7 +37,7 @@ export default function UsagePanel({ id, cpuUsage, ramUsage, totalRam }: UsagePa
 				<Tran className="font-bold" text="server.cpu-usage" />
 				<span className="text-muted-foreground">{cpu}%</span>
 			</div>
-			<CpuProgress value={cpuUsage} />
+			<CpuProgress value={cpu} />
 			<div className="flex gap-2 justify-between w-full">
 				<Tran className="font-bold" text="metric.ram-usage" />
 				<span className="text-muted-foreground">
