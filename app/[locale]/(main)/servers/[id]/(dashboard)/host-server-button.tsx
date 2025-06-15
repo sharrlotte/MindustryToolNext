@@ -4,6 +4,7 @@ import { CheckCircleIcon, PowerIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 import HasServerMap from '@/app/[locale]/(main)/servers/[id]/(dashboard)/has-server-map';
+import StreamTextCard from '@/app/[locale]/(main)/servers/[id]/(dashboard)/stream-text-card';
 
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
@@ -91,13 +92,7 @@ export default function HostServerButton({ id }: Props) {
 					</DialogDescription>
 					<Divider />
 					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
-						{data?.map((text, index, array) => (
-							<div className="gap-2 flex text-sm" key={index}>
-								<span className="font-semibold text-nowrap">{index.toString().padStart(2, '0')}</span>
-								<ColorText className="text-sm" text={text.data} />
-								<span className='ml-auto text-nowrap'>{Math.round((text.createdAt - array[0].createdAt) / 10) / 100}s</span>
-							</div>
-						))}
+						{data?.map((text, index, array) => <StreamTextCard key={index} current={text} first={array[0]} index={index} />)}
 						{isError && <ErrorMessage error={error} />}
 					</ScrollContainer>
 					{isSuccess && (
