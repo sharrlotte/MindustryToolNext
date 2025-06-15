@@ -18,12 +18,13 @@ import Divider from '@/components/ui/divider';
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+import useServer from '@/hooks/use-server';
 import useSse from '@/hooks/use-sse';
 import { useI18n } from '@/i18n/client';
 import { metricFilters } from '@/lib/metric.utils';
 import { fillMetric } from '@/lib/metric.utils';
 import { cn } from '@/lib/utils';
-import { getServer, getServerLoginMetrics } from '@/query/server';
+import { getServerLoginMetrics } from '@/query/server';
 import { ServerLiveStats } from '@/types/response/ServerLiveStats';
 
 import { useQuery } from '@tanstack/react-query';
@@ -50,11 +51,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 		limit: 15,
 	});
 
-	const axios = useClientApi();
-	const { data: server } = useQuery({
-		queryKey: ['server', id],
-		queryFn: () => getServer(axios, { id }),
-	});
+	const { data: server } = useServer(id);
 
 	const [filter, setFilter] = useState<Filter>(metricFilters[4]);
 

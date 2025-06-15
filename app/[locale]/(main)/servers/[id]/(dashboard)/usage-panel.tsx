@@ -10,15 +10,17 @@ import env from '@/constant/env';
 import useSse from '@/hooks/use-sse';
 import { byteToSize } from '@/lib/utils';
 import { ServerLiveStats } from '@/types/response/ServerLiveStats';
+import { ServerPlan } from '@/types/response/ServerPlan';
 
 type UsagePanelProps = {
 	id: string;
 	cpuUsage: number;
 	ramUsage: number;
 	totalRam: number;
+	plan: ServerPlan;
 };
 
-export default function UsagePanel({ id, cpuUsage, ramUsage, totalRam }: UsagePanelProps) {
+export default function UsagePanel({ id, cpuUsage, ramUsage, totalRam, plan }: UsagePanelProps) {
 	const { data } = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
 		limit: 1,
 	});
@@ -37,7 +39,7 @@ export default function UsagePanel({ id, cpuUsage, ramUsage, totalRam }: UsagePa
 				<Tran className="font-bold" text="server.cpu-usage" />
 				<span className="text-muted-foreground">{cpu}%</span>
 			</div>
-			<CpuProgress value={cpu} />
+			<CpuProgress value={cpu} maxValue={plan.cpu * 100} />
 			<div className="flex gap-2 justify-between w-full">
 				<Tran className="font-bold" text="metric.ram-usage" />
 				<span className="text-muted-foreground">
