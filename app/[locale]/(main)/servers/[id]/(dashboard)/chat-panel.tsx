@@ -8,7 +8,7 @@ const ChatInput = dynamic(() => import('@/components/messages/chat-input'), {
 });
 const Divider = dynamic(() => import('@/components/ui/divider'));
 
-const ServerConsolePage = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-list'), {
+const ChatList = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/(dashboard)/chat-list'), {
 	loading: () => <Skeleton className="h-full w-full" />,
 });
 
@@ -23,7 +23,7 @@ export default async function ChatPanel({ id }: Props) {
 				<Tran asChild text="server.chat" />
 			</h3>
 			<Divider />
-			<ServerConsolePage />
+			<ChatList />
 			<ChatInput className="p-2" room={`SERVER_CHAT-${id}`} />
 		</div>
 	);
