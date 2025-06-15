@@ -1,6 +1,6 @@
 'use client';
 
-import { BanIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import Tran from '@/components/common/tran';
@@ -58,8 +58,8 @@ export function KickButton({ id, uuid }: BanButtonProps) {
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
 				<Button variant="command-destructive">
-					<BanIcon size={20} />
 					<Tran text="kick" />
+					<XIcon size={20} />
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>

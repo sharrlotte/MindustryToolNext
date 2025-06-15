@@ -1,6 +1,6 @@
 'use client';
 
-import { BanIcon } from 'lucide-react';
+import { GavelIcon } from 'lucide-react';
 
 import Tran from '@/components/common/tran';
 import {
@@ -66,8 +66,8 @@ export function BanButton({ id, ip, uuid, username }: BanButtonProps) {
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
 				<Button variant="command-destructive">
-					<BanIcon size={20} />
 					<Tran text="ban" />
+					<GavelIcon size={20} />
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>

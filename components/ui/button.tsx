@@ -22,7 +22,7 @@ const buttonVariants = cva(
 				link: 'text-primary underline-offset-4 hover:underline',
 				icon: 'p-0',
 				command: 'hover:bg-destructive/20 justify-start gap-1 rounded-sm p-0 w-full',
-				'command-destructive': 'justify-start gap-1 hover:bg-destructive rounded-sm p-0 text-destructive-foreground w-full',
+				'command-destructive': 'justify-between gap-1 hover:bg-destructive rounded-sm p-0 text-destructive-foreground w-full',
 			},
 			size: {
 				default: 'h-9 px-3 py-2',
