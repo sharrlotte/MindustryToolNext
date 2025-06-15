@@ -87,11 +87,17 @@ export default function HostServerButton({ id }: Props) {
 						) : (
 							<CheckCircleIcon className="w-4" />
 						)}{' '}
-						<ColorText text={last} />
+						<ColorText text={last?.data} />
 					</DialogDescription>
 					<Divider />
 					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
-						{data?.map((text, index) => <ColorText className="text-sm" key={index} text={text} />)}
+						{data?.map((text, index, array) => (
+							<div className="space-x-1 text-sm" key={index}>
+								<span className="font-semibold">{index}</span>
+								<span>{(text.createdAt - array[0].createdAt) / 1000}s</span>
+								<ColorText className="text-sm" text={text.data} />
+							</div>
+						))}
 						{isError && <ErrorMessage error={error} />}
 					</ScrollContainer>
 					{isSuccess && (

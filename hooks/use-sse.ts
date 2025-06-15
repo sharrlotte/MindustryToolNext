@@ -15,15 +15,15 @@ export default function useSse<T = string>(
 	const [error, setError] = useState<Event>();
 
 	useEffect(() => {
-		if (eventSource === undefined) {
-			setEventSource(
+		setEventSource(
+			(prev) =>
+				prev ??
 				new EventSource(url, {
 					withCredentials: true,
 				}),
-			);
-			setState('connecting');
-		}
-	}, [eventSource, url]);
+		);
+		setState('connecting');
+	}, [url]);
 
 	useInterval(() => {
 		if (state === 'disconnected' || eventSource === undefined) {
