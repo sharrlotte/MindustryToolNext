@@ -8,7 +8,7 @@ type SortDropdownProps = {
   handleSortChange: (value?: string) => void;
 };
 
-export function SortDropdown({ sortBy, handleSortChange }: SortDropdownProps) {
+export default function SortDropdown({ sortBy, handleSortChange }: SortDropdownProps) {
   const { t } = useI18n();
 
   return (
