@@ -91,7 +91,7 @@ export default function HostServerButton({ id }: Props) {
 					</DialogDescription>
 					<Divider />
 					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
-						{data?.map((text, index) => <ColorText key={index} text={text} />)}
+						{data?.map((text, index) => <ColorText className="text-sm" key={index} text={text} />)}
 						{isError && <ErrorMessage error={error} />}
 					</ScrollContainer>
 					{isSuccess && (
