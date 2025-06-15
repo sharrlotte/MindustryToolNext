@@ -93,9 +93,9 @@ export default function HostServerButton({ id }: Props) {
 					<ScrollContainer className="flex overflow-x-auto flex-col flex-1 w-full h-full">
 						{data?.map((text, index, array) => (
 							<div className="gap-2 flex text-sm" key={index}>
-								<span className="font-semibold">{index.toString().padStart(2, '0')}</span>
+								<span className="font-semibold text-nowrap">{index.toString().padStart(2, '0')}</span>
 								<ColorText className="text-sm" text={text.data} />
-								<span>{Math.round((text.createdAt - array[0].createdAt) / 10) / 100}s</span>
+								<span className='ml-auto text-nowrap'>{Math.round((text.createdAt - array[0].createdAt) / 10) / 100}s</span>
 							</div>
 						))}
 						{isError && <ErrorMessage error={error} />}
