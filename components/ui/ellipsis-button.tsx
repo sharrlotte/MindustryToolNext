@@ -28,12 +28,12 @@ const EllipsisButton = ({ className, variant, children, ...props }: Props) => {
 		<Popover>
 			<PopoverTrigger asChild>
 				<Button className={cn(ellipsisVariants({ className, variant }))} variant={variant} type="button" {...props}>
-					<DotsHorizontalIcon className='size-4' />
+					<DotsHorizontalIcon className="size-4" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="bg-transparent border-transparent p-0">
 				<Suspense>
-					<div className="gap-1 p-1 text-sm grid border bg-card rounded-md">{children}</div>
+					<div className="p-1 text-sm grid border bg-secondary m-1 rounded-md">{children}</div>
 				</Suspense>
 			</PopoverContent>
 		</Popover>
