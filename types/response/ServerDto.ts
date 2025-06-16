@@ -28,4 +28,5 @@ export type ServerDto = {
 	errors: string[];
 	planId: number;
 	plan: ServerPlan;
+	image: string
 };
