@@ -9,7 +9,9 @@ import ChatInput from '@/components/messages/chat-input';
 
 import useClientApi from '@/hooks/use-client';
 import useServerStatus from '@/hooks/use-server-status';
+import { levenshtein } from '@/lib/utils';
 import { getServerCommands, getServerPlayers } from '@/query/server';
+import { ServerCommandDto } from '@/types/response/ServerCommand';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -58,15 +60,18 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 
 				const parts = message.split(' ');
 
+				function lev(command: ServerCommandDto, message: string): number {
+					return (
+						levenshtein(command.text, message) +
+						levenshtein(command.paramText, message) +
+						levenshtein(command.description, message)
+					);
+				}
+
 				// Focusing on command
 				if (parts.length === 0 || parts.length === 1) {
 					const filteredCommands =
-						data?.filter(
-							(command) =>
-								command.text.includes(message.substring(1)) ||
-								command.paramText.includes(message.substring(1)) ||
-								command.description.includes(message.substring(1)),
-						) ?? [];
+						data?.sort((a, b) => lev(b, message.substring(1)) - lev(a, message.substring(1))).slice(0, 10) ?? [];
 
 					if (filteredCommands?.length === 0) {
 						return (

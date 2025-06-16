@@ -33,9 +33,9 @@ const CpuProgress = React.forwardRef<
 				style={{
 					transform: `translateX(-${100 - (percent || 0)}%)`,
 					backgroundColor:
-						percent < 50
+						percent < 60
 							? 'green' //
-							: percent < 75
+							: percent < 85
 								? 'gold'
 								: 'red',
 				}}
