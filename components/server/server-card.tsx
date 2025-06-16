@@ -35,7 +35,7 @@ export default function ServerCard({
 							</span>
 						)}
 						{version && (status === 'HOST' || status === 'UP') && (
-							<span className="rounded-xl text-nowrap bg-amber-300 text-white text-xs px-2 py-1">{version}</span>
+							<span className="rounded-xl text-nowrap bg-amber-600 text-white text-xs px-2 py-1">{version}</span>
 						)}
 					</div>
 				</div>
