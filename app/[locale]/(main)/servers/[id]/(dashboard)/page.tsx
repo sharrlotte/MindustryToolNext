@@ -152,7 +152,7 @@ export default async function Page({ params }: Props) {
 									<MismatchPanel />
 								</Suspense>
 							</ProtectedElement>
-							<section className="space-x-2 text-destructive-foreground">
+							<section className="space-x-2 text-destructive-foreground text-xs">
 								{errors?.map((error, index) => <span key={index}>{error}</span>)}
 							</section>
 						</div>
