@@ -29,4 +29,5 @@ export type ServerDto = {
 	planId: number;
 	plan: ServerPlan;
 	image: string
+	version: string
 };

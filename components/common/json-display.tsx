@@ -149,7 +149,7 @@ function parseCustomJsonNested(json: any) {
 
 			return Object.fromEntries(
 				Object.entries(json)
-					.sort(([a], [b]) => b.localeCompare(a))
+					.sort(([a], [b]) => a.localeCompare(b))
 					.map(([key, value]) => [key, parseCustomJson(value)]),
 			);
 		}
@@ -176,7 +176,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 		case 'boolean':
 		case 'number':
 		case 'undefined':
-			return <p className="text-wrap w-full">{json}</p>;
+			return <p className="text-wrap w-full text-sm">{json}</p>;
 
 		case 'object': {
 			if (json === null) {
@@ -189,7 +189,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 				return (
 					<div>
 						[{isObjectArray && <br />}
-						<div className="pl-4">
+						<div className="pl-4 text-sm">
 							{json
 								.filter((_, index) => index < show)
 								.map((item, index) => (
@@ -217,12 +217,12 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 			return (
 				<>
 					<div>{'{'}</div>
-					<div className="pl-4 divide-y">
+					<div className="pl-4 divide-y text-sm">
 						{Object.entries(json)
 							.sort(([a], [b]) => b.localeCompare(a))
 							.filter((_, index) => index < show)
 							.map(([key, value]) => (
-								<div className="py-2" key={key}>
+								<div className="py-2 text-sm" key={key}>
 									{value === null || value === undefined ? (
 										<span>
 											{key}:{' null'}
@@ -243,7 +243,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 									) : (
 										<Accordion type="single" collapsible>
 											<AccordionItem value={key}>
-												<AccordionTrigger className="h-fit p-0">
+												<AccordionTrigger className="h-fit p-0 text-sm">
 													{key}:
 													{Array.isArray(value) //
 														? ` [...](${value.length})`

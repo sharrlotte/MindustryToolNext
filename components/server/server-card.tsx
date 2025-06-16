@@ -15,10 +15,8 @@ type ServerCardProps = {
 };
 
 export default function ServerCard({
-	server: { id, name, players, port, status, mapName, mode, gamemode, isOfficial, avatar, image },
+	server: { id, name, players, port, status, mapName, mode, gamemode, isOfficial, avatar, version },
 }: ServerCardProps) {
-	const version = image && image.startsWith('mindustry-server-') ? image.slice('mindustry-server-'.length) : null;
-
 	return (
 		<InternalLink
 			className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-4 h-72 relative border"
