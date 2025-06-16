@@ -40,6 +40,10 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 			placeholder="/help"
 			onKeyPress={(event) => {
 				if (event.key === 'Tab') {
+					const element = document.getElementById(`autocomplete-0`);
+
+					element?.focus();
+
 					return true;
 				}
 			}}
@@ -62,8 +66,8 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 
 				function lev(command: ServerCommandDto, message: string): number {
 					return (
-						levenshtein(command.text, message) +
-						levenshtein(command.paramText, message) +
+						levenshtein(command.text, message) * 10 +
+						levenshtein(command.paramText, message) * 5 +
 						levenshtein(command.description, message)
 					);
 				}
@@ -143,9 +147,11 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 				if (isOption) {
 					return (
 						<AutocompleteContainer>
-							{options.map((option) => (
+							{options.map((option, index) => (
 								<AutocompleteCard
+									id={`autocomplete-${index}`}
 									key={option}
+									tabIndex={index}
 									onClick={() => {
 										setMessage(message + option + ' ');
 										ref?.focus();
