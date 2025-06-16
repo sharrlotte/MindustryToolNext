@@ -47,7 +47,7 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalR
 			<div className="flex gap-2 justify-between w-full">
 				<Tran className="font-bold" text="metric.ram-usage" />
 				<span className="text-muted-foreground">
-					{`${byteToSize(serverRam)} + ${byteToSize(nativeRam)} (server + native)`} / {byteToSize(totalRam * 1024 * 1024)}
+					{`${byteToSize(nativeRam)}+${byteToSize(serverRam)} (native+server)`} / {byteToSize(totalRam * 1024 * 1024)}
 				</span>
 			</div>
 			<RamUsageChart serverRamUsage={serverRam} nativeRamUsage={nativeRam} totalRam={totalRam * 1024 * 1024} />
