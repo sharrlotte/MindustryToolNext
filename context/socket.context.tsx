@@ -39,7 +39,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		if (authState !== 'authenticated') return;
 
-		if (socket.getState() === 'disconnected') {
+		if (socket.getState() !== 'connected') {
 			socket.connect();
 		}
 

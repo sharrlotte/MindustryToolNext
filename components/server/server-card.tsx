@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { Fragment, Suspense } from 'react';
 
 import ColorText from '@/components/common/color-text';
@@ -9,13 +8,17 @@ import ServerStatusBadge from '@/components/server/server-status-badge';
 import { cn } from '@/lib/utils';
 import { ServerDto } from '@/types/response/ServerDto';
 
+import Image from 'next/image';
+
 type ServerCardProps = {
 	server: ServerDto;
 };
 
 export default function ServerCard({
-	server: { id, name, players, port, status, mapName, mode, gamemode, isOfficial, avatar },
+	server: { id, name, players, port, status, mapName, mode, gamemode, isOfficial, avatar, image },
 }: ServerCardProps) {
+	const version = image && image.startsWith('mindustry-server-') ? image.slice('mindustry-server-'.length) : null;
+
 	return (
 		<InternalLink
 			className="flex flex-1 cursor-pointer flex-col gap-2 rounded-md bg-card p-4 h-72 relative border"
@@ -29,9 +32,10 @@ export default function ServerCard({
 					</div>
 					{isOfficial && (
 						<span className="rounded-xl text-nowrap bg-purple-500 text-white text-xs px-2 py-1">
-							<Tran text="server.official" />
+							<Tran text="server.official" asChild />
 						</span>
 					)}
+					{version && <span className="rounded-xl text-nowrap bg-amber-300 text-white text-xs px-2 py-1">{version}</span>}
 				</div>
 				<div
 					className={cn('grid grid-cols-2 w-full gap-3 text-sm font-medium capitalize text-muted-foreground', {
