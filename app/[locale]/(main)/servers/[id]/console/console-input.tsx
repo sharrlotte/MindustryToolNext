@@ -181,7 +181,7 @@ function AutocompleteContainer({ children }: { children: ReactNode }) {
 
 function AutocompleteCard({ children, ...props }: ComponentPropsWithRef<'div'> & { children: ReactNode }) {
 	return (
-		<div className="p-2 bg-secondary/60 rounded-md hover:bg-secondary cursor-pointer" {...props}>
+		<div className="p-2 bg-secondary/60 rounded-md hover:bg-secondary cursor-pointer" role="button" {...props}>
 			{children}
 		</div>
 	);
