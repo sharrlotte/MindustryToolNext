@@ -203,7 +203,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			</div>
 			<Suspense>
 				{useTag && showFilterDialog && (
-					<div className="fixed top-0 right-0 bottom-0 left-0 z-50 justify-center items-center backdrop-blur-sm">
+					<div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center items-center backdrop-blur-sm">
 						<Card className="flex flex-col gap-2 items-center p-4 w-screen h-screen rounded-none md:h-4/5 md:w-4/5 md:rounded-lg">
 							<div className="flex gap-1 w-full">
 								<SearchBar className="p-1 w-full">
