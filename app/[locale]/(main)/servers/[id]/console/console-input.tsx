@@ -91,7 +91,7 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 							{filteredCommands.map((command, index) => (
 								<AutocompleteCard
 									id={`autocomplete-${index}`}
-									tabIndex={index}
+									tabIndex={0}
 									key={command.text}
 									onClick={() => {
 										setMessage('/' + command.text + ' ');
@@ -151,7 +151,7 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 							{options.map((option, index) => (
 								<AutocompleteCard
 									id={`autocomplete-${index}`}
-									tabIndex={index}
+									tabIndex={0}
 									key={option}
 									onClick={() => {
 										setMessage(message + option + ' ');
@@ -179,10 +179,10 @@ function AutocompleteContainer({ children }: { children: ReactNode }) {
 	);
 }
 
-function AutocompleteCard({ children, ...props }: ComponentPropsWithRef<'div'> & { children: ReactNode }) {
+function AutocompleteCard({ children, ...props }: ComponentPropsWithRef<'button'> & { children: ReactNode }) {
 	return (
-		<div className="p-2 bg-secondary/60 rounded-md hover:bg-secondary cursor-pointer" role="button" {...props}>
+		<button className="p-2 bg-secondary/60 rounded-md hover:bg-secondary cursor-pointer flex flex-col items-start" {...props}>
 			{children}
-		</div>
+		</button>
 	);
 }
