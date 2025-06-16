@@ -40,7 +40,7 @@ export default function RamUsageChart({ serverRamUsage, nativeRamUsage, totalRam
 	return (
 		<ProgressPrimitive.Root className={cn('relative h-2 w-full overflow-hidden rounded-full bg-primary/20')}>
 			<ProgressPrimitive.Indicator
-				className="h-full w-full flex-1 transition-all duration-500 z-10"
+				className="h-full w-full flex-1 transition-all duration-500 z-10 border-white border-r"
 				style={{
 					transform: `translateX(-${100 - serverPercent - nativePercent}%)`,
 					backgroundColor:
@@ -52,7 +52,7 @@ export default function RamUsageChart({ serverRamUsage, nativeRamUsage, totalRam
 				}}
 			/>
 			<ProgressPrimitive.Indicator
-				className="absolute top-0 left-0 h-full w-full flex-1 transition-all duration-500 z-20 border-r border-white"
+				className="absolute top-0 left-0 h-full w-full flex-1 transition-all duration-500 z-20"
 				style={{
 					transform: `translateX(-${100 - serverPercent}%)`,
 					backgroundColor:
