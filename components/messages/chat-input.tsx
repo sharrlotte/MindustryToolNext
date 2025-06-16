@@ -124,6 +124,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 				<AutosizeTextarea
 					className="h-full w-full bg-card px-2 outline-none border-none min-h-12 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
 					value={message}
+					tabIndex={0}
 					placeholder={placeholder}
 					onKeyDown={handleKeyPress}
 					onChange={(event) => setMessage(event.currentTarget.value)}
@@ -132,7 +133,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 				/>
 				<div className="mt-auto mb-1 mx-1 flex items-center gap-2 min-h-9">
 					<Popover>
-						<PopoverTrigger>
+						<PopoverTrigger tabIndex={0}>
 							<SmileIcon />
 						</PopoverTrigger>
 						<PopoverContent className="border-transparent bg-transparent">
@@ -149,6 +150,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 						variant="ghost"
 						type="submit"
 						title="send"
+						tabIndex={0}
 						disabled={state !== 'connected' || !message || message.length > maxMessageLength}
 					>
 						<SendIcon />
