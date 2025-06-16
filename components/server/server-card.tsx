@@ -30,12 +30,14 @@ export default function ServerCard({
 						{avatar && <Image className="size-8 object-cover rounded-md" src={avatar} width={32} height={32} alt={name} />}
 						<ColorText className="text-2xl font-bold" text={name} />
 					</div>
-					{isOfficial && (
-						<span className="rounded-xl text-nowrap bg-purple-500 text-white text-xs px-2 py-1">
-							<Tran text="server.official" asChild />
-						</span>
-					)}
-					{version && <span className="rounded-xl text-nowrap bg-amber-300 text-white text-xs px-2 py-1">{version}</span>}
+					<div className="flex gap-2">
+						{isOfficial && (
+							<span className="rounded-xl text-nowrap bg-purple-500 text-white text-xs px-2 py-1">
+								<Tran text="server.official" asChild />
+							</span>
+						)}
+						{version && <span className="rounded-xl text-nowrap bg-amber-300 text-white text-xs px-2 py-1">{version}</span>}
+					</div>
 				</div>
 				<div
 					className={cn('grid grid-cols-2 w-full gap-3 text-sm font-medium capitalize text-muted-foreground', {
