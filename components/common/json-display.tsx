@@ -219,7 +219,7 @@ export default function JsonDisplay({ json, depth = 0 }: { json: any; depth?: nu
 					<div>{'{'}</div>
 					<div className="pl-4 divide-y text-sm">
 						{Object.entries(json)
-							.sort(([a], [b]) => b.localeCompare(a))
+							.sort(([a], [b]) => a.localeCompare(b))
 							.filter((_, index) => index < show)
 							.map(([key, value]) => (
 								<div className="py-2 text-sm" key={key}>
