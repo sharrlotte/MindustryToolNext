@@ -34,7 +34,9 @@ export default function ServerCard({
 								<Tran text="server.official" asChild />
 							</span>
 						)}
-						{version && <span className="rounded-xl text-nowrap bg-amber-300 text-white text-xs px-2 py-1">{version}</span>}
+						{version && (status === 'HOST' || status === 'UP') && (
+							<span className="rounded-xl text-nowrap bg-amber-300 text-white text-xs px-2 py-1">{version}</span>
+						)}
 					</div>
 				</div>
 				<div
