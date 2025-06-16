@@ -40,6 +40,10 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 			placeholder="/help"
 			onKeyPress={(event) => {
 				if (event.key === 'Tab') {
+					const element = document.getElementById(`autocomplete-0`);
+
+					element?.focus();
+
 					return true;
 				}
 			}}
@@ -143,9 +147,11 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 				if (isOption) {
 					return (
 						<AutocompleteContainer>
-							{options.map((option) => (
+							{options.map((option, index) => (
 								<AutocompleteCard
+									id={`autocomplete-${index}`}
 									key={option}
+									tabIndex={index}
 									onClick={() => {
 										setMessage(message + option + ' ');
 										ref?.focus();
