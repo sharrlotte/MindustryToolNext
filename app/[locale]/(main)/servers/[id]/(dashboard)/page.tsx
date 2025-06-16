@@ -175,12 +175,18 @@ export default async function Page({ params }: Props) {
 					</div>
 					<div className="gap-2 flex flex-col md:flex-row w-full h-full">
 						<div className="flex-1 flex flex-col gap-2">
-							<div className="flex flex-col gap-2 justify-start items-start p-2 rounded-md border shadow-lg bg-card h-[180px]">
-								<h3>
-									<Tran text="server.system-status" />
-								</h3>
-								{status === 'HOST' || status === 'UP' ? <UsagePanel {...server} /> : <Tran text="server.server-is-not-running" />}
-							</div>
+							<ProtectedElement session={session} filter={canAccess}>
+								<div className="flex flex-col gap-2 justify-start items-start p-2 rounded-md border shadow-lg bg-card h-[180px]">
+									<h3>
+										<Tran text="server.system-status" />
+									</h3>
+									{status === 'HOST' || status === 'UP' ? (
+										<UsagePanel {...server} />
+									) : (
+										<Tran text="server.server-is-not-running" />
+									)}
+								</div>
+							</ProtectedElement>
 							{status === 'HOST' && (
 								<div className="flex min-w-[30vw] h-auto w-full rounded-md overflow-hidden">
 									<ServerImage id={id} key={status} alt={name} />
