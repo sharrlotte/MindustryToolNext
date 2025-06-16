@@ -4,6 +4,7 @@ import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
 import ServerStatusBadge from '@/components/server/server-status-badge';
+import ServerVersion from '@/components/server/server-version';
 
 import { cn } from '@/lib/utils';
 import { ServerDto } from '@/types/response/ServerDto';
@@ -34,9 +35,7 @@ export default function ServerCard({
 								<Tran text="server.official" asChild />
 							</span>
 						)}
-						{version && (status === 'HOST' || status === 'UP') && (
-							<span className="rounded-xl text-nowrap bg-amber-600 text-white text-xs px-2 py-1">{version}</span>
-						)}
+						{version && (status === 'HOST' || status === 'UP') && <ServerVersion>{version}</ServerVersion>}
 					</div>
 				</div>
 				<div

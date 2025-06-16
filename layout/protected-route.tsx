@@ -4,8 +4,8 @@ import React, { ReactNode } from 'react';
 
 import LoginButton from '@/components/button/login.button';
 import ErrorMessage from '@/components/common/error-message';
-import LoadingScreen from '@/components/common/loading-screen';
 import Tran from '@/components/common/tran';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { useSession } from '@/context/session.context';
 import { isError } from '@/lib/error';
@@ -28,7 +28,7 @@ export default function ProtectedRoute({ filter, children }: Props) {
 	const { session, state } = useSession();
 
 	if (state === 'loading') {
-		return <LoadingScreen />;
+		return <Skeleton className="w-full h-full" />;
 	}
 
 	if (isError(session)) {
