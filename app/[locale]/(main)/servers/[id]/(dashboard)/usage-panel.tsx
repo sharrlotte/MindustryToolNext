@@ -16,25 +16,29 @@ type UsagePanelProps = {
 	id: string;
 	cpuUsage: number;
 	ramUsage: number;
+	jvmRamUsage: number;
 	totalRam: number;
 	plan: ServerPlan;
 };
 
-export default function UsagePanel({ id, cpuUsage, ramUsage, totalRam, plan }: UsagePanelProps) {
+export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalRam, plan }: UsagePanelProps) {
 	const { data } = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
 		limit: 1,
 	});
 
-	const { cpu, ram } = useMemo(
+	const { cpu, serverRam, jvmRam } = useMemo(
 		() => ({
 			cpu: (Math.round(data[0]?.value.cpuUsage ?? cpuUsage) * 100) / 100,
-			ram: (data[0]?.value.ramUsage ?? ramUsage) * 1024 * 1024,
+			serverRam: (data[0]?.value.ramUsage ?? ramUsage) * 1024 * 1024,
+			jvmRam: (data[0]?.value.jvmRamUsage ?? jvmRamUsage) * 1024 * 1024,
 		}),
-		[cpuUsage, data, ramUsage],
+		[cpuUsage, jvmRamUsage, ramUsage, data],
 	);
 
+	const nativeRam = jvmRam - serverRam;
+
 	return (
-		<div className="flex flex-col w-full text-sm max-w-[300px] gap-2">
+		<div className="flex flex-col w-full text-sm max-w-[400px] gap-2">
 			<div className="flex gap-2 justify-between w-full">
 				<Tran className="font-bold" text="server.cpu-usage" />
 				<span className="text-muted-foreground">{cpu}%</span>
@@ -43,10 +47,10 @@ export default function UsagePanel({ id, cpuUsage, ramUsage, totalRam, plan }: U
 			<div className="flex gap-2 justify-between w-full">
 				<Tran className="font-bold" text="metric.ram-usage" />
 				<span className="text-muted-foreground">
-					{byteToSize(ram)} / {byteToSize(totalRam * 1024 * 1024)}
+					{`${byteToSize(serverRam)} (server) + ${byteToSize(nativeRam)} (native)`} / {byteToSize(totalRam * 1024 * 1024)}
 				</span>
 			</div>
-			<RamUsageChart ramUsage={ram} totalRam={totalRam * 1024 * 1024} />
+			<RamUsageChart serverRamUsage={serverRam} nativeRamUsage={nativeRam} totalRam={totalRam * 1024 * 1024} />
 		</div>
 	);
 }

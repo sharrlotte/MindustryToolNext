@@ -2,7 +2,7 @@
 
 import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
 import { RefreshCwIcon } from 'lucide-react';
-import { Suspense } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { use, useMemo, useRef, useState } from 'react';
 import React from 'react';
 import { Line } from 'react-chartjs-2';
@@ -84,46 +84,68 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 			<Divider />
 			<ScrollContainer className="p-2 flex flex-col gap-2">
 				<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
-					<Suspense>
-						<LineChart
-							label="cpu"
-							unit="%"
-							maxTick={(server?.plan.cpu ?? 1) * 150}
-							metrics={
-								data?.map(({ createdAt, value }) => ({
-									createdAt: new Date(createdAt),
-									value: value.cpuUsage,
-								})) ?? []
-							}
-						/>
-					</Suspense>
-					<Suspense>
-						<LineChart
-							label="ram"
-							unit="Mb"
-							fill
-							maxTick={(server?.plan.ram ?? 1) * 1.2}
-							metrics={
-								data?.map(({ createdAt, value }) => ({
-									createdAt: new Date(createdAt),
-									value: value.ramUsage,
-								})) ?? []
-							}
-						/>
-					</Suspense>
-					<Suspense>
-						<LineChart
-							label="tps"
-							unit="Tick per second"
-							maxTick={70}
-							metrics={
-								data?.map(({ createdAt, value }) => ({
-									createdAt: new Date(createdAt),
-									value: value.tps,
-								})) ?? []
-							}
-						/>
-					</Suspense>
+					<LineChartWrapper>
+						<Suspense>
+							<LineChart
+								label="cpu"
+								unit="%"
+								maxTick={(server?.plan.cpu ?? 1) * 150}
+								metrics={
+									data?.map(({ createdAt, value }) => ({
+										createdAt: new Date(createdAt),
+										value: value.cpuUsage,
+									})) ?? []
+								}
+							/>
+						</Suspense>
+					</LineChartWrapper>
+					<LineChartWrapper>
+						<Suspense>
+							<LineChart
+								label="ram"
+								unit="Mb"
+								fill
+								maxTick={(server?.plan.ram ?? 1) * 1.2}
+								metrics={
+									data?.map(({ createdAt, value }) => ({
+										createdAt: new Date(createdAt),
+										value: value.ramUsage,
+									})) ?? []
+								}
+							/>
+						</Suspense>
+					</LineChartWrapper>
+					<LineChartWrapper>
+						<Suspense>
+							<LineChart
+								label="jvm-ram"
+								unit="Mb"
+								fill
+								maxTick={(server?.plan.ram ?? 1) * 1.2}
+								metrics={
+									data?.map(({ createdAt, value }) => ({
+										createdAt: new Date(createdAt),
+										value: value.jvmRamUsage,
+									})) ?? []
+								}
+							/>
+						</Suspense>
+					</LineChartWrapper>
+					<LineChartWrapper>
+						<Suspense>
+							<LineChart
+								label="tps"
+								unit="Tick per second"
+								maxTick={70}
+								metrics={
+									data?.map(({ createdAt, value }) => ({
+										createdAt: new Date(createdAt),
+										value: value.tps,
+									})) ?? []
+								}
+							/>
+						</Suspense>
+					</LineChartWrapper>
 					<Suspense>
 						<LoginLogChart serverId={id} filter={filter} />
 					</Suspense>
@@ -131,6 +153,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 			</ScrollContainer>
 		</div>
 	);
+}
+
+function LineChartWrapper({ children }: { children: ReactNode }) {
+	return <div className="aspect-video h-auto w-full flex overflow-hidden rounded-lg border bg-card">{children}</div>;
 }
 
 function LineChart({
@@ -161,49 +187,47 @@ function LineChart({
 	const unitLabel = unit ? `(${unit})` : '';
 
 	return (
-		<div className="aspect-video h-auto w-full flex overflow-hidden rounded-lg border bg-card">
-			<Line
-				className="p-2"
-				options={{
-					animations: {
-						y: {
-							duration: 0,
+		<Line
+			className="p-2"
+			options={{
+				animations: {
+					y: {
+						duration: 0,
+					},
+				},
+				responsive: true,
+				aspectRatio: 16 / 9,
+				scales: {
+					x: {
+						ticks: {
+							maxTicksLimit: 15,
 						},
 					},
-					responsive: true,
-					aspectRatio: 16 / 9,
-					scales: {
-						x: {
-							ticks: {
-								maxTicksLimit: 15,
-							},
-						},
-						y: {
-							max: maxTick,
-							beginAtZero: true,
-							ticks: {
-								precision: 0,
-							},
+					y: {
+						max: maxTick,
+						beginAtZero: true,
+						ticks: {
+							precision: 0,
 						},
 					},
-				}}
-				data={{
-					labels: metrics.map(
-						({ createdAt }) =>
-							`${createdAt.getMinutes().toString().padStart(2, '0')}:${createdAt.getSeconds().toString().padStart(2, '0')}`,
-					),
-					datasets: [
-						{
-							label: `${t(label)} ${unitLabel} avg: ${avg} ${unitLabel} min: ${min} ${unitLabel} max: ${max} ${unitLabel}`,
-							data: metrics.map(({ value }) => value),
-							fill,
-							borderColor,
-							backgroundColor,
-						},
-					],
-				}}
-			/>
-		</div>
+				},
+			}}
+			data={{
+				labels: metrics.map(
+					({ createdAt }) =>
+						`${createdAt.getMinutes().toString().padStart(2, '0')}:${createdAt.getSeconds().toString().padStart(2, '0')}`,
+				),
+				datasets: [
+					{
+						label: `${t(label)} ${unitLabel} avg: ${avg} ${unitLabel} min: ${min} ${unitLabel} max: ${max} ${unitLabel}`,
+						data: metrics.map(({ value }) => value),
+						fill,
+						borderColor,
+						backgroundColor,
+					},
+				],
+			}}
+		/>
 	);
 }
 

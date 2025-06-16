@@ -7,36 +7,58 @@ import { cn } from '@/lib/utils';
 import * as ProgressPrimitive from '@radix-ui/react-progress';
 
 type Props = {
-	ramUsage: number;
+	serverRamUsage: number;
+	nativeRamUsage: number;
 	totalRam: number;
 };
 
-export default function RamUsageChart({ ramUsage, totalRam }: Props) {
-	ramUsage = isNaN(ramUsage) ? 0 : ramUsage;
+export default function RamUsageChart({ serverRamUsage, nativeRamUsage, totalRam }: Props) {
+	serverRamUsage = isNaN(serverRamUsage) ? 0 : serverRamUsage;
 	totalRam = isNaN(totalRam) ? 0 : totalRam;
 
-	let percentUsage = Math.round((ramUsage / totalRam) * 10000) / 100;
+	let serverPercentUsage = Math.round((serverRamUsage / totalRam) * 10000) / 100;
+	let nativePercentUsage = Math.round((nativeRamUsage / totalRam) * 10000) / 100;
 
-	percentUsage = isNaN(percentUsage) ? 0 : percentUsage;
+	serverPercentUsage = isNaN(serverPercentUsage) ? 0 : serverPercentUsage;
+	nativePercentUsage = isNaN(nativePercentUsage) ? 0 : nativePercentUsage;
 
-	const [percent, setPercent] = React.useState(0);
+	const [nativePercent, setNativePercent] = React.useState(0);
+	const [serverPercent, setServerPercent] = React.useState(0);
 
 	React.useEffect(() => {
-		const timeout = setTimeout(() => setPercent(percentUsage || 0), 100);
+		const timeout = setTimeout(() => setServerPercent(serverPercentUsage || 0), 100);
 
 		return () => clearTimeout(timeout);
-	}, [percentUsage]);
+	}, [serverPercentUsage]);
+
+	React.useEffect(() => {
+		const timeout = setTimeout(() => setNativePercent(nativePercentUsage || 0), 100);
+
+		return () => clearTimeout(timeout);
+	}, [nativePercentUsage]);
 
 	return (
-		<ProgressPrimitive.Root className={cn('relative h-2 w-full overflow-hidden rounded-full bg-primary/20')}>
+		<ProgressPrimitive.Root className={cn('relative h-2 w-full overflow-hidden rounded-full bg-primary/20 divide-y')}>
 			<ProgressPrimitive.Indicator
-				className="h-full w-full flex-1 transition-all duration-500"
+				className="h-full w-full flex-1 transition-all duration-500 z-10"
 				style={{
-					transform: `translateX(-${100 - (percent || 0)}%)`,
+					transform: `translateX(-${100 + serverPercent - nativePercent}%)`,
 					backgroundColor:
-						percentUsage < 50
+						nativePercent < 50
 							? 'green' //
-							: percentUsage < 70
+							: nativePercent < 70
+								? 'gold'
+								: 'red',
+				}}
+			/>
+			<ProgressPrimitive.Indicator
+				className="h-full w-full flex-1 transition-all duration-500 z-20 border-r border-white"
+				style={{
+					transform: `translateX(-${100 - serverPercent}%)`,
+					backgroundColor:
+						serverPercent < 50
+							? 'green' //
+							: serverPercent < 70
 								? 'gold'
 								: 'red',
 				}}

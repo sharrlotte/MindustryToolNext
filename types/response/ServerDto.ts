@@ -13,6 +13,7 @@ export type ServerDto = {
 	gamemode?: string;
 	status: ServerStatus;
 	ramUsage: number;
+	jvmRamUsage: number;
 	cpuUsage: number;
 	totalRam: number;
 	players: number;
