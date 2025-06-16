@@ -3,8 +3,8 @@
 import { Theme } from 'emoji-picker-react';
 import { SendIcon, SmileIcon } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import dynamic from 'next/dynamic';
 import { KeyboardEvent, useRef, useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,8 @@ import { maxMessageLength } from '@/constant/constant';
 import { useSocket } from '@/context/socket.context';
 import useMessage from '@/hooks/use-message';
 import { cn } from '@/lib/utils';
+
+import dynamic from 'next/dynamic';
 
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false });
 
@@ -37,7 +39,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 
 	const [message, setMessage] = useState<string>('');
 
-	const [messageHistory, setMessageHistory] = useState<string[]>([]);
+	const [messageHistory, setMessageHistory] = useLocalStorage<string[]>(`message-history-${window.location.href}`, []);
 	const [messagesCursor, setMessageCursor] = useState(0);
 
 	const { sendMessage } = useMessage({
@@ -47,7 +49,8 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 
 	const handleFormSubmit = () => {
 		sendMessage(message);
-		setMessageHistory((prev) => [...prev, message]);
+		setMessageCursor(0);
+		setMessageHistory((prev) => [...prev, message].slice(0, 20));
 		setMessage('');
 	};
 

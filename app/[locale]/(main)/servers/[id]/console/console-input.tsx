@@ -74,8 +74,7 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 
 				// Focusing on command
 				if (parts.length === 0 || parts.length === 1) {
-					const filteredCommands =
-						data?.sort((a, b) => lev(a, message.substring(1)) - lev(b, message.substring(1))).slice(0, 10) ?? [];
+					const filteredCommands = data?.sort((a, b) => lev(a, message.substring(1)) - lev(b, message.substring(1))) ?? [];
 
 					if (filteredCommands?.length === 0) {
 						return (
@@ -89,8 +88,10 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 
 					return (
 						<AutocompleteContainer>
-							{filteredCommands.map((command) => (
+							{filteredCommands.map((command, index) => (
 								<AutocompleteCard
+									id={`autocomplete-${index}`}
+									tabIndex={index}
 									key={command.text}
 									onClick={() => {
 										setMessage('/' + command.text + ' ');
@@ -150,8 +151,8 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 							{options.map((option, index) => (
 								<AutocompleteCard
 									id={`autocomplete-${index}`}
-									key={option}
 									tabIndex={index}
+									key={option}
 									onClick={() => {
 										setMessage(message + option + ' ');
 										ref?.focus();
@@ -180,7 +181,7 @@ function AutocompleteContainer({ children }: { children: ReactNode }) {
 
 function AutocompleteCard({ children, ...props }: ComponentPropsWithRef<'div'> & { children: ReactNode }) {
 	return (
-		<div className="p-2 bg-secondary/60 rounded-md hover:bg-secondary cursor-pointer" {...props}>
+		<div className="p-2 bg-secondary/60 rounded-md hover:bg-secondary cursor-pointer" role="button" {...props}>
 			{children}
 		</div>
 	);
