@@ -10,12 +10,12 @@ const colors = {
 
 export default function ServerVersion({
 	children,
-}: Omit<React.ComponentPropsWithoutRef<'div'>, 'children'> & { children: string }) {
+}: Omit<React.ComponentPropsWithoutRef<'span'>, 'children'> & { children: string }) {
 	return (
-		<div
+		<span
 			className={cn('rounded-xl text-nowrap bg-amber-600 text-white text-xs px-2 py-1', colors[children as keyof typeof colors])}
 		>
 			{children}
-		</div>
+		</span>
 	);
 }
