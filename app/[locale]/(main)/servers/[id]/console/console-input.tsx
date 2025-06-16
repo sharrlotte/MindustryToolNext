@@ -62,8 +62,8 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 
 				function lev(command: ServerCommandDto, message: string): number {
 					return (
-						levenshtein(command.text, message) +
-						levenshtein(command.paramText, message) +
+						levenshtein(command.text, message) * 10 +
+						levenshtein(command.paramText, message) * 5 +
 						levenshtein(command.description, message)
 					);
 				}
