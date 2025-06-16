@@ -71,7 +71,7 @@ export default function ConsoleInput({ id, room }: { room: string; id: string })
 				// Focusing on command
 				if (parts.length === 0 || parts.length === 1) {
 					const filteredCommands =
-						data?.sort((a, b) => lev(b, message.substring(1)) - lev(a, message.substring(1))).slice(0, 10) ?? [];
+						data?.sort((a, b) => lev(a, message.substring(1)) - lev(b, message.substring(1))).slice(0, 10) ?? [];
 
 					if (filteredCommands?.length === 0) {
 						return (

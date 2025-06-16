@@ -23,10 +23,10 @@ export default function ServerCard({
 			href={`/servers/${id}`}
 		>
 			<Suspense>
-				<div className="flex items-start gap-2 flex-nowrap w-full overflow-hidden text-ellipsis justify-between">
+				<div className="flex items-center gap-2 flex-nowrap w-full overflow-hidden text-ellipsis justify-between">
 					<div className="flex gap-2 items-center">
-						{avatar && <Image className="size-8 object-cover rounded-md" src={avatar} width={32} height={32} alt={name} />}
-						<ColorText className="text-2xl font-bold" text={name} />
+						{avatar && <Image className="size-6 object-cover rounded-md" src={avatar} width={24} height={24} alt={name} />}
+						<ColorText className="text-xl font-bold" text={name} />
 					</div>
 					<div className="flex gap-2">
 						{isOfficial && (
