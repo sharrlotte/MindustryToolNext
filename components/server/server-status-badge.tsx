@@ -15,7 +15,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'UP') {
 			return (
 				<Badge className="gap-1" variant="warning">
-					<AlertTriangleIcon size={16} />
+					<AlertTriangleIcon className="size-4" size={16} />
 					<Tran text="server.stopped" />
 				</Badge>
 			);
@@ -24,7 +24,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'HOST') {
 			return (
 				<Badge className="gap-1" variant="success">
-					<WifiIcon size={16} />
+					<WifiIcon className="size-4" size={16} />
 					<Tran text="server.online" />
 				</Badge>
 			);
@@ -41,7 +41,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'NOT_RESPONSE') {
 			return (
 				<Badge className="gap-1" variant="destructive">
-					<ClockIcon size={16} />
+					<ClockIcon className="size-4" size={16} />
 					<Tran text="server.not-response" />
 				</Badge>
 			);
@@ -50,7 +50,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'DOWN') {
 			return (
 				<Badge className="gap-1" variant="destructive">
-					<WifiOff size={16} />
+					<WifiOff className="size-4" size={16} />
 					<Tran text="server.offline" />
 				</Badge>
 			);
@@ -58,7 +58,7 @@ export default function ServerStatusBadge({ status }: Props) {
 
 		return (
 			<Badge className="gap-1" variant="destructive">
-				<AlertTriangleIcon size={16} />
+				<AlertTriangleIcon className="size-4" size={16} />
 				<span>{status}</span>
 			</Badge>
 		);

@@ -47,7 +47,7 @@ export default function ServerCard({
 					</div>
 					<div className="flex flex-col gap-0.5">
 						<span className="flex gap-1">
-							<PlayIcon size={16} />
+							<PlayIcon className="size-4" size={16} />
 							<Tran text="server.game-mode" />
 						</span>
 						<span className="font-semibold">
@@ -58,7 +58,7 @@ export default function ServerCard({
 					</div>
 					<div className="flex flex-col gap-0.5">
 						<span className="flex gap-1">
-							<UsersIcon size={16} />
+							<UsersIcon className="size-4" size={16} />
 							<Tran text="server.players" />
 						</span>
 						<span className="font-semibold">{players}/30</span>
@@ -67,7 +67,7 @@ export default function ServerCard({
 						{port > 0 && (
 							<Fragment>
 								<span className="flex gap-1">
-									<GlobeIcon size={16} />
+									<GlobeIcon className="size-4" size={16} />
 									<Tran text="server.port" />
 								</span>
 								<span className="font-semibold">{port}</span>
@@ -78,7 +78,7 @@ export default function ServerCard({
 						{mapName && (
 							<Fragment>
 								<span className="flex gap-1">
-									<MapIcon size={16} />
+									<MapIcon className="size-4" size={16} />
 									<Tran text="server.map" />
 								</span>
 								<ColorText className="font-semibold" text={mapName} />
