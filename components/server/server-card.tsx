@@ -1,3 +1,4 @@
+import { GlobeIcon, MapIcon, PlayIcon, UsersIcon } from 'lucide-react';
 import React, { Fragment, Suspense } from 'react';
 
 import ColorText from '@/components/common/color-text';
@@ -29,14 +30,11 @@ export default function ServerCard({
 						{avatar && <Image className="size-8 object-cover rounded-md" src={avatar} width={32} height={32} alt={name} />}
 						<ColorText className="text-xl font-bold" text={name} />
 					</div>
-					<div className="flex gap-2">
-						{isOfficial && (
-							<span className="rounded-xl text-nowrap bg-purple-500 text-white text-xs px-2 py-1">
-								<Tran text="server.official" asChild />
-							</span>
-						)}
-						{version && (status === 'HOST' || status === 'UP') && <ServerVersion>{version}</ServerVersion>}
-					</div>
+					{isOfficial && (
+						<span className="rounded-xl text-nowrap bg-purple-500 text-white text-xs px-2 py-1">
+							<Tran text="server.official" asChild />
+						</span>
+					)}
 				</div>
 				<div
 					className={cn('grid grid-cols-2 w-full gap-3 text-sm font-medium capitalize text-muted-foreground', {
@@ -48,33 +46,53 @@ export default function ServerCard({
 						<ServerStatusBadge status={status} />
 					</div>
 					<div className="flex flex-col gap-0.5">
-						<Tran asChild text="server.game-mode" />
 						<span>
+							<PlayIcon size={20} />
+							<Tran asChild text="server.game-mode" />
+						</span>
+						<span className="font-semibold">
 							<span className="capitalize">{mode.toLowerCase()}</span>
 							{gamemode && '/'}
 							{gamemode && <span>{gamemode}</span>}
 						</span>
 					</div>
 					<div className="flex flex-col gap-0.5">
-						<Tran asChild text="server.players" />
-						<span>{players}/30</span>
+						<span>
+							<UsersIcon size={20} />
+							<Tran asChild text="server.players" />
+						</span>
+						<span className="font-semibold">{players}/30</span>
 					</div>
 					<div className="flex flex-col gap-0.5">
 						{port > 0 && (
 							<Fragment>
-								<Tran asChild text="server.port" />
-								<span>{port}</span>
+								<span>
+									<GlobeIcon size={20} />
+									<Tran asChild text="server.port" />
+								</span>
+								<span className="font-semibold">{port}</span>
 							</Fragment>
 						)}
 					</div>
 					<div className="flex flex-col gap-0.5 text-nowrap">
 						{mapName && (
 							<Fragment>
-								<Tran asChild text="server.map" />
-								<ColorText text={mapName} />
+								<span>
+									<MapIcon size={20} />
+									<Tran asChild text="server.map" />
+								</span>
+								<ColorText className="font-semibold" text={mapName} />
 							</Fragment>
 						)}
 					</div>
+					{version && (status === 'HOST' || status === 'UP') && (
+						<div className="flex flex-col gap-0.5 text-nowrap">
+							<Fragment>
+								<Tran asChild text="server.version" />
+								<ServerVersion>{version}</ServerVersion>
+							</Fragment>
+						</div>
+					)}
 				</div>
 			</Suspense>
 		</InternalLink>

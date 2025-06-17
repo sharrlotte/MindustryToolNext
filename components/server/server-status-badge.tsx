@@ -1,3 +1,4 @@
+import { AlertTriangleIcon, ClockIcon, WifiIcon, WifiOff } from 'lucide-react';
 import React from 'react';
 
 import Tran from '@/components/common/tran';
@@ -14,6 +15,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'UP') {
 			return (
 				<Badge variant="warning">
+					<AlertTriangleIcon size={20} />
 					<Tran text="server.stopped" asChild />
 				</Badge>
 			);
@@ -22,6 +24,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'HOST') {
 			return (
 				<Badge variant="success">
+					<WifiIcon size={20} />
 					<Tran text="server.online" asChild />
 				</Badge>
 			);
@@ -38,6 +41,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'NOT_RESPONSE') {
 			return (
 				<Badge variant="destructive">
+					<ClockIcon size={20} />
 					<Tran text="server.not-response" asChild />
 				</Badge>
 			);
@@ -46,12 +50,18 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'DOWN') {
 			return (
 				<Badge variant="destructive">
+					<WifiOff size={20} />
 					<Tran text="server.offline" asChild />
 				</Badge>
 			);
 		}
 
-		return <Badge variant="destructive">{status}</Badge>;
+		return (
+			<Badge variant="destructive">
+				<AlertTriangleIcon size={20} />
+				<span>{status}</span>
+			</Badge>
+		);
 	}
 
 	return <div>{render()}</div>;

@@ -151,10 +151,10 @@ export default async function Page({ params }: Props) {
 								<Suspense>
 									<MismatchPanel />
 								</Suspense>
+								<section className="space-x-2 text-destructive-foreground text-xs">
+									{errors?.map((error, index) => <span key={index}>{error}</span>)}
+								</section>
 							</ProtectedElement>
-							<section className="space-x-2 text-destructive-foreground text-xs">
-								{errors?.map((error, index) => <span key={index}>{error}</span>)}
-							</section>
 						</div>
 						<Divider />
 						<footer className="flex gap-8 flex-wrap justify-between h-9 w-full overflow-x-auto">
