@@ -1,3 +1,4 @@
+import { WifiIcon } from 'lucide-react';
 import React from 'react';
 
 import Tran from '@/components/common/tran';
@@ -22,6 +23,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'HOST') {
 			return (
 				<Badge variant="success">
+					<WifiIcon size={20} />
 					<Tran text="server.online" asChild />
 				</Badge>
 			);
@@ -46,6 +48,7 @@ export default function ServerStatusBadge({ status }: Props) {
 		if (status === 'DOWN') {
 			return (
 				<Badge variant="destructive">
+					<WifiIcon size={20} />
 					<Tran text="server.offline" asChild />
 				</Badge>
 			);
