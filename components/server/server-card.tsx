@@ -32,7 +32,7 @@ export default function ServerCard({
 					</div>
 					{isOfficial && (
 						<span className="rounded-xl text-nowrap bg-purple-500 text-white text-xs px-2 py-1">
-							<Tran text="server.official" asChild />
+							<Tran text="server.official" />
 						</span>
 					)}
 				</div>
@@ -42,13 +42,13 @@ export default function ServerCard({
 					})}
 				>
 					<div className="flex flex-col gap-0.5">
-						<Tran asChild text="server.status" />
+						<Tran text="server.status" />
 						<ServerStatusBadge status={status} />
 					</div>
 					<div className="flex flex-col gap-0.5">
 						<span className="flex gap-1">
 							<PlayIcon size={16} />
-							<Tran asChild text="server.game-mode" />
+							<Tran text="server.game-mode" />
 						</span>
 						<span className="font-semibold">
 							<span className="capitalize">{mode.toLowerCase()}</span>
@@ -59,7 +59,7 @@ export default function ServerCard({
 					<div className="flex flex-col gap-0.5">
 						<span className="flex gap-1">
 							<UsersIcon size={16} />
-							<Tran asChild text="server.players" />
+							<Tran text="server.players" />
 						</span>
 						<span className="font-semibold">{players}/30</span>
 					</div>
@@ -68,7 +68,7 @@ export default function ServerCard({
 							<Fragment>
 								<span className="flex gap-1">
 									<GlobeIcon size={16} />
-									<Tran asChild text="server.port" />
+									<Tran text="server.port" />
 								</span>
 								<span className="font-semibold">{port}</span>
 							</Fragment>
@@ -79,7 +79,7 @@ export default function ServerCard({
 							<Fragment>
 								<span className="flex gap-1">
 									<MapIcon size={16} />
-									<Tran asChild text="server.map" />
+									<Tran text="server.map" />
 								</span>
 								<ColorText className="font-semibold" text={mapName} />
 							</Fragment>
@@ -88,7 +88,7 @@ export default function ServerCard({
 					{version && (status === 'HOST' || status === 'UP') && (
 						<div className="flex flex-col gap-0.5 text-nowrap">
 							<Fragment>
-								<Tran asChild text="server.version" />
+								<Tran text="server.version" />
 								<ServerVersion>{version}</ServerVersion>
 							</Fragment>
 						</div>
