@@ -1,5 +1,5 @@
 import { FileIcon, FolderIcon } from 'lucide-react';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, Suspense } from 'react';
 
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 
@@ -31,7 +31,9 @@ export default function FileCard({ file, children, onClick }: Props) {
 				<span>{name}</span>
 				{!directory && <span className="ml-auto"> {byteToSize(size)}</span>}
 			</ContextMenuTrigger>
-			<ContextMenuContent>{children}</ContextMenuContent>
+			<ContextMenuContent>
+				<Suspense>{children}</Suspense>
+			</ContextMenuContent>
 		</ContextMenu>
 	);
 }

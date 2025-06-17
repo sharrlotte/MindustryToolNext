@@ -1,0 +1,46 @@
+.react_flow {
+	@apply h-full;
+}
+
+.react-flow__panel {
+	@apply bg-white text-black;
+}
+
+.react-flow__handle {
+	@apply size-3;
+}
+
+.react-flow__handle.source {
+	@apply bg-blue-400;
+}
+
+.react-flow__handle.target {
+	@apply bg-emerald-500;
+}
+
+.react-flow__minimap {
+	@apply border border-border text-black;
+}
+
+.react-flow__handle-bottom {
+	@apply -bottom-2;
+}
+
+.react-flow__handle-top {
+	@apply -top-2;
+}
+
+.react-flow__handle-right {
+	@apply -right-2;
+}
+
+.react-flow__handle-left {
+	@apply -left-2;
+}
+
+.font-outline-2 {
+	@apply drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)];
+}
+.font-outline-4 {
+	-webkit-text-stroke: 4px black;
+}

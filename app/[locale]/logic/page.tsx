@@ -47,13 +47,11 @@ function Flow() {
 	return (
 		<>
 			<div className="hidden grid-cols-[auto_1fr] h-full sm:grid">
-				<ReactFlowProvider>
-					<LogicDndContext>
-						<LogicEditorProvider>
-							<Background />
-						</LogicEditorProvider>
-					</LogicDndContext>
-				</ReactFlowProvider>
+				<LogicDndContext>
+					<LogicEditorProvider>
+						<Background />
+					</LogicEditorProvider>
+				</LogicDndContext>
 			</div>
 			<span className="sm:hidden flex h-full w-full items-center justify-center font-bold m-auto">
 				<Tran text="logic.require-bigger-device-screen" />

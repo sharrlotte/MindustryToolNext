@@ -80,19 +80,21 @@ export default function HostServerButton({ id }: Props) {
 					<DialogTitle>
 						<Tran text="server.hosting-server" asChild />
 					</DialogTitle>
-					<DialogDescription className="flex overflow-hidden gap-2 items-center w-full text-ellipsis">
-						{isPending ? (
-							<LoadingSpinner className="justify-start p-0 m-0 w-4" />
-						) : isError ? (
-							<ErrorMessage error={error} />
-						) : (
-							<CheckCircleIcon className="w-4" />
-						)}
-						<div className="gap-2 flex text-sm">
-							<ColorText text={last?.data} />
-							<span className="ml-auto text-nowrap">
-								{Math.round(((last?.createdAt ?? 0) - (data[0]?.createdAt ?? 0)) / 100) / 10}s
-							</span>
+					<DialogDescription asChild>
+						<div className="flex text-sm overflow-hidden gap-2 items-center w-full text-ellipsis text-muted-foreground">
+							{isPending ? (
+								<LoadingSpinner className="justify-start p-0 m-0 w-4" />
+							) : isError ? (
+								<ErrorMessage error={error} />
+							) : (
+								<CheckCircleIcon className="w-4" />
+							)}
+							<div className="gap-2 flex text-sm">
+								<ColorText text={last?.data} />
+								<span className="ml-auto text-nowrap">
+									{Math.round(((last?.createdAt ?? 0) - (data[0]?.createdAt ?? 0)) / 100) / 10}s
+								</span>
+							</div>
 						</div>
 					</DialogDescription>
 					<Divider />

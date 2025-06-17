@@ -13,6 +13,7 @@ import { errors } from '@/lib/error';
 
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 import { useMutation } from '@tanstack/react-query';
+import env from '@/constant/env';
 
 const EXPLAIN_MESSAGE = `If you encountered an error, please let us know what happened. To help us fix it, describe:
 
@@ -72,7 +73,7 @@ export default function ReportErrorForm() {
 			</span>
 			<a
 				className="font-semibold h-9 gap-1 bg-[rgb(88,101,242)] text-nowrap rounded-md border border-border flex justify-center items-center px-4 py-2"
-				href="https://discord.gg/DCX5yrRUyp"
+				href={env.url.discordServer}
 				target="_blank"
 				rel="noopener noreferrer"
 			>
