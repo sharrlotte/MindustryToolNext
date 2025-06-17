@@ -14,51 +14,51 @@ export default function ServerStatusBadge({ status }: Props) {
 	function render() {
 		if (status === 'UP') {
 			return (
-				<Badge variant="warning">
-					<AlertTriangleIcon size={20} />
-					<Tran text="server.stopped" asChild />
+				<Badge className="gap-1" variant="warning">
+					<AlertTriangleIcon size={16} />
+					<Tran text="server.stopped" />
 				</Badge>
 			);
 		}
 
 		if (status === 'HOST') {
 			return (
-				<Badge variant="success">
-					<WifiIcon size={20} />
-					<Tran text="server.online" asChild />
+				<Badge className="gap-1" variant="success">
+					<WifiIcon size={16} />
+					<Tran text="server.online" />
 				</Badge>
 			);
 		}
 
 		if (status === 'DELETED') {
 			return (
-				<Badge variant="destructive">
-					<Tran text="server.deleted" asChild />
+				<Badge className="gap-1" variant="destructive">
+					<Tran text="server.deleted" />
 				</Badge>
 			);
 		}
 
 		if (status === 'NOT_RESPONSE') {
 			return (
-				<Badge variant="destructive">
-					<ClockIcon size={20} />
-					<Tran text="server.not-response" asChild />
+				<Badge className="gap-1" variant="destructive">
+					<ClockIcon size={16} />
+					<Tran text="server.not-response" />
 				</Badge>
 			);
 		}
 
 		if (status === 'DOWN') {
 			return (
-				<Badge variant="destructive">
-					<WifiOff size={20} />
-					<Tran text="server.offline" asChild />
+				<Badge className="gap-1" variant="destructive">
+					<WifiOff size={16} />
+					<Tran text="server.offline" />
 				</Badge>
 			);
 		}
 
 		return (
-			<Badge variant="destructive">
-				<AlertTriangleIcon size={20} />
+			<Badge className="gap-1" variant="destructive">
+				<AlertTriangleIcon size={16} />
 				<span>{status}</span>
 			</Badge>
 		);
