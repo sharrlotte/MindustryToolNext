@@ -46,8 +46,8 @@ export default function ServerCard({
 						<ServerStatusBadge status={status} />
 					</div>
 					<div className="flex flex-col gap-0.5">
-						<span>
-							<PlayIcon size={20} />
+						<span className="flex gap-1">
+							<PlayIcon size={16} />
 							<Tran asChild text="server.game-mode" />
 						</span>
 						<span className="font-semibold">
@@ -57,8 +57,8 @@ export default function ServerCard({
 						</span>
 					</div>
 					<div className="flex flex-col gap-0.5">
-						<span>
-							<UsersIcon size={20} />
+						<span className="flex gap-1">
+							<UsersIcon size={16} />
 							<Tran asChild text="server.players" />
 						</span>
 						<span className="font-semibold">{players}/30</span>
@@ -66,8 +66,8 @@ export default function ServerCard({
 					<div className="flex flex-col gap-0.5">
 						{port > 0 && (
 							<Fragment>
-								<span>
-									<GlobeIcon size={20} />
+								<span className="flex gap-1">
+									<GlobeIcon size={16} />
 									<Tran asChild text="server.port" />
 								</span>
 								<span className="font-semibold">{port}</span>
@@ -77,8 +77,8 @@ export default function ServerCard({
 					<div className="flex flex-col gap-0.5 text-nowrap">
 						{mapName && (
 							<Fragment>
-								<span>
-									<MapIcon size={20} />
+								<span className="flex gap-1">
+									<MapIcon size={16} />
 									<Tran asChild text="server.map" />
 								</span>
 								<ColorText className="font-semibold" text={mapName} />
