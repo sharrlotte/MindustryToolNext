@@ -24,6 +24,7 @@ import { ServerPlan } from '@/types/response/ServerPlan';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { ServerSetting } from '@/types/response/ServerSetting';
 import { ServerStats } from '@/types/response/ServerStats';
+import { WorkflowNode } from '@/types/response/WorkflowNode';
 import { PaginationQuery } from '@/types/schema/search-query';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
@@ -325,6 +326,18 @@ export async function getServerLoginMetrics(
 	},
 ): Promise<ServerMetric[]> {
 	const result = await axios.get(`/servers/${serverId}/metrics/login`, { params });
+
+	return result.data;
+}
+
+export async function getServerWorkflowNodes(axios: AxiosInstance, serverId: string): Promise<WorkflowNode[]> {
+	const result = await axios.get(`/servers/${serverId}/workflow/nodes`);
+
+	return result.data;
+}
+
+export async function loadServerWorkflow(axios: AxiosInstance, serverId: string): Promise<WorkflowNode[]> {
+	const result = await axios.post(`/servers/${serverId}/workflow`);
 
 	return result.data;
 }

@@ -1,29 +1,30 @@
-'use client';
-
 import { useMemo, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
-
-import { NodeData, instructionNodes } from '@/app/[locale]/logic/node';
 
 import Tran from '@/components/common/tran';
 import { Input } from '@/components/ui/input';
 
+import useClientApi from '@/hooks/use-client';
+import usePathId from '@/hooks/use-path-id';
+import useWorkflowNodes from '@/hooks/use-workflow-nodes';
 import { groupBy } from '@/lib/utils';
+import { getServerWorkflowNodes } from '@/query/server';
+import { WorkflowNode } from '@/types/response/WorkflowNode';
 
-export default function PlusPanel() {
-	return <InstructionList />;
-}
+import { useQuery } from '@tanstack/react-query';
 
-function InstructionList() {
+export default function NodeListPanel() {
 	const [filter, setFilter] = useState('');
+
+	const { data, isLoading, isError, error } = useWorkflowNodes();
 
 	const nodeGroups = useMemo(
 		() =>
 			groupBy(
-				Object.values(instructionNodes).filter(({ name }) => name.includes(filter)),
-				(k) => k.category,
+				Object.values(data ?? []).filter(({ name }) => name.includes(filter)),
+				(k) => k.group,
 			),
-		[filter],
+		[data, filter],
 	);
 
 	return (
@@ -43,7 +44,7 @@ function InstructionList() {
 	);
 }
 
-function InstructionGroup({ group: { key, value } }: { group: { key: string; value: NodeData[] } }) {
+function InstructionGroup({ group: { key, value } }: { group: { key: string; value: WorkflowNode[] } }) {
 	return (
 		<div className="space-y-1">
 			<h3 className="text-base capitalize">{key}</h3>
@@ -54,7 +55,7 @@ function InstructionGroup({ group: { key, value } }: { group: { key: string; val
 	);
 }
 
-function InstructionItem({ item: { name, color } }: { item: NodeData }) {
+function InstructionItem({ item: { name, color } }: { item: WorkflowNode }) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	const [_, drag] = useDrag({

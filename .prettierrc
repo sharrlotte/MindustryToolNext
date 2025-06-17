@@ -4,6 +4,7 @@
     ],
     "singleQuote": true,
     "importOrder": [
+        "(.*).css",
         "server-only",
         "@/app/(.*)",
         "@/components/(.*)",
