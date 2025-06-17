@@ -34,10 +34,10 @@ const CpuProgress = React.forwardRef<
 					transform: `translateX(-${100 - (percent || 0)}%)`,
 					backgroundColor:
 						percent < 60
-							? 'var(--success-foreground)' //
+							? 'hsl(var(--success-foreground))' //
 							: percent < 85
-								? 'var(--warning-foreground)'
-								: 'var(--destructive-foreground)',
+								? 'hsl(var(--warning-foreground))'
+								: 'hsl(var(--destructive-foreground))',
 				}}
 			/>
 		</ProgressPrimitive.Root>
