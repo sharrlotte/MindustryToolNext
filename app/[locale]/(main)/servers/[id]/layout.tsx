@@ -1,6 +1,15 @@
 'use client';
 
-import { FileIcon, HardDriveIcon, LayoutDashboardIcon, MapIcon, PlugIcon, SettingsIcon, TerminalIcon } from 'lucide-react';
+import {
+	FileIcon,
+	HardDriveIcon,
+	LayoutDashboardIcon,
+	MapIcon,
+	PlugIcon,
+	SettingsIcon,
+	TerminalIcon,
+	WorkflowIcon,
+} from 'lucide-react';
 import React, { ReactNode, Suspense, use, useMemo } from 'react';
 
 import { CatchError } from '@/components/common/catch-error';
@@ -127,6 +136,13 @@ export default function Layout({ params, children }: LayoutProps) {
 				href: '/plugins',
 				label: <PluginLabel />,
 				icon: <PlugIcon className="size-5" />,
+				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
+			},
+			{
+				id: 'workflow',
+				href: '/workflows',
+				label: <Tran text="workflow" />,
+				icon: <WorkflowIcon className="size-5" />,
 				filter: { any: [{ authority: 'UPDATE_SERVER' }, { authorId: ownerId }] },
 			},
 			{
