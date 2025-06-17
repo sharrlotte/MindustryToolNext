@@ -13,10 +13,7 @@
 // Autocomplete
 import { InstructionNode } from '@/app/[locale]/logic/instruction.node';
 
-
-
 import { groupBy } from '@/lib/utils';
-
 
 export type ItemsType = Readonly<NodeItem[]>;
 export type OutputsType = Readonly<Output[]>;
@@ -730,6 +727,52 @@ export const instructionNodesGraph: Record<
 		] as const,
 		inputs: 1,
 		compile: ({ state: { display } }) => `drawflush ${display}`,
+	}),
+	printFlush: new NodeData({
+		name: 'printFlush',
+		label: 'Print Flush',
+		category: 'Block Control',
+		color: '#D4816B',
+		items: [
+			{
+				type: 'label',
+				value: 'to',
+			},
+			{
+				type: 'input',
+				name: 'message',
+				value: 'message1',
+				accept: ['string'],
+			},
+		] as const,
+		inputs: 1,
+		compile: ({ state: { message } }) => `printflush ${message}`,
+	}),
+	getLink: new NodeData({
+		name: 'getLink',
+		label: 'Get Link',
+		category: 'Block Control',
+		color: '#D4816B',
+		items: [
+			{
+				type: 'input',
+				name: 'result',
+				value: 'result',
+				accept: ['string'],
+			},
+			{
+				type: 'label',
+				value: ' = link# ',
+			},
+			{
+				type: 'input',
+				name: 'index',
+				value: '0',
+				accept: ['variable', 'number'],
+			},
+		] as const,
+		inputs: 1,
+		compile: ({ state: { result, index } }) => `getlink ${result} ${index}`,
 	}),
 } as const;
 

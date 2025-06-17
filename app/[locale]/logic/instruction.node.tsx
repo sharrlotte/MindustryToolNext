@@ -96,7 +96,7 @@ function InputNodeComponent({ data, color, state, nodeId }: NodeItemComponentPro
 	const value = state[data.name];
 
 	const matchedVariable = Object.values(variables).filter((variable) => variable.includes(value));
-	const showSugesstion = focus && data.accept.includes('variable') && matchedVariable.length > 0;
+	const showSuggestion = focus && data.accept.includes('variable') && matchedVariable.length > 0;
 
 	return (
 		<div className="flex gap-1">
@@ -111,7 +111,7 @@ function InputNodeComponent({ data, color, state, nodeId }: NodeItemComponentPro
 					onFocus={() => setFocus(true)}
 					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>
-				<div className={cn('absolute -bottom-1 translate-y-[100%] z-50 hidden', { block: showSugesstion })}>
+				<div className={cn('absolute -bottom-1 translate-y-[100%] z-50 hidden', { block: showSuggestion })}>
 					<div className="p-4 border rounded-md bg-card min-w-60">
 						{matchedVariable.map((variable) => (
 							<div key={variable} onClick={() => setNodeState(nodeId, (prev) => ({ ...prev, [data.name]: variable }))}>
