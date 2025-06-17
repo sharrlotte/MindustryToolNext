@@ -13,6 +13,7 @@ const env = {
 		api: process.env.NEXT_PUBLIC_BACKEND_URL as string,
 		image: process.env.NEXT_PUBLIC_CLOUDINARY_IMAGE_URL as string,
 		bot: 'https://discord.com/oauth2/authorize?client_id=918818673626599434',
+		discordServer: 'https://discord.gg/DD2sf4NVhn',
 	},
 	supportedImageFormat: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
 };
