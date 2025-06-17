@@ -26,13 +26,13 @@ export default function RamUsageChart({ serverRamUsage, nativeRamUsage, totalRam
 	const [serverPercent, setServerPercent] = React.useState(0);
 
 	React.useEffect(() => {
-		const timeout = setTimeout(() => setServerPercent(serverPercentUsage || 0), 100);
+		const timeout = setTimeout(() => setServerPercent(serverPercentUsage ?? 0), 100);
 
 		return () => clearTimeout(timeout);
 	}, [serverPercentUsage]);
 
 	React.useEffect(() => {
-		const timeout = setTimeout(() => setNativePercent(nativePercentUsage || 0), 100);
+		const timeout = setTimeout(() => setNativePercent(nativePercentUsage ?? 0), 100);
 
 		return () => clearTimeout(timeout);
 	}, [nativePercentUsage]);
