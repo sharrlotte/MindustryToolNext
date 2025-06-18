@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { z } from 'zod';
+
+
 
 import { toForm } from '@/lib/utils';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
@@ -10,6 +11,11 @@ import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
 import { TagGroups } from '@/types/response/TagGroup';
 import { CountItemPaginationQueryType, ItemPaginationQueryType } from '@/types/schema/search-query';
 import { TAG_GROUP_SCHEMA } from '@/types/schema/zod-schema';
+
+
+
+import { z } from 'zod/v4';
+
 
 export async function getMapCount(axios: AxiosInstance, params: CountItemPaginationQueryType): Promise<number> {
 	const result = await axios.get('/maps/total', { params });

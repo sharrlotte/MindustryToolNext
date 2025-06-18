@@ -1,7 +1,8 @@
 import { XIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
+
 
 import {
 	BoldIcon,
@@ -24,11 +25,20 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
+
+
 import { acceptedImageFormats } from '@/constant/constant';
 import env from '@/constant/env';
 import { insertAtCaret, wrapAtCaret } from '@/lib/markdown.utils';
 
+
+
 import { zodResolver } from '@hookform/resolvers/zod';
+
+
+
+import { z } from 'zod/v4';
+
 
 type TextArea = {
 	value: string;

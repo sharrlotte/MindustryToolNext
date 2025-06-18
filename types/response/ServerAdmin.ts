@@ -1,4 +1,4 @@
-export default interface ServerAdmin {
+export type ServerAdmin = {
   id: string;
   serverId: string;
   userId: string;

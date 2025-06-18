@@ -1,6 +1,8 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 export const ServerModes = ['SURVIVAL', 'ATTACK', 'PVP', 'SANDBOX'] as const;
+
+export const ServerModeSchema = z.enum(ServerModes);
 
 export type ServerMode = (typeof ServerModes)[number];
 

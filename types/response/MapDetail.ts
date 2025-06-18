@@ -1,21 +1,25 @@
-import { Status } from '@/types/response/Status';
-import { DetailTagDto } from '@/types/response/Tag';
+import { StatusSchema } from '@/types/response/Status';
+import { DetailTagDtoSchema } from '@/types/response/Tag';
 
-export type MapDetail = {
-	id: string;
-	name: string;
-	userId: string;
-	description: string;
-	tags: DetailTagDto[];
-	likes: number;
-	dislikes: number;
-	height: number;
-	width: number;
-	status: Status;
-	verifierId: string;
-	itemId: string;
-	isVerified: boolean;
-	downloadCount: number;
-	createdAt: string;
-	meta: any;
-};
+import { z } from 'zod/v4';
+
+export const MapDetailSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	userId: z.string(),
+	description: z.string(),
+	tags: z.array(DetailTagDtoSchema),
+	likes: z.number(),
+	dislikes: z.number(),
+	height: z.number(),
+	width: z.number(),
+	status: StatusSchema,
+	verifierId: z.string(),
+	itemId: z.string(),
+	isVerified: z.boolean(),
+	downloadCount: z.number(),
+	createdAt: z.string(),
+	meta: z.any(),
+});
+
+export type MapDetail = z.infer<typeof MapDetailSchema>;

@@ -1,11 +1,11 @@
-import { z } from 'zod';
-
 import { userRoles } from '@/constant/constant';
 import { DEFAULT_PAGINATION_SIZE } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
 import { locales } from '@/i18n/config';
 import { sortTag } from '@/types/response/SortTag';
 import { verifyStatus } from '@/types/response/Status';
+
+import { z } from 'zod/v4';
 
 type Pageable = {
 	page: number;

@@ -1,45 +1,20 @@
-import { useState } from 'react';
+import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor.context';
 
-import { useWorkflowEditor, WorkflowNodeState } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor.context';
 
-import ComboBox from '@/components/common/combo-box';
 
 import { cn } from '@/lib/utils';
-import { type WorkflowNode } from '@/types/response/WorkflowNode';
+import {  WorkflowNodeData } from '@/types/response/WorkflowContext';
 
-import { Handle, Node, Position } from '@xyflow/react';
+
+
+import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { Connection, useNodeConnections } from '@xyflow/react';
 
-const workflowNodes: Record<string, WorkflowNode> = {};
 
-export function OutputHandle(props: Parameters<typeof Handle>[0] & { label: string }) {
-	const { setEdges } = useWorkflowEditor();
-	const connections = useNodeConnections({
-		handleType: props.type,
-		handleId: props.id ?? '',
-		onConnect(connections: Connection[]) {
-			setEdges((prevEdges) =>
-				prevEdges.map((edge) => (edge.id === (connections[0] as unknown as any).edgeId ? { ...edge, label: props.label } : edge)),
-			);
-		},
-	});
+export type WorkflowNode = Node<{ name: string; index?: number } & Omit<WorkflowNodeData, 'x' | 'y' | 'id'>, 'workflow'>;
 
-	return <Handle {...props} id={props.id} isConnectable={connections.length < 1} />;
-}
-
-export type WorkflowNodeData<T extends (keyof typeof workflowNodes)[number] = (keyof typeof workflowNodes)[number]> = {
-	data: { type: T; index?: number; state: Pick<WorkflowNode, 'parameters' | 'consumers'> };
-	isConnectable?: boolean;
-	type: 'workflow';
-	id: string;
-};
-
-export type WorkflowNodeProps = Omit<Node, 'data' | 'type'> & WorkflowNodeData;
-
-export default function WorkflowNodeComponent({ id, data }: WorkflowNodeData) {
-	const { state, type } = data;
-	const node = workflowNodes[type];
-	const { color, outputs, consumers, name } = node;
+export default function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
+	const { name, index, color, outputs, consumers } = data;
 
 	const items = consumers.length;
 	const inputs = 1;
@@ -83,14 +58,14 @@ export default function WorkflowNodeComponent({ id, data }: WorkflowNodeData) {
 			{items > 0 && (
 				<div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
 					{consumers.map((item, i) => (
-						<NodeItemComponent key={i} nodeId={id} color={color} data={item} state={state} />
+						<NodeItemComponent key={i} nodeId={id} color={color} data={item} />
 					))}
 				</div>
 			)}
 		</div>
 	);
 }
-type NodeItemComponentProps<T> = { nodeId: string; color: string; state: WorkflowNodeState; data: T };
+type NodeItemComponentProps<T> = { nodeId: string; color: string; data: T };
 
 function NodeItemComponent(props: NodeItemComponentProps<any>) {
 	// if (props.data.type === 'input') {
@@ -159,3 +134,18 @@ function NodeItemComponent(props: NodeItemComponentProps<any>) {
 // 		</div>
 // 	);
 // }
+
+export function OutputHandle(props: Parameters<typeof Handle>[0] & { label: string }) {
+	const { setEdges } = useWorkflowEditor();
+	const connections = useNodeConnections({
+		handleType: props.type,
+		handleId: props.id ?? '',
+		onConnect(connections: Connection[]) {
+			setEdges((prevEdges) =>
+				prevEdges.map((edge) => (edge.id === (connections[0] as unknown as any).edgeId ? { ...edge, label: props.label } : edge)),
+			);
+		},
+	});
+
+	return <Handle {...props} id={props.id} isConnectable={connections.length < 1} />;
+}

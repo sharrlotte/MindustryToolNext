@@ -1,5 +1,7 @@
 import { NextConfig } from 'next';
 
+
+
 import bundleAnalyzer from '@next/bundle-analyzer';
 
 const now = new Date();
@@ -51,7 +53,7 @@ const nextConfig: NextConfig = {
 		];
 	},
 	experimental: {
-		reactCompiler: true,
+		reactCompiler: process.env.NODE_ENV === 'production',
 	},
 	productionBrowserSourceMaps: true,
 	pageExtensions: ['ts', 'tsx'],

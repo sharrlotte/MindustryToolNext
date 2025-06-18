@@ -13,7 +13,7 @@ export default function useWorkflowNodes() {
 	});
 
 	return {
-		data: data ?? [],
+		data: data ?? {},
 		...rest,
 	};
 }

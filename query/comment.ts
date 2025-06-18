@@ -1,9 +1,10 @@
 import { AxiosInstance } from 'axios';
-import { z } from 'zod';
 
 import { toForm } from '@/lib/utils';
 import { Comment } from '@/types/response/Comment';
 import { PaginationQuery } from '@/types/schema/search-query';
+
+import { z } from 'zod/v4';
 
 export async function getComments(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<Comment[]> {
 	const result = await axios.get(`/items/${id}/comments`, {
@@ -52,7 +53,11 @@ export const CreateCommentSchema = z.object({
 
 export type CreateCommentRequest = z.infer<typeof CreateCommentSchema>;
 
-export async function createComment(axios: AxiosInstance, itemId: string, { content, attachments, ...rest }: CreateCommentRequest) {
+export async function createComment(
+	axios: AxiosInstance,
+	itemId: string,
+	{ content, attachments, ...rest }: CreateCommentRequest,
+) {
 	const form = toForm(rest);
 
 	form.append('content', content);

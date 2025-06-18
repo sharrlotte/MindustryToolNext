@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { z } from 'zod';
+
+
 
 import { UserRole } from '@/constant/constant';
 import { Map } from '@/types/response/Map';
@@ -8,6 +9,8 @@ import { Schematic } from '@/types/response/Schematic';
 import { ServerDto } from '@/types/response/ServerDto';
 import { User } from '@/types/response/User';
 import { ItemPaginationQueryType, PaginationQuery, StatusPaginationSearchQuery } from '@/types/schema/search-query';
+
+import { z } from 'zod/v4';
 
 export async function getMeServers(axios: AxiosInstance): Promise<ServerDto[]> {
 	const result = await axios.get(`/users/@me/servers`);
@@ -79,7 +82,11 @@ export async function getUserPosts(axios: AxiosInstance, userId: string, params:
 	return result.data;
 }
 
-export async function getUserSchematics(axios: AxiosInstance, userId: string, params: ItemPaginationQueryType): Promise<Schematic[]> {
+export async function getUserSchematics(
+	axios: AxiosInstance,
+	userId: string,
+	params: ItemPaginationQueryType,
+): Promise<Schematic[]> {
 	const result = await axios.get(`/users/${userId}/schematics`, {
 		params,
 	});
@@ -93,13 +100,19 @@ export async function getUser(axios: AxiosInstance, { id }: { id: string }): Pro
 	return result.data;
 }
 
-export async function getUsers(axios: AxiosInstance, params: PaginationQuery & { name?: string; role?: UserRole; is_banned?: boolean }): Promise<User[]> {
+export async function getUsers(
+	axios: AxiosInstance,
+	params: PaginationQuery & { name?: string; role?: UserRole; is_banned?: boolean },
+): Promise<User[]> {
 	const result = await axios.get(`/users`, { params });
 
 	return result.data;
 }
 
-export async function getUserCount(axios: AxiosInstance, params: { name?: string; role?: UserRole; is_banned?: string }): Promise<number> {
+export async function getUserCount(
+	axios: AxiosInstance,
+	params: { name?: string; role?: UserRole; is_banned?: string },
+): Promise<number> {
 	const result = await axios.get(`/users/count`, { params });
 
 	return result.data;

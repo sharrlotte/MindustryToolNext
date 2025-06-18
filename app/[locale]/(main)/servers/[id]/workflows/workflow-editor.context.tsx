@@ -1,12 +1,12 @@
 'use client';
 
 import { Identifier } from 'dnd-core';
-import { Suspense, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
-import SideBar from '@/app/[locale]/(main)/servers/[id]/workflows/sidebar';
-import WorkflowNodeComponent, { WorkflowNodeProps } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
+import WorkflowNodeComponent from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
+import WorkflowSideBar from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-sidebar';
 import HelperLines from '@/app/[locale]/logic/helper-lines';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
 
@@ -17,12 +17,12 @@ import { toast } from '@/components/ui/sonner';
 
 import useWorkflowNodes from '@/hooks/use-workflow-nodes';
 import { uuid } from '@/lib/utils';
-import { WorkflowNode } from '@/types/response/WorkflowNode';
 
 import {
 	Edge,
 	EdgeChange,
 	MiniMap,
+	Node,
 	NodeChange,
 	ProOptions,
 	ReactFlow,
@@ -34,13 +34,9 @@ import {
 	useViewport,
 } from '@xyflow/react';
 
-export const nodeTypeMap = {
+export const xyflowNodeTypes = {
 	workflow: WorkflowNodeComponent,
 } as const;
-
-export type NodeType = keyof typeof nodeTypeMap;
-export type Node = WorkflowNodeProps;
-export type WorkflowNodeState = Pick<WorkflowNode, 'consumers' | 'parameters'>;
 
 const WorkflowEditorContext = createContext<WorkflowEditorContextType | null>(null);
 
@@ -62,8 +58,7 @@ type WorkflowEditorContextType = {
 	setNodes: React.Dispatch<React.SetStateAction<Node[]>>;
 	setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
 	setName: (name: string) => void;
-	setNodeState: (id: string, fn: (prev: WorkflowNodeState) => WorkflowNodeState) => void;
-	setNode: (id: string, fn: (prev: WorkflowNodeProps) => WorkflowNodeProps) => void;
+	setNode: (id: string, fn: (prev: Node) => Node) => void;
 
 	actions: {
 		undo: () => void;
@@ -94,7 +89,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const [edges, setEdges] = useState<Edge[]>([]);
 	const [helperLineHorizontal, setHelperLineHorizontal] = useState<number | undefined>(undefined);
 	const [helperLineVertical, setHelperLineVertical] = useState<number | undefined>(undefined);
-	const [rfInstance, setRfInstance] = useState<ReactFlowInstance<WorkflowNodeProps, Edge> | null>(null);
+	const [rfInstance, setRfInstance] = useState<ReactFlowInstance<Node, Edge> | null>(null);
 	const [nodeHistory, setNodeHistory] = useState<Node[][]>([]);
 	const [edgeHistory, setEdgeHistory] = useState<Edge[][]>([[]]);
 	const [historyIndex, setHistoryIndex] = useState(0);
@@ -147,28 +142,10 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		[nodes],
 	);
 
-	const setNodeState = useCallback(
-		(id: string, fn: (prev: WorkflowNodeState) => WorkflowNodeState) => {
-			const node = nodes.find((node) => node.id === id);
-
-			if (node) {
-				const newNode = { ...node, data: { ...node.data, state: fn(node.data.state) } };
-				const newNodes = nodes.map((n) => (n.id === id ? newNode : n));
-				setNodes(newNodes);
-			}
-		},
-		[nodes, setNodes],
-	);
-
 	const setNode = useCallback(
-		(id: string, fn: (prev: WorkflowNodeProps) => WorkflowNodeProps) => {
-			const node = nodes.find((node) => node.id === id);
-
-			if (node) {
-				const newNode = fn(node);
-				const newNodes = nodes.map((n) => (n.id === id ? newNode : n));
-				setNodes(newNodes);
-			}
+		(id: string, fn: (prev: Node) => Node) => {
+			const newNodes = nodes.map((n) => (n.id === id ? fn(n) : n));
+			setNodes(newNodes);
 		},
 		[nodes, setNodes],
 	);
@@ -189,7 +166,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				}
 			}
 
-			const node = nodeTypes.find((n) => n.name === type);
+			const node = nodeTypes[type];
 
 			if (!node) {
 				toast.error(<span>{`Node not found: ${type}`}</span>);
@@ -398,7 +375,6 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				canRedo: historyIndex < nodeHistory.length - 1,
 				setEdges,
 				setNodes,
-				setNodeState,
 				setNode,
 				isDeleteOnClick,
 				actions,
@@ -406,48 +382,41 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		>
 			<CatchError>
 				<Suspense>
-					<SideBar />
+					<WorkflowSideBar />
 				</Suspense>
 			</CatchError>
-			<div className="grid grid-rows-[auto_1fr]">
-				<Suspense>
-					<CatchError>
-						<div className="h-nav w-full">Toolbar</div>
-					</CatchError>
-				</Suspense>
-				<CatchError>
-					<ReactFlow
-						ref={ref}
-						nodes={nodes}
-						edges={edges}
-						onInit={setRfInstance}
-						onNodesChange={onNodeChange}
-						onEdgesChange={onEdgeChange}
-						onConnect={onEdgeConnect}
-						onNodesDelete={onNodesDelete}
-						onEdgesDelete={onEdgesDelete}
-						nodeTypes={nodeTypeMap}
-						onNodeClick={onNodeClick}
-						onEdgeClick={onEdgeClick}
-						onNodeContextMenu={onNodeContextMenu}
-						onEdgeContextMenu={onEdgeContextMenu}
-						onNodeDragStop={onNodeDragStop}
-						proOptions={proOptions}
-						fitView
-						data-handler-id={handlerId}
-					>
-						<Suspense>
-							{children}
-							<div className="absolute z-50 top-1 left-1 space-x-1 text-xs text-muted-foreground">
-								<span>x: {Math.round(viewport.x)}</span>
-								<span>y: {Math.round(viewport.y)}</span>
-							</div>
-							<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
-							<Hydrated>{showMiniMap && <MiniMap />}</Hydrated>
-						</Suspense>
-					</ReactFlow>
-				</CatchError>
-			</div>
+			<CatchError>
+				<ReactFlow
+					ref={ref}
+					nodes={nodes}
+					edges={edges}
+					onInit={setRfInstance}
+					onNodesChange={onNodeChange}
+					onEdgesChange={onEdgeChange}
+					onConnect={onEdgeConnect}
+					onNodesDelete={onNodesDelete}
+					onEdgesDelete={onEdgesDelete}
+					nodeTypes={xyflowNodeTypes}
+					onNodeClick={onNodeClick}
+					onEdgeClick={onEdgeClick}
+					onNodeContextMenu={onNodeContextMenu}
+					onEdgeContextMenu={onEdgeContextMenu}
+					onNodeDragStop={onNodeDragStop}
+					proOptions={proOptions}
+					fitView
+					data-handler-id={handlerId}
+				>
+					<Suspense>
+						{children}
+						<div className="absolute z-50 top-1 left-1 space-x-1 text-xs text-muted-foreground">
+							<span>x: {Math.round(viewport.x)}</span>
+							<span>y: {Math.round(viewport.y)}</span>
+						</div>
+						<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
+						<Hydrated>{showMiniMap && <MiniMap />}</Hydrated>
+					</Suspense>
+				</ReactFlow>
+			</CatchError>
 		</WorkflowEditorContext.Provider>
 	);
 }

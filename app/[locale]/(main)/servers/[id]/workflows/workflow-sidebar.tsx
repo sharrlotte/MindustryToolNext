@@ -45,7 +45,7 @@ const tabs: TabType[] = [
 	},
 ];
 
-export default function SideBar() {
+export default function WorkflowSideBar() {
 	const [{ tab: currentTab }, setState] = useQueryState<{
 		tab: string | null;
 	}>({
@@ -57,7 +57,7 @@ export default function SideBar() {
 	};
 
 	return (
-		<div className="h-full flex items-start overflow-hidden p-2 space-x-2">
+		<div className="h-full flex items-start overflow-hidden p-2 space-x-2 absolute top-0 left-0">
 			<div className="flex gap-2 flex-col h-full">
 				{tabs.map(({ id, icon }) => (
 					<button

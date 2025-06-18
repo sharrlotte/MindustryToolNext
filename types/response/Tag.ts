@@ -1,32 +1,36 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import TagGroup from '@/types/response/TagGroup';
 
-export type DetailTagDto = {
-	name: string;
-	icon: string;
-	color: string;
-	position: number;
-};
+import { z } from 'zod/v4';
 
-type Tag = {
-	name: string;
-	value: string;
-	color: string;
-	icon?: string;
-};
+export const DetailTagDtoSchema = z.object({
+	name: z.string(),
+	icon: z.string(),
+	color: z.string(),
+	position: z.number(),
+});
 
-export type TagDto = {
-	id: number;
-	name: string;
-	description: string;
-	categoryId: number;
-	position: number;
-	icon?: string;
-	modId?: string;
-	fullname: string;
-};
+export const TagSchema = z.object({
+	name: z.string(),
+	value: z.string(),
+	color: z.string(),
+	icon: z.string().optional(),
+});
 
-export default Tag;
+export const TagDtoSchema = z.object({
+	id: z.number(),
+	name: z.string(),
+	description: z.string(),
+	categoryId: z.number(),
+	position: z.number(),
+	icon: z.string().optional(),
+	modId: z.string().optional(),
+	fullname: z.string(),
+});
+
+export type DetailTagDto = z.infer<typeof DetailTagDtoSchema>;
+export type Tag = z.infer<typeof TagSchema>;
+export type TagDto = z.infer<typeof TagDtoSchema>;
 
 export class Tags {
 	static parseString(str: DetailTagDto) {

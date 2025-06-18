@@ -1,6 +1,8 @@
 import { Locale } from '@/i18n/config';
 import { AllTagGroup } from '@/types/response/TagGroup';
 
+import { z } from 'zod/v4';
+
 export const isServer = typeof window === 'undefined';
 export const isClient = !isServer;
 
@@ -70,6 +72,8 @@ export type UserRole = (typeof userRoles)[number];
 
 export const serverStatus = ['DOWN', 'UP', 'HOST', 'DELETED', 'NOT_RESPONSE', 'ERROR'] as const;
 export type ServerStatus = (typeof serverStatus)[number];
+
+export const ServerStatusSchema = z.enum(serverStatus);
 
 export const uploadStates = ['QUEUING', 'PROCESSING', 'ERROR', 'RETRY'] as const;
 export type UploadState = (typeof uploadStates)[number];

@@ -4,7 +4,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
+
 
 import DeleteButton from '@/components/button/delete.button';
 import ErrorMessage from '@/components/common/error-message';
@@ -20,10 +21,13 @@ import { toast } from '@/components/ui/sonner';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { CreateServerEnvSchema, createServerEnv, deleteServerEnv, getServerEnv } from '@/query/server';
-import ServerEnv from '@/types/response/ServerEnv';
+import { ServerEnv } from '@/types/response/ServerEnv';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+
+import { z } from 'zod/v4';
+
 
 type Props = {
 	id: string;

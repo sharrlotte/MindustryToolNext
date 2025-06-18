@@ -1,9 +1,15 @@
-import { ErrorStatus } from '@/constant/constant';
+import { errorStatus } from '@/constant/constant';
 
-export type ErrorReport = {
-	id: string;
-	content: any;
-	ip: string;
-	status: ErrorStatus;
-	createdAt: number;
-};
+import { z } from 'zod/v4';
+
+export const ErrorStatusSchema = z.enum(errorStatus);
+
+export const ErrorReportSchema = z.object({
+	id: z.string(),
+	content: z.any(),
+	ip: z.string(),
+	status: z.enum(errorStatus),
+	createdAt: z.number(),
+});
+
+export type ErrorReport = z.infer<typeof ErrorReportSchema>;
