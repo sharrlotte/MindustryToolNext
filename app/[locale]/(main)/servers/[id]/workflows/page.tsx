@@ -15,7 +15,7 @@ import { Background, ReactFlowProvider } from '@xyflow/react';
 export default function Page() {
 	return (
 		<ReactFlowProvider>
-			<div className="hidden grid-cols-[auto_1fr] sm:grid w-full h-full">
+			<div className="hidden sm:block w-full h-full">  
 				<DndProvider backend={HTML5Backend}>
 					<WorkflowEditorProvider>
 						<Background />

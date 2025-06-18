@@ -2,8 +2,6 @@ import { AxiosInstance } from 'axios';
 
 
 
-import { MetricUnit } from '@/lib/metric.utils';
-import { toForm } from '@/lib/utils';
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
 import { CreateServerRequest } from '@/types/request/CreateServerRequest';
@@ -28,8 +26,16 @@ import { ServerStats } from '@/types/response/ServerStats';
 import { GetWorkflowNodeDataSchema, WorkflowContextSchema, WorkflowNodeData } from '@/types/response/WorkflowContext';
 import { PaginationQuery } from '@/types/schema/search-query';
 
+
+
+import { MetricUnit } from '@/lib/metric.utils';
+import { toForm } from '@/lib/utils';
+
+
+
 import { WorkflowContext } from './../types/response/WorkflowContext';
 import { z } from 'zod/v4';
+
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
 	const result = await axios.delete(`/servers/${id}/files`, {
@@ -336,6 +342,8 @@ export async function getServerLoginMetrics(
 
 export async function getServerWorkflowNodes(axios: AxiosInstance, serverId: string): Promise<Record<string, WorkflowNodeData>> {
 	const result = await axios.get(`/servers/${serverId}/workflow/nodes`);
+
+	console.log(result.data);
 
 	return GetWorkflowNodeDataSchema.parse(result.data);
 }

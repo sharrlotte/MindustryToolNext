@@ -1,9 +1,7 @@
 import { z } from 'zod/v4';
 
+
 export const WorkflowNodeDataSchema = z.object({
-	id: z.number(),
-	x: z.number(),
-	y: z.number(),
 	name: z.string(),
 	group: z.string(),
 	color: z.string(),
@@ -11,7 +9,7 @@ export const WorkflowNodeDataSchema = z.object({
 		z.object({
 			name: z.string(),
 			type: z.string(),
-			value: z.string(),
+			value: z.string().optional().nullable(),
 			required: z.boolean(),
 			options: z.array(
 				z.object({
@@ -31,7 +29,6 @@ export const WorkflowNodeDataSchema = z.object({
 		z.object({
 			name: z.string(),
 			description: z.string(),
-			nextId: z.number(),
 		}),
 	),
 });

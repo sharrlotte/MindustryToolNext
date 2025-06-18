@@ -57,15 +57,15 @@ export default function WorkflowSideBar() {
 	};
 
 	return (
-		<div className="h-full flex items-start overflow-hidden p-2 space-x-2 absolute top-0 left-0">
+		<div className="h-full flex items-start overflow-hidden p-2 space-x-2 absolute top-0 left-0 z-50">
 			<div className="flex gap-2 flex-col h-full">
 				{tabs.map(({ id, icon }) => (
 					<button
 						key={id}
 						className={cn(
-							'cursor-pointer p-2 size-12 rounded-md bg-secondary/30 hover:bg-secondary/70 flex items-center justify-center aspect-square',
+							'cursor-pointer p-2 size-12 rounded-md bg-secondary/70 hover:bg-secondary flex items-center justify-center aspect-square', 
 							{
-								'bg-secondary/70 border': id === currentTab,
+								'bg-secondary border border-foreground': id === currentTab,
 							},
 						)}
 						onClick={() => setCurrentTab((prev) => (prev === id ? null : id))}
