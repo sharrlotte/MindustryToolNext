@@ -1,8 +1,12 @@
 import { useMemo, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
 
+
+
 import Tran from '@/components/common/tran';
 import { Input } from '@/components/ui/input';
+
+
 
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
@@ -11,7 +15,10 @@ import { groupBy } from '@/lib/utils';
 import { getServerWorkflowNodes } from '@/query/server';
 import { WorkflowNode } from '@/types/response/WorkflowNode';
 
+
+
 import { useQuery } from '@tanstack/react-query';
+
 
 export default function NodeListPanel() {
 	const [filter, setFilter] = useState('');
@@ -59,7 +66,7 @@ function InstructionItem({ item: { name, color } }: { item: WorkflowNode }) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	const [_, drag] = useDrag({
-		type: 'instruction',
+		type: 'workflow',
 		item: () => {
 			return { id: name };
 		},

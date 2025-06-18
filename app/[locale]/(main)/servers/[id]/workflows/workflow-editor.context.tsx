@@ -5,30 +5,34 @@ import { Suspense, createContext, useCallback, useContext, useEffect, useMemo, u
 import { useDrop } from 'react-dnd';
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
-
-
 import SideBar from '@/app/[locale]/(main)/servers/[id]/workflows/sidebar';
 import WorkflowNodeComponent, { WorkflowNodeProps } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
 import HelperLines from '@/app/[locale]/logic/helper-lines';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
-
-
 
 import { CatchError } from '@/components/common/catch-error';
 import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
-
-
 import useWorkflowNodes from '@/hooks/use-workflow-nodes';
 import { uuid } from '@/lib/utils';
 import { WorkflowNode } from '@/types/response/WorkflowNode';
 
-
-
-import { Edge, EdgeChange, MiniMap, NodeChange, ProOptions, ReactFlow, ReactFlowInstance, addEdge, applyEdgeChanges, applyNodeChanges, useReactFlow, useViewport } from '@xyflow/react';
-
+import {
+	Edge,
+	EdgeChange,
+	MiniMap,
+	NodeChange,
+	ProOptions,
+	ReactFlow,
+	ReactFlowInstance,
+	addEdge,
+	applyEdgeChanges,
+	applyNodeChanges,
+	useReactFlow,
+	useViewport,
+} from '@xyflow/react';
 
 export const nodeTypeMap = {
 	workflow: WorkflowNodeComponent,
@@ -101,7 +105,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const { setViewport } = useReactFlow();
 	const ref = useRef<HTMLDivElement>(null);
 	const viewport = useViewport();
-	const {data: nodeTypes} = useWorkflowNodes()
+	const { data: nodeTypes } = useWorkflowNodes();
 
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
@@ -171,6 +175,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 	const addNode = useCallback(
 		(type: string, p?: { x: number; y: number } | undefined | null) => {
+			console.log('Add node: ' + { type, p });
 			const position = screenToFlowPosition({
 				x: p?.x ?? window.innerWidth / 2 - 200,
 				y: p?.y ?? window.innerHeight / 2 - 200,
@@ -185,7 +190,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			}
 
 			const node = nodeTypes.find((n) => n.name === type);
-			
+
 			if (!node) {
 				toast.error(<span>{`Node not found: ${type}`}</span>);
 				return;
@@ -358,7 +363,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			setShowMiniMap,
 			setShowLiveCode,
 		}),
-		[ redo, undo, addNode, setShowMiniMap, setShowLiveCode],
+		[redo, undo, addNode, setShowMiniMap, setShowLiveCode],
 	);
 
 	const [{ handlerId }, drop] = useDrop<any, void, { handlerId: Identifier | null }>({
