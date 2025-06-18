@@ -95,7 +95,7 @@ export async function getSchematicUploadCount(
 
 export const CreateSchematicSchema = z.object({
 	name: z.string().min(1).max(128),
-	description: z.string().max(1024).optional(),
+	description: z.string().max(1024),
 	data: z.any(),
 	tags: TAG_GROUP_SCHEMA,
 });

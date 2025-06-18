@@ -1,7 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+
+
 
 import DeleteButton from '@/components/button/delete.button';
 import VerifyButton from '@/components/button/verify.button';
@@ -14,14 +15,21 @@ import BackButton from '@/components/ui/back-button';
 import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
+
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { deletePost, verifyPost } from '@/query/post';
 import VerifyPostRequest from '@/types/request/VerifyPostRequest';
 import { PostDetail } from '@/types/response/PostDetail';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { TagGroup, TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation } from '@tanstack/react-query';
+
+
+
+import { useRouter } from 'next/navigation';
+
 
 type UploadPostDetailCardProps = {
 	post: PostDetail;

@@ -21,7 +21,7 @@ export async function getRoles(axios: AxiosInstance): Promise<RoleWithAuthoritie
 }
 
 export const CreateRoleSchema = z.object({
-	position: z.coerce.number().int().min(0).max(32767),
+	position: z.number().int().min(0).max(32767),
 	name: z.string().min(1).max(100),
 	description: z.string(),
 	color: z.string(),
@@ -36,7 +36,7 @@ export async function createRole(axios: AxiosInstance, payload: CreateRoleReques
 }
 
 export const UpdateRoleSchema = z.object({
-	position: z.coerce.number().int().min(0).max(32767),
+	position: z.number().int().min(0).max(32767),
 	name: z.string().min(1).max(100),
 	description: z.string(),
 	color: z.string(),

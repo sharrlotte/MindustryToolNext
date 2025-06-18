@@ -1,17 +1,25 @@
-import { useRouter } from 'next/navigation';
 import React from 'react';
+
+
 
 import VerifyButton from '@/components/button/verify.button';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
 
+
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { verifyMap } from '@/query/map';
 import VerifyMapRequest from '@/types/request/VerifyMapRequest';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { TagGroup, TagGroups } from '@/types/response/TagGroup';
 
 import { useMutation } from '@tanstack/react-query';
+
+
+
+import { useRouter } from 'next/navigation';
+
 
 type VerifyMapButtonProps = {
 	id: string;

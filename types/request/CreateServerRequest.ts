@@ -1,11 +1,13 @@
 import { ServerModes } from '@/types/request/UpdateServerRequest';
 
+
+
 import { z } from 'zod/v4';
 
 export const CreateServerSchema = z.object({
 	name: z.string().min(3).max(100),
 	description: z.string().min(3).max(200),
-	mode: z.enum(ServerModes).default('SURVIVAL'),
+	mode: z.enum(ServerModes),
 	hostCommand: z.string().max(1000).optional(),
 	gamemode: z.string().max(100).optional(),
 	managerId: z.string().max(100).optional().nullable(),

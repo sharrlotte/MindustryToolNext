@@ -1,24 +1,15 @@
 'use client';
 
 import { Share2Icon } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
+
+
 
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
 import CommentSection from '@/components/common/comment-section';
 import CreatedAt from '@/components/common/created-at';
-import {
-	Detail,
-	DetailActions,
-	DetailAuthor,
-	DetailContent,
-	DetailDescription,
-	DetailHeader,
-	DetailImage,
-	DetailInfo,
-	DetailTitle,
-} from '@/components/common/detail';
+import { Detail, DetailActions, DetailAuthor, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
 import JsonDisplay from '@/components/common/json-display';
 import ScrollContainer from '@/components/common/scroll-container';
 import SizeCard from '@/components/common/size-card';
@@ -28,9 +19,14 @@ import VerifyMapButton from '@/components/map/verify-map.button';
 import TagSelector from '@/components/search/tag-selector';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+
+
 import env from '@/constant/env';
 import { MapDetail } from '@/types/response/MapDetail';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { TagGroup, TagGroups } from '@/types/response/TagGroup';
+
+import { useParams } from 'next/navigation';
+
 
 type UploadMapDetailCardProps = {
 	map: MapDetail;

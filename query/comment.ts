@@ -45,10 +45,9 @@ export async function deleteCommentById(axios: AxiosInstance, id: string): Promi
 export const CreateCommentSchema = z.object({
 	content: z.string().min(1).max(1024),
 	attachments: z
-		.array(z.object({ url: z.string().min(5).max(100), file: z.any().nullable() }))
+		.array(z.object({ url: z.string().min(5).max(100), file: z.any().nullable().optional() }))
 		.min(0)
-		.max(5)
-		.default([]),
+		.max(5),
 });
 
 export type CreateCommentRequest = z.infer<typeof CreateCommentSchema>;

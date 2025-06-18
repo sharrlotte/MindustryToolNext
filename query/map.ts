@@ -99,7 +99,7 @@ export const CreateMapSchema = z.object({
 	name: z.string().min(1).max(128),
 	description: z.string().max(1024).optional(),
 	file: z.any(),
-	isPrivate: z.boolean().default(false),
+	isPrivate: z.boolean(),
 	tags: TAG_GROUP_SCHEMA,
 });
 

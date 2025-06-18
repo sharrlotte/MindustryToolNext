@@ -3,9 +3,10 @@ import useClientApi from '@/hooks/use-client';
 import { groupBy } from '@/lib/utils';
 import { getTags } from '@/query/tag';
 import { Mod } from '@/types/response/Mod';
-import TagGroup, { AllTagGroup } from '@/types/response/TagGroup';
+import { AllTagGroup, TagGroup } from '@/types/response/TagGroup';
 
 import { useQueries } from '@tanstack/react-query';
+
 
 export default function useTags(type: TagType, mod: Mod[]): TagGroup[]  {
 	const axios = useClientApi();

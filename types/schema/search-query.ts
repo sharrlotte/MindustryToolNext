@@ -5,6 +5,8 @@ import { locales } from '@/i18n/config';
 import { sortTag } from '@/types/response/SortTag';
 import { verifyStatus } from '@/types/response/Status';
 
+
+
 import { z } from 'zod/v4';
 
 type Pageable = {
@@ -14,8 +16,14 @@ type Pageable = {
 export default Pageable;
 
 export const sortSchema = z.enum(sortTag).default(defaultSortTag).optional().catch(defaultSortTag);
-export const sizeSchema = z.coerce.number().gte(1).default(DEFAULT_PAGINATION_SIZE).catch(DEFAULT_PAGINATION_SIZE);
-export const pageSchema = z.coerce.number().gte(0).default(0).catch(0);
+
+export const sizeSchema = z
+	.preprocess(Number, z.number().int().min(1).max(100))
+	.default(DEFAULT_PAGINATION_SIZE)
+	.catch(DEFAULT_PAGINATION_SIZE);
+
+export const pageSchema = z.preprocess(Number, z.number().int().min(0)).default(0).catch(0);
+    
 export const nameSchema = z.string().optional();
 export const roleSchema = z.enum(userRoles).optional();
 export const isBannedSchema = z.boolean().optional();
@@ -136,5 +144,5 @@ export type CommentSort = (typeof commentSorts)[number];
 
 export const CommentPaginationQuerySchema = z.object({
 	...PaginationParam,
-	sort: z.enum(commentSorts).default('newest').catch('newest'),
+	sort: z.enum(commentSorts).default('newest').catch('newest'), 
 });

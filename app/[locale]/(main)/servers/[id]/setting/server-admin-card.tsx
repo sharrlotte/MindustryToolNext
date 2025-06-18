@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import { XIcon } from 'lucide-react';
 
+
+
 import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { toast } from '@/components/ui/sonner';
@@ -11,9 +13,10 @@ import IdUserCard from '@/components/user/id-user-card';
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import { deleteServerAdmin } from '@/query/server';
-import ServerAdmin from '@/types/response/ServerAdmin';
+import { ServerAdmin } from '@/types/response/ServerAdmin';
 
 import { useMutation } from '@tanstack/react-query';
+
 
 type ServerAdminCardProps = {
 	id: string;

@@ -1,10 +1,13 @@
 import React, { useMemo } from 'react';
 
+
+
 import TagBadge from '@/components/tag/tag-badge';
 
 import useTagSearch from '@/hooks/use-tag-search';
-import Tag from '@/types/response/Tag';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { Tag } from '@/types/response/Tag';
+import { TagGroup, TagGroups } from '@/types/response/TagGroup';
+
 
 const MAX_DISPLAYED = 4;
 

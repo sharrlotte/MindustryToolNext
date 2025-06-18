@@ -2,20 +2,20 @@ import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
 import { groupBy } from '@/lib/utils';
 import { DetailTagDto, TagDto, Tags } from '@/types/response/Tag';
 
-type TagGroup = {
-  name: string;
-  values: {
-    name: string;
-    modId?: string;
-    icon?: string;
-    count: number;
-  }[];
-  color: string;
-  duplicate: boolean;
-  position: number;
+
+export type TagGroup = {
+	name: string;
+	values: {
+		name: string;
+		modId?: string;
+		icon?: string;
+		count: number;
+	}[];
+	color: string;
+	duplicate: boolean;
+	position: number;
 };
 
-export default TagGroup;
 
 export type TagGroupDto = {
   id: number;

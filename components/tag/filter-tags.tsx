@@ -1,10 +1,15 @@
 import React, { useCallback, useMemo } from 'react';
 
+
+
 import MultipleFilerTags from '@/components/tag/multiple-filter-tags';
 import SingeFilerTags from '@/components/tag/single-filter-tags';
 
+
+
 import { useI18n } from '@/i18n/client';
-import TagGroup from '@/types/response/TagGroup';
+import { TagGroup } from '@/types/response/TagGroup';
+
 
 export type FilterTag = { name: string; icon?: string };
 

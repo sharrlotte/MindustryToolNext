@@ -1,7 +1,10 @@
 import { TAG_DEFAULT_COLOR, TAG_SEPARATOR } from '@/constant/constant';
-import TagGroup from '@/types/response/TagGroup';
+import { TagGroup } from '@/types/response/TagGroup';
+
+
 
 import { z } from 'zod/v4';
+
 
 export const DetailTagDtoSchema = z.object({
 	name: z.string(),

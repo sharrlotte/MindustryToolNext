@@ -1,5 +1,4 @@
 import { SearchIcon } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
@@ -19,8 +18,10 @@ import { PresetType } from '@/constant/constant';
 import useTags from '@/hooks/use-tags';
 import { cn } from '@/lib/utils';
 import { Mod } from '@/types/response/Mod';
-import Tag from '@/types/response/Tag';
-import TagGroup from '@/types/response/TagGroup';
+import { Tag } from '@/types/response/Tag';
+import { TagGroup } from '@/types/response/TagGroup';
+
+import dynamic from 'next/dynamic';
 
 const FilterTags = dynamic(() => import('@/components/tag/filter-tags'));
 
