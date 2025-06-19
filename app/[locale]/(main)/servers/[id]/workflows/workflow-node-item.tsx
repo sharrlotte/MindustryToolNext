@@ -63,7 +63,7 @@ function InputNodeComponent({ data, parentId }: NodeItemProps) {
 
 	return (
 		<>
-			<div className="text-muted-foreground text-sm">
+			<div className="text-muted-foreground text-sm flex items-center">
 				<span>{name}</span>
 				{required && <span className="text-destructive-foreground">*</span>}
 			</div>
@@ -119,7 +119,7 @@ function OptionNodeComponent({ data, parentId }: NodeItemProps) {
 
 	return (
 		<>
-			<div className="text-muted-foreground text-sm">
+			<div className="text-muted-foreground text-sm flex items-center">
 				<span>{name}</span>
 				{required && <span className="text-destructive-foreground">*</span>}
 			</div>
