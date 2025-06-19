@@ -654,6 +654,9 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 		onSuccess: () => {
 			toast.success(<Tran text="upload.success" />);
 		},
+		onError: (error) => {
+			toast.error(<Tran text="upload.fail" />, { error });
+		},
 	});
 
 	return (

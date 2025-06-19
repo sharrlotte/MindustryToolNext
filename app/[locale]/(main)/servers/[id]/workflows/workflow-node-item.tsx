@@ -91,10 +91,18 @@ function BooleanNodeComponent({ data, parentId }: NodeItemProps) {
 	const { setNode } = useWorkflowEditor();
 	const { name, value } = data;
 
+	let parsed: boolean = false;
+
+	try {
+		parsed = Boolean(value ?? 'false');
+	} catch (e) {
+		parsed = false;
+	}
+
 	return (
 		<div className="flex gap-1 items-center justify-between">
 			<span className="text-muted-foreground text-sm">{name}</span>
-			<Switch />
+			<Switch checked={parsed} onCheckedChange={(value) => setNode(parentId, (prev) => updateConsumer(prev, name, value))} />
 		</div>
 	);
 }
