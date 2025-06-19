@@ -343,8 +343,6 @@ export async function getServerLoginMetrics(
 export async function getServerWorkflowNodes(axios: AxiosInstance, serverId: string): Promise<Record<string, WorkflowNodeData>> {
 	const result = await axios.get(`/servers/${serverId}/workflow/nodes`);
 
-	console.log(result.data);
-
 	return GetWorkflowNodeDataSchema.parse(result.data);
 }
 
