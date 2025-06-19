@@ -52,7 +52,7 @@ function NodeItemInternal(props: NodeItemProps) {
 
 function InputNodeComponent({ data, parentId }: NodeItemProps) {
 	const { variables, setNode } = useWorkflowEditor();
-	const { name, value, type } = data;
+	const { name, value, type, required } = data;
 	const [focus, setFocus] = useState(false);
 
 	const matchedVariable = value
@@ -63,7 +63,10 @@ function InputNodeComponent({ data, parentId }: NodeItemProps) {
 
 	return (
 		<>
-			<span className="text-muted-foreground text-sm">{name}</span>
+			<div className="text-muted-foreground text-sm">
+				<span>{name}</span>
+				{required && <span className="text-destructive-foreground">*</span>}
+			</div>
 			<div className="relative">
 				<Input
 					className="bg-transparent min-w-10 max-w-20 sm:max-w-40 md:max-w-60 focus:outline-none" //
@@ -116,7 +119,10 @@ function OptionNodeComponent({ data, parentId }: NodeItemProps) {
 
 	return (
 		<>
-			<span className="text-muted-foreground text-sm">{name}</span>
+			<div className="text-muted-foreground text-sm">
+				<span>{name}</span>
+				{required && <span className="text-destructive-foreground">*</span>}
+			</div>
 			<ComboBox<string>
 				className="w-full"
 				value={v ?? first}
