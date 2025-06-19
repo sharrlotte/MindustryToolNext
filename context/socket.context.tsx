@@ -4,9 +4,10 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { toast } from '@/components/ui/sonner';
 
+import SocketClient, { SocketState } from '@/types/data/SocketClient';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
-import SocketClient, { SocketState } from '@/types/data/SocketClient';
 
 type SocketContextType = {
 	socket: SocketClient;
@@ -39,12 +40,16 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		if (authState !== 'authenticated') return;
 
+		if (socket.getState() === 'connected') {
+			setState(socket.getState());
+		}
+
 		if (socket.getState() !== 'connected') {
 			socket.connect();
 		}
 
 		socket.onDisconnect(() => {
-			setState('disconnected');
+			setState(socket.getState());
 
 			if (!isShowDisconnected.current) {
 				isShowDisconnected.current = true;
@@ -54,24 +59,14 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 			}
 		});
 
-		if (socket.getState() === 'connected') {
-			setState('connected');
-		}
-
 		socket.onConnect(() => {
-			setState('connected');
+			setState(socket.getState());
 		});
 
 		socket.onError(() => {
 			setState(socket.getState());
 		});
 	}, [socket, authState]);
-
-	useEffect(() => {
-		return () => {
-			socket.close();
-		};
-	}, [socket]);
 
 	return (
 		<SocketContext.Provider
