@@ -226,6 +226,14 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 						node.data.producers = base.producers;
 					}
 
+					for (const consumer of node.data.consumers) {
+						const baseConsumer = base.consumers.find((c) => c.name === consumer.name);
+
+						if (baseConsumer) {
+							consumer.options = baseConsumer.options;
+						}
+					}
+
 					return true;
 				}),
 			);
@@ -651,12 +659,9 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server', id, 'workflow', 'load'],
 		mutationFn: () => loadServerWorkflow(axios, id, payload),
-		onSuccess: () => {
-			toast.success(<Tran text="upload.success" />);
-		},
-		onError: (error) => {
-			toast.error(<Tran text="upload.fail" />, { error });
-		},
+		onMutate: () => toast.loading(<Tran text="upload.loading" />),
+		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
+		onError: (error, _variables, id) => toast.error(<Tran text="upload.fail" />, { error, id }),
 	});
 
 	return (
