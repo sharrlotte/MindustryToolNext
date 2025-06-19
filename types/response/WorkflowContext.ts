@@ -29,6 +29,7 @@ export const WorkflowNodeDataSchema = z.object({
 		z.object({
 			name: z.string(),
 			description: z.string().optional().nullable(),
+			nextId: z.string().optional().nullable(),
 		}),
 	),
 	inputs: z.number(),

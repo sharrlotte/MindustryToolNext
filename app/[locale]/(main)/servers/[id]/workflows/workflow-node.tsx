@@ -2,12 +2,13 @@ import { memo } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 import NodeItem from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node-item';
+import { updateOutput } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
 import { CatchError } from '@/components/common/catch-error';
 
 import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
-import { Handle, Node, NodeProps, Position } from '@xyflow/react';
+import { Edge, Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { Connection, useNodeConnections } from '@xyflow/react';
 
 export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y' | 'id'>, 'workflow'>;
@@ -32,6 +33,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 						backgroundColor: color,
 					}}
 				>
+					<span>{id}</span>
 					<span>{name}</span>
 					<span className="border-white bg-white/50 backdrop-brightness-90 backdrop-blur-sm rounded-full px-1.5">{group}</span>
 				</div>
@@ -62,9 +64,14 @@ export function OutputHandle({
 	offset,
 	index,
 }: { parentId: string; offset: number; index: number } & WorkflowNodeData['outputs'][number]) {
-	const { setEdges, setNodes } = useWorkflowEditor();
+	const { nodes, setEdges, setNode } = useWorkflowEditor();
 
 	const id = `${parentId}-source-handle-${index}`;
+	const parent = nodes.find((node) => node.id === parentId);
+
+	if (!parent) {
+		throw new Error(`Parent node with id ${parentId} not found.`);
+	}
 
 	const connections = useNodeConnections({
 		handleType: 'source',
@@ -73,25 +80,30 @@ export function OutputHandle({
 			setEdges((prevEdges) =>
 				prevEdges.map((edge) => {
 					if (edge.id === (connections[0] as unknown as any).edgeId) {
-						console.dir({ edge, connection: connections[0] });
-
 						return { ...edge, label: name === 'Next' ? '' : name };
 					}
 					return edge;
 				}),
 			);
+
+			setNode(parentId, (prev) => updateOutput(prev, name, connections[0].target));
 		},
 	});
 
+	const handle = nodes.find((node) => node.id === parentId)?.data.outputs?.find((output) => output.name === name);
+
 	return (
-		<Handle
-			className="size-3 bg-emerald-500"
-			id={id}
-			type="source"
-			style={{ marginTop: offset * 20 + 'px' }}
-			position={Position.Right}
-			isConnectable={connections.length < 1}
-		/>
+		<>
+			<span>{handle?.nextId}</span>
+			<Handle
+				className="size-3 bg-emerald-500"
+				id={id}
+				type="source"
+				style={{ marginTop: offset * 20 + 'px' }}
+				position={Position.Right}
+				isConnectable={connections.length < 1}
+			/>
+		</>
 	);
 }
 
