@@ -86,7 +86,7 @@
 	}
 
 	div {
-		@apply box-border border-border;
+		@apply box-border border-border !importance;
 	}
 
 	h1 {
