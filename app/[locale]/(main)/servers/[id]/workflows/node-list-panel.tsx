@@ -83,7 +83,7 @@ function WorkflowItem({ item: { name, color } }: { item: WorkflowNodeData }) {
 	drag(ref);
 
 	return (
-		<div className="text-white p-2 border rounded-md capitalize cursor-pointer" style={{ backgroundColor: color }} ref={ref}>
+		<div className="text-white p-2 border rounded-md capitalize cursor-pointer select-none" style={{ backgroundColor: color }} ref={ref}>
 			{name}
 		</div>
 	);

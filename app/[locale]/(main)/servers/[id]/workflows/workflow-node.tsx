@@ -8,7 +8,7 @@ import { CatchError } from '@/components/common/catch-error';
 
 import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
-import { Edge, Handle, Node, NodeProps, Position } from '@xyflow/react';
+import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { Connection, useNodeConnections } from '@xyflow/react';
 
 export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y'>, 'workflow'>;
@@ -88,8 +88,6 @@ export function OutputHandle({
 			setNode(parentId, (prev) => updateOutput(prev, name, connections[0].target));
 		},
 	});
-
-	const handle = nodes.find((node) => node.id === parentId)?.data.outputs?.find((output) => output.name === name);
 
 	return (
 		<Handle

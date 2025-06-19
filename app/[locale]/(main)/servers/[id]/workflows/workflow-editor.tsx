@@ -8,11 +8,11 @@ import { createPortal } from 'react-dom';
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
 import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
+import WorkflowNodeComponent from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
 import HelperLines from '@/app/[locale]/logic/helper-lines';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
 
 import { CatchError } from '@/components/common/catch-error';
-import CreatedAt from '@/components/common/created-at';
 import ErrorMessage from '@/components/common/error-message';
 import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
@@ -51,7 +51,7 @@ import {
 import dynamic from 'next/dynamic';
 
 const PropertiesPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/properties-panel'));
-const WorkflowNodeComponent = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/workflow-node'));
+
 const WorkflowSideBar = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/workflow-sidebar'));
 
 type Node = WorkflowNode;
@@ -246,7 +246,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		} finally {
 			setLoadState('loaded');
 		}
-	}, [id, viewport, nodeTypes, setViewport]);
+	}, [id, viewport, nodeTypes, setViewport, loadState]);
 
 	const variables = useMemo(
 		() =>
@@ -589,7 +589,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					</Suspense>
 				</CatchError>
 			</ReactFlow>
-			{showPropertiesPanel && <PropertiesPanel node={showPropertiesPanel} />}
+			<Suspense>{showPropertiesPanel && <PropertiesPanel node={showPropertiesPanel} />}</Suspense>
 		</WorkflowEditorContext.Provider>
 	);
 }

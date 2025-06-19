@@ -1,5 +1,7 @@
 import { z } from 'zod/v4';
 
+const WorkflowConsumerUnits = ['SECOND'] as const;
+
 export const WorkflowNodeDataSchema = z.object({
 	id: z.string().optional().nullable(),
 	name: z.string(),
@@ -11,6 +13,7 @@ export const WorkflowNodeDataSchema = z.object({
 			type: z.string(),
 			value: z.string().optional().nullable(),
 			required: z.boolean(),
+			unit: z.enum(WorkflowConsumerUnits).optional().nullable(),
 			defaultValue: z.any().optional().nullable(),
 			options: z.array(
 				z.object({

@@ -35,6 +35,10 @@ function NodeItemInternal(props: NodeItemProps) {
 	// 	return <OptionNodeComponent {...(props as NodeItemProps<OptionItem>)} />;
 	// }
 
+	if (data.unit === 'SECOND') {
+		return <SecondNodeComponent {...props} />;
+	}
+
 	if (data.options && data.options.length > 0) {
 		return <OptionNodeComponent {...props} />;
 	}
@@ -48,6 +52,46 @@ function NodeItemInternal(props: NodeItemProps) {
 	}
 
 	return <ErrorMessage error={{ message: 'Invalid consumer type: ' + data.type + ' on consumer: ' + data.name }} />;
+}
+
+function SecondNodeComponent({ data, parentId }: NodeItemProps) {
+	const { variables, setNode } = useWorkflowEditor();
+	const { name, value, type, required } = data;
+	const [focus, setFocus] = useState(false);
+
+	const matchedVariable = value
+		? Object.values(variables).filter((variable) => variable.includes(value))
+		: Object.values(variables);
+
+	const showSuggestion = focus && type.includes('variable') && matchedVariable.length > 0;
+
+	return (
+		<>
+			<div className="text-muted-foreground text-sm flex items-center">
+				<span>{name}</span>
+				{required && <span className="text-destructive-foreground">*</span>}
+			</div>
+			<div className="relative">
+				<Input
+					className="bg-transparent min-w-10 max-w-20 sm:max-w-40 md:max-w-60 focus:outline-none" //
+					type="text"
+					value={value ?? value ?? ''}
+					onChange={(e) => setNode(parentId, (prev) => updateConsumer(prev, name, e.currentTarget.value))}
+					onFocus={() => setFocus(true)}
+					onBlur={() => setTimeout(() => setFocus(false), 100)}
+				/>
+				<div className={cn('absolute -bottom-1 translate-y-[100%] z-50 hidden', { block: showSuggestion })}>
+					<div className="p-4 border rounded-md bg-card min-w-60">
+						{matchedVariable.map((variable) => (
+							<div key={variable} onClick={() => setNode(parentId, (prev) => ({ ...prev, [data.name]: variable }))}>
+								{variable}
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+		</>
+	);
 }
 
 function InputNodeComponent({ data, parentId }: NodeItemProps) {
