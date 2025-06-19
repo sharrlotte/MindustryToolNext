@@ -17,7 +17,7 @@ type NodeItemProps = { variant: 'inline' | 'panel'; parentId: string; data: Work
 export default function NodeItem(props: NodeItemProps) {
 	return (
 		<div
-			className={cn('flex flex-col gap-1 z-50', {
+			className={cn('flex flex-col gap-1 z-50 nowheel', {
 				'bg-card rounded-sm px-2 py-1 border': props.variant === 'inline',
 			})}
 		>

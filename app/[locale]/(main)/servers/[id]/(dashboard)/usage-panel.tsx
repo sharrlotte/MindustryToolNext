@@ -6,11 +6,13 @@ import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
 import CpuProgress from '@/components/server/cpu-progress';
 
-import env from '@/constant/env';
-import useSse from '@/hooks/use-sse';
-import { byteToSize } from '@/lib/utils';
 import { ServerLiveStats } from '@/types/response/ServerLiveStats';
 import { ServerPlan } from '@/types/response/ServerPlan';
+
+import useSse from '@/hooks/use-sse';
+
+import env from '@/constant/env';
+import { byteToSize } from '@/lib/utils';
 
 type UsagePanelProps = {
 	id: string;
@@ -48,7 +50,7 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalR
 				<Tran className="font-bold" text="metric.ram-usage" />
 				<span className="text-muted-foreground">
 					{byteToSize(jvmRamUsage * 1024 * 1024)} / {byteToSize(totalRam * 1024 * 1024)} (
-					{Math.ceil((jvmRamUsage ?? 1 / totalRam ?? 1) * 10000) / 100}%)
+					{Math.ceil((jvmRamUsage ?? 1 / totalRam ?? 1) * 10) / 100}%)
 				</span>
 			</div>
 			<RamUsageChart serverRamUsage={serverRam} nativeRamUsage={nativeRam} totalRam={totalRam * 1024 * 1024} />
