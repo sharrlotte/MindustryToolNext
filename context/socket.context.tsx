@@ -4,9 +4,10 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react';
 
 import { toast } from '@/components/ui/sonner';
 
+import SocketClient, { SocketState } from '@/types/data/SocketClient';
+
 import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
-import SocketClient, { SocketState } from '@/types/data/SocketClient';
 
 type SocketContextType = {
 	socket: SocketClient;
@@ -66,12 +67,6 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 			setState(socket.getState());
 		});
 	}, [socket, authState]);
-
-	useEffect(() => {
-		return () => {
-			socket.close();
-		};
-	}, [socket]);
 
 	return (
 		<SocketContext.Provider
