@@ -1,7 +1,5 @@
 import { AxiosInstance } from 'axios';
 
-
-
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
 import { CreateServerRequest } from '@/types/request/CreateServerRequest';
@@ -26,16 +24,11 @@ import { ServerStats } from '@/types/response/ServerStats';
 import { GetWorkflowNodeDataSchema, WorkflowContextSchema, WorkflowNodeData } from '@/types/response/WorkflowContext';
 import { PaginationQuery } from '@/types/schema/search-query';
 
-
-
 import { MetricUnit } from '@/lib/metric.utils';
 import { toForm } from '@/lib/utils';
 
-
-
 import { WorkflowContext } from './../types/response/WorkflowContext';
 import { z } from 'zod/v4';
-
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
 	const result = await axios.delete(`/servers/${id}/files`, {
@@ -346,8 +339,18 @@ export async function getServerWorkflowNodes(axios: AxiosInstance, serverId: str
 	return GetWorkflowNodeDataSchema.parse(result.data);
 }
 
-export async function loadServerWorkflow(axios: AxiosInstance, serverId: string): Promise<WorkflowContext> {
-	const result = await axios.post(`/servers/${serverId}/workflow`);
+export async function getServerWorkflowVersion(axios: AxiosInstance, serverId: string): Promise<number> {
+	const result = await axios.get(`/servers/${serverId}/workflow/version`);
+
+	return result.data;
+}
+
+export async function loadServerWorkflow(
+	axios: AxiosInstance,
+	serverId: string,
+	payload: WorkflowContext,
+): Promise<WorkflowContext> {
+	const result = await axios.post(`/servers/${serverId}/workflow`, payload);
 
 	return WorkflowContextSchema.parse(result.data);
 }

@@ -10,17 +10,25 @@ import HelperLines from '@/app/[locale]/logic/helper-lines';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
 
 import { CatchError } from '@/components/common/catch-error';
+import CreatedAt from '@/components/common/created-at';
+import ErrorMessage from '@/components/common/error-message';
 import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/sonner';
 
 import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
+import { getServerWorkflowVersion, loadServerWorkflow } from '@/query/server';
+
+import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
 import useWorkflowNodes from '@/hooks/use-workflow-nodes';
 
 import { uuid } from '@/lib/utils';
 
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
 	Edge,
 	EdgeChange,
@@ -558,11 +566,79 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 						<div className="absolute z-50 bottom-0 top-0 right-1 p-1 space-x-1 flex text-sm text-muted-foreground">
 							<span>x: {Math.round(viewport.x)}</span>
 							<span>y: {Math.round(viewport.y)}</span>
+							<Suspense>
+								<UploadContextButton />
+							</Suspense>
 						</div>
 					</Suspense>
 				</CatchError>
 			</ReactFlow>
 			{showPropertiesPanel && <PropertiesPanel node={showPropertiesPanel} />}
 		</WorkflowEditorContext.Provider>
+	);
+}
+
+function UploadContextButton() {
+	const id = usePathId();
+	const axios = useClientApi();
+	const { data, isLoading, isError, error } = useQuery({
+		queryKey: ['server', id, 'workflow', 'version'],
+		queryFn: () => getServerWorkflowVersion(axios, id),
+	});
+
+	const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
+	const localVersion = result[id]?.createdAt ?? 0;
+
+	if (isLoading) {
+		return undefined;
+	}
+
+	if (isError) {
+		return <ErrorMessage error={error} />;
+	}
+
+	return (
+		<div>
+			{(data ?? 0) > localVersion && <span className="text-destructive-foreground">Your local version is outdated</span>}
+			<Dialog>
+				<DialogTrigger>Load workflow</DialogTrigger>
+				<DialogContent>
+					<UploadWorkflowDialog version={localVersion} />
+				</DialogContent>
+			</Dialog>
+		</div>
+	);
+}
+
+function UploadWorkflowDialog({ version }: { version: number }) {
+	const id = usePathId();
+	const axios = useClientApi();
+
+	const { nodes } = useWorkflowEditor();
+	const payload = useMemo(() => {
+		const result = nodes.filter((node) => node.type === 'workflow').map((node) => node.data);
+
+		return {
+			nodes: result,
+			createdAt: version,
+		};
+	}, [nodes, version]);
+
+	const { mutate, isPending } = useMutation({
+		mutationKey: ['server', id, 'workflow', 'load'],
+		mutationFn: () => loadServerWorkflow(axios, id, payload),
+		onSuccess: () => {
+			toast.success(<Tran text="upload.success" />);
+		},
+	});
+
+	return (
+		<>
+			<DialogTitle>Confirm</DialogTitle>
+			<DialogClose>Cancel</DialogClose>
+			<DialogClose onClick={() => mutate()} disabled={isPending || !payload}>
+				Ok
+			</DialogClose>
+		</>
 	);
 }

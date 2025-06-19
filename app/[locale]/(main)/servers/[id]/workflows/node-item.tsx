@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor.context';
+import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 import { updateConsumer } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
 import ComboBox from '@/components/common/combo-box';

@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import './style.css';
 import '@xyflow/react/dist/style.css';
 
-import { WorkflowEditorProvider } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor.context';
+import { WorkflowEditorProvider } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 
 import Tran from '@/components/common/tran';
 

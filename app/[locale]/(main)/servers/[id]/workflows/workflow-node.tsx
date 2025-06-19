@@ -1,7 +1,7 @@
 import { memo } from 'react';
 
 import NodeItem from '@/app/[locale]/(main)/servers/[id]/workflows/node-item';
-import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor.context';
+import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 
 import { CatchError } from '@/components/common/catch-error';
 
