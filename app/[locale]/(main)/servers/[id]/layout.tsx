@@ -19,11 +19,12 @@ import NavLinkContainer from '@/components/common/nav-link-container';
 import { NotificationNumber } from '@/components/common/notification-number';
 import Tran from '@/components/common/tran';
 
-import { NavLinkProvider } from '@/context/nav-link.context';
-import { useSession } from '@/context/session.context';
 import useClientApi from '@/hooks/use-client';
 import useServer from '@/hooks/use-server';
 import useServerPlugins from '@/hooks/use-server-plugins';
+
+import { NavLinkProvider } from '@/context/nav-link.context';
+import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import ProtectedRoute from '@/layout/protected-route';
 import { Filter } from '@/lib/utils';
@@ -166,6 +167,7 @@ export default function Layout({ params, children }: LayoutProps) {
 							<NavLink {...item} root={`servers/${id}`} />
 						</ProtectedElement>
 					))}
+					<div id="server-nav-right" className="ml-auto"></div>
 				</NavLinkContainer>
 			</NavLinkProvider>
 			<div className="flex overflow-hidden flex-col w-full h-full relative" key="child">

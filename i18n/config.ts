@@ -8,4 +8,5 @@ export const i18nCachePrefix = 'i18next';
 export type Locale = (typeof locales)[number];
 
 export type TranslateFunction = (key: string, args?: Record<string, any>) => string;
+
 export const defaultNamespace: string | string[] = ['common', 'tags'];

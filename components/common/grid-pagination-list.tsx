@@ -2,7 +2,8 @@
 
 import { AxiosInstance } from 'axios';
 import React, { ReactNode, Suspense, useMemo } from 'react';
-import { z } from 'zod';
+
+
 
 import LoadingSpinner from '@/components/common/loading-spinner';
 import NoResult from '@/components/common/no-result';
@@ -13,6 +14,9 @@ import { cn } from '@/lib/utils';
 import { QuerySchema } from '@/types/schema/search-query';
 
 import { QueryKey, useQuery } from '@tanstack/react-query';
+
+import { z } from 'zod/v4';
+
 
 type Props<T, P extends QuerySchema> = {
 	className?: string;

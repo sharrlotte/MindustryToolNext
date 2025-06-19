@@ -1,8 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { z } from 'zod';
 
-import { MetricUnit } from '@/lib/metric.utils';
-import { toForm } from '@/lib/utils';
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
 import { CreateServerRequest } from '@/types/request/CreateServerRequest';
@@ -11,21 +8,27 @@ import { KickInfo } from '@/types/response/KickInfo';
 import { Player } from '@/types/response/Player';
 import { PlayerInfo } from '@/types/response/PlayerInfo';
 import { PostServerResponse } from '@/types/response/PostServerResponse';
-import ServerAdmin from '@/types/response/ServerAdmin';
+import { ServerAdmin } from '@/types/response/ServerAdmin';
 import { ServerBuildLog } from '@/types/response/ServerBuildLog';
 import { ServerCommandDto } from '@/types/response/ServerCommand';
 import { ServerDto } from '@/types/response/ServerDto';
-import ServerEnv from '@/types/response/ServerEnv';
+import { ServerEnv } from '@/types/response/ServerEnv';
 import { ServerFile } from '@/types/response/ServerFile';
-import ServerLoginLog from '@/types/response/ServerLoginLog';
+import { ServerLoginLog } from '@/types/response/ServerLoginLog';
 import { ServerMap } from '@/types/response/ServerMap';
 import { ServerMetric } from '@/types/response/ServerMetric';
 import { ServerPlan } from '@/types/response/ServerPlan';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { ServerSetting } from '@/types/response/ServerSetting';
 import { ServerStats } from '@/types/response/ServerStats';
-import { WorkflowNode } from '@/types/response/WorkflowNode';
+import { GetWorkflowNodeDataSchema, WorkflowContextSchema, WorkflowNodeData } from '@/types/response/WorkflowContext';
 import { PaginationQuery } from '@/types/schema/search-query';
+
+import { MetricUnit } from '@/lib/metric.utils';
+import { toForm } from '@/lib/utils';
+
+import { WorkflowContext } from './../types/response/WorkflowContext';
+import { z } from 'zod/v4';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
 	const result = await axios.delete(`/servers/${id}/files`, {
@@ -330,14 +333,18 @@ export async function getServerLoginMetrics(
 	return result.data;
 }
 
-export async function getServerWorkflowNodes(axios: AxiosInstance, serverId: string): Promise<WorkflowNode[]> {
+export async function getServerWorkflowNodes(axios: AxiosInstance, serverId: string): Promise<Record<string, WorkflowNodeData>> {
 	const result = await axios.get(`/servers/${serverId}/workflow/nodes`);
+
+	return GetWorkflowNodeDataSchema.parse(result.data);
+}
+
+export async function getServerWorkflowVersion(axios: AxiosInstance, serverId: string): Promise<number> {
+	const result = await axios.get(`/servers/${serverId}/workflow/version`);
 
 	return result.data;
 }
 
-export async function loadServerWorkflow(axios: AxiosInstance, serverId: string): Promise<WorkflowNode[]> {
-	const result = await axios.post(`/servers/${serverId}/workflow`);
-
-	return result.data;
+export async function loadServerWorkflow(axios: AxiosInstance, serverId: string, payload: WorkflowContext): Promise<void> {
+	await axios.post(`/servers/${serverId}/workflow`, payload);
 }

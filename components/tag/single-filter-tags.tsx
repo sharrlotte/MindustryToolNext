@@ -1,14 +1,19 @@
 import React from 'react';
 import { useCookies } from 'react-cookie';
 
+
+
 import { FilterTag } from '@/components/tag/filter-tags';
 import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 import { Separator } from '@/components/ui/separator';
 
+
+
 import { SHOW_TAG_NAME_PERSISTENT_KEY, SHOW_TAG_NUMBER_PERSISTENT_KEY } from '@/constant/constant';
 import { cn } from '@/lib/utils';
-import TagGroup from '@/types/response/TagGroup';
+import { TagGroup } from '@/types/response/TagGroup';
+
 
 type SingeFilerTagsProps = {
 	group: TagGroup;

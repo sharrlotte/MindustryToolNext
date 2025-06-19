@@ -4,7 +4,8 @@ import { AxiosInstance } from 'axios';
 import { Trash2 } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
+
 
 import ErrorMessage from '@/components/common/error-message';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -23,6 +24,9 @@ import useClientApi from '@/hooks/use-client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { z } from 'zod/v4';
+
 
 const fetchFiles = async (axios: AxiosInstance, state: UploadState) => {
 	const { data } = await axios.get('/upload', { params: { state } });

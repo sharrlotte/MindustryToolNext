@@ -5,6 +5,8 @@ import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import { debounce } from 'throttle-debounce';
 import { useLocalStorage } from 'usehooks-ts';
 
+
+
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { SearchBar, SearchInput } from '@/components/search/search-input';
@@ -22,11 +24,12 @@ import { cn } from '@/lib/utils';
 import { QueryParams } from '@/query/config/search-query-params';
 import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
-import Tag from '@/types/response/Tag';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { Tag } from '@/types/response/Tag';
+import { TagGroup, TagGroups } from '@/types/response/TagGroup';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
 
 import dynamic from 'next/dynamic';
+
 
 const AuthorFilter = dynamic(() => import('@/components/search/author-filter'));
 const ModFilter = dynamic(() => import('@/components/search/mod-filter'));

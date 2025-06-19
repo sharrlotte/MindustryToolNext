@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
+
 
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,9 @@ import { createServerFile } from '@/query/file';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+import { z } from 'zod/v4';
+
 
 type Props = {
 	path: string;

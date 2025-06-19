@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import './style.css';
 import '@xyflow/react/dist/style.css';
 
-import { WorkflowEditorProvider } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor.context';
+import { WorkflowEditorProvider } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 
 import Tran from '@/components/common/tran';
 
@@ -15,7 +15,7 @@ import { Background, ReactFlowProvider } from '@xyflow/react';
 export default function Page() {
 	return (
 		<ReactFlowProvider>
-			<div className="hidden grid-cols-[auto_1fr] sm:grid w-full h-full">
+			<div className="hidden sm:flex w-full h-full">
 				<DndProvider backend={HTML5Backend}>
 					<WorkflowEditorProvider>
 						<Background />

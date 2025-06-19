@@ -1,9 +1,10 @@
 import { AxiosInstance } from 'axios';
-import { z } from 'zod';
 
 import { toForm } from '@/lib/utils';
 import { Comment } from '@/types/response/Comment';
 import { PaginationQuery } from '@/types/schema/search-query';
+
+import { z } from 'zod/v4';
 
 export async function getComments(axios: AxiosInstance, id: string, params: PaginationQuery): Promise<Comment[]> {
 	const result = await axios.get(`/items/${id}/comments`, {
@@ -44,15 +45,18 @@ export async function deleteCommentById(axios: AxiosInstance, id: string): Promi
 export const CreateCommentSchema = z.object({
 	content: z.string().min(1).max(1024),
 	attachments: z
-		.array(z.object({ url: z.string().min(5).max(100), file: z.any().nullable() }))
+		.array(z.object({ url: z.string().min(5).max(100), file: z.any().nullable().optional() }))
 		.min(0)
-		.max(5)
-		.default([]),
+		.max(5),
 });
 
 export type CreateCommentRequest = z.infer<typeof CreateCommentSchema>;
 
-export async function createComment(axios: AxiosInstance, itemId: string, { content, attachments, ...rest }: CreateCommentRequest) {
+export async function createComment(
+	axios: AxiosInstance,
+	itemId: string,
+	{ content, attachments, ...rest }: CreateCommentRequest,
+) {
 	const form = toForm(rest);
 
 	form.append('content', content);

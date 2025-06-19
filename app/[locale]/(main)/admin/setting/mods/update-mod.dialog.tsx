@@ -1,7 +1,6 @@
 'use client';
 
 import { ImageIcon, Pencil } from 'lucide-react';
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -21,6 +20,9 @@ import { Mod } from '@/types/response/Mod';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+import Image from 'next/image';
+
 
 type Props = {
 	mod: Mod;

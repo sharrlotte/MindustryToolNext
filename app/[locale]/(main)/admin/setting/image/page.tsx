@@ -5,7 +5,8 @@ import { Plus } from 'lucide-react';
 import { FileIcon, FolderIcon, LinkIcon, UploadIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+
+
 
 import CopyButton from '@/components/button/copy.button';
 import RemoveButton from '@/components/button/remove.button';
@@ -31,6 +32,9 @@ import { PaginationQuerySchema } from '@/types/schema/search-query';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import * as z from 'zod/v4';
+
 
 export default function Page() {
 	const [{ path }, setState] = useQueryState({

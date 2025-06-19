@@ -2,12 +2,15 @@
 
 import React, { Suspense, useMemo } from 'react';
 
+
+
 import TagCard from '@/components/tag/tag-card';
 
 import useTagSearch from '@/hooks/use-tag-search';
 import { cn, groupBy } from '@/lib/utils';
-import Tag from '@/types/response/Tag';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { Tag } from '@/types/response/Tag';
+import { TagGroup, TagGroups } from '@/types/response/TagGroup';
+
 
 type TagContainerProps = {
 	className?: string;

@@ -1,11 +1,15 @@
 import { XIcon } from 'lucide-react';
 import React, { HTMLAttributes, useCallback } from 'react';
 
+
+
 import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
 
+import { DetailTagDto, Tag, Tags } from '@/types/response/Tag';
+
 import { cn } from '@/lib/utils';
-import Tag, { DetailTagDto, Tags } from '@/types/response/Tag';
+
 
 type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
 	tag: DetailTagDto;

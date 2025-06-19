@@ -1,34 +1,38 @@
-import { ServerStatus } from '@/constant/constant';
-import { ServerMode } from '@/types/request/UpdateServerRequest';
-import { ServerPlan } from '@/types/response/ServerPlan';
+import { ServerStatusSchema } from '@/constant/constant';
+import { ServerModeSchema } from '@/types/request/UpdateServerRequest';
+import { ServerPlanSchema } from '@/types/response/ServerPlan';
 
-export type ServerDto = {
-	id: string;
-	name: string;
-	userId: string;
-	description: string;
-	port: number;
-	isOfficial: boolean;
-	mode: ServerMode;
-	gamemode?: string;
-	status: ServerStatus;
-	ramUsage: number;
-	jvmRamUsage: number;
-	cpuUsage: number;
-	totalRam: number;
-	players: number;
-	mapName: string;
-	address: string;
-	avatar: string;
-	discordChannelId: string | null;
-	isAutoTurnOff: boolean;
-	isHub: boolean;
-	isPaused: boolean;
-	hostCommand?: string;
-	kicks: number;
-	errors: string[];
-	planId: number;
-	plan: ServerPlan;
-	image: string
-	version: string
-};
+import { z } from 'zod/v4';
+
+export const ServerDtoSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	userId: z.string(),
+	description: z.string(),
+	port: z.number(),
+	isOfficial: z.boolean(),
+	mode: ServerModeSchema,
+	gamemode: z.string().optional(),
+	status: ServerStatusSchema,
+	ramUsage: z.number(),
+	jvmRamUsage: z.number(),
+	cpuUsage: z.number(),
+	totalRam: z.number(),
+	players: z.number(),
+	mapName: z.string(),
+	address: z.string(),
+	avatar: z.string(),
+	discordChannelId: z.string().nullable(),
+	isAutoTurnOff: z.boolean(),
+	isHub: z.boolean(),
+	isPaused: z.boolean(),
+	hostCommand: z.string().optional(),
+	kicks: z.number(),
+	errors: z.array(z.string()),
+	planId: z.number(),
+	plan: ServerPlanSchema,
+	image: z.string(),
+	version: z.string(),
+});
+
+export type ServerDto = z.infer<typeof ServerDtoSchema>;

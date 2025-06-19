@@ -1,5 +1,7 @@
 import env from '@/constant/env';
 
+import { ZodError, z } from 'zod/v4';
+
 export const errors: string[] = [];
 
 export function reportError(error: any) {
@@ -43,6 +45,10 @@ export function getErrorMessage(error: TError) {
 
 	if (typeof error === 'string') {
 		return error;
+	}
+
+	if (error instanceof ZodError) {
+		return z.prettifyError(error);
 	}
 
 	if (typeof error === 'object' && 'response' in error) {
@@ -89,7 +95,7 @@ export function getLoggedErrorMessage(error: TError) {
 }
 
 export function isError<T extends Record<string, any> | number>(req: T | ApiError | null): req is ApiError {
-	const isError = !!req && typeof req === 'object' && 'error' in req;
+	const isError = (!!req && typeof req === 'object' && 'error' in req) || req instanceof Error;
 
 	if (isError) {
 		try {

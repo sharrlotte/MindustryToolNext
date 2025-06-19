@@ -18,12 +18,15 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-import { LogType } from '@/constant/constant';
-import useClientQuery from '@/hooks/use-client-query';
-import { cn } from '@/lib/utils';
-import { getLogCollections, getLogCount, getLogs } from '@/query/log';
 import { Log } from '@/types/Log';
 import { LogEnvironment, LogPaginationQuerySchema, LogPaginationQueryType } from '@/types/schema/search-query';
+
+import { getLogCollections, getLogCount, getLogs } from '@/query/log';
+
+import useClientQuery from '@/hooks/use-client-query';
+
+import { LogType } from '@/constant/constant';
+import { cn } from '@/lib/utils';
 
 const defaultFilter: Omit<LogPaginationQueryType, 'page' | 'size'> = {
 	collection: 'SYSTEM',
@@ -61,7 +64,7 @@ export default function StaticLog() {
 			<div className="flex justify-between gap-2 rounded-md">
 				<div className="flex items-center gap-2">
 					<ComboBox
-						value={{ label: collection, value: collection }}
+						value={{ label: collection ?? '', value: collection }}
 						values={[...(data ?? [])].map((item) => ({
 							label: item,
 							value: item,

@@ -1,25 +1,15 @@
 'use client';
 
 import { Share2Icon } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
+
+
 
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
 import CommentSection from '@/components/common/comment-section';
 import CreatedAt from '@/components/common/created-at';
-import {
-	Detail,
-	DetailActions,
-	DetailAuthor,
-	DetailContent,
-	DetailDescription,
-	DetailHeader,
-	DetailImage,
-	DetailInfo,
-	DetailTitle,
-} from '@/components/common/detail';
+import { Detail, DetailActions, DetailAuthor, DetailContent, DetailDescription, DetailHeader, DetailImage, DetailInfo, DetailTitle } from '@/components/common/detail';
 import SizeCard from '@/components/common/size-card';
 import Tran from '@/components/common/tran';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
@@ -27,12 +17,20 @@ import VerifySchematicButton from '@/components/schematic/verify-schematic.butto
 import TagSelector from '@/components/search/tag-selector';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+
+
 import env from '@/constant/env';
 import useClientApi from '@/hooks/use-client';
 import useToastAction from '@/hooks/use-toast-action';
 import { getSchematicData } from '@/query/schematic';
 import { SchematicDetail } from '@/types/response/SchematicDetail';
-import TagGroup, { TagGroups } from '@/types/response/TagGroup';
+import { TagGroup, TagGroups } from '@/types/response/TagGroup';
+
+
+
+import dynamic from 'next/dynamic';
+import { useParams } from 'next/navigation';
+
 
 const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic.button'));
 

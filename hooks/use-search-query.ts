@@ -1,10 +1,11 @@
-import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
-import { z } from 'zod';
 
 import useConfig from '@/hooks/use-config';
 import { groupParamsByKey } from '@/lib/utils';
 import { QuerySchema } from '@/types/schema/search-query';
+
+import { useSearchParams } from 'next/navigation';
+import { z } from 'zod/v4';
 
 export default function useSearchQuery<T extends QuerySchema>(schema: T, additional?: Record<string, any>): z.infer<T> {
 	const { paginationSize } = useConfig();

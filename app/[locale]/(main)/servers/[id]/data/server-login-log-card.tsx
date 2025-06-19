@@ -8,7 +8,7 @@ import { KickButton } from '@/components/server/kick.button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 
 import { cn } from '@/lib/utils';
-import ServerLoginLog from '@/types/response/ServerLoginLog';
+import { ServerLoginLog } from '@/types/response/ServerLoginLog';
 
 type ServerLoginLogCardProps = {
 	data: ServerLoginLog;

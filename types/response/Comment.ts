@@ -1,8 +1,12 @@
-export type Comment = {
-  id: string;
-  userId: string;
-  content: string;
-  attachments: string[];
-  path: string;
-  createdAt: string;
-};
+import { z } from 'zod/v4';
+
+export const CommentSchema = z.object({
+	id: z.string(),
+	userId: z.string(),
+	content: z.string(),
+	attachments: z.array(z.string()),
+	path: z.string(),
+	createdAt: z.string(),
+});
+
+export type Comment = z.infer<typeof CommentSchema>;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
+
 
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,9 @@ import { createServerFile } from '@/query/file';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+import { z } from 'zod/v4';
+
 
 const addFileSchema = z.object({
 	file: z.any().refine((files) => files.size <= 500000, `Max file size is 5MB.`),

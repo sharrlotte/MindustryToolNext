@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+
+
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
 import ErrorMessage from '@/components/common/error-message';
@@ -111,6 +113,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 			description: preview.description,
 			tags: [],
 			file,
+			isPrivate: false,
 		},
 	});
 

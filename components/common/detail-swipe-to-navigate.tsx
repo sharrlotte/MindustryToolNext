@@ -1,10 +1,7 @@
 'use client';
 
 import { AxiosInstance } from 'axios';
-import { useParams, usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 import { ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
-import { z } from 'zod';
 
 import SwipeToNavigate from '@/components/common/swipe-to-navigate';
 
@@ -15,6 +12,11 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { QuerySchema } from '@/types/schema/search-query';
 
 import { QueryKey, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { useParams, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { z } from 'zod/v4';
+
 
 type Props<T, P extends QuerySchema> = {
 	className?: string;

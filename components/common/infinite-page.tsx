@@ -3,7 +3,8 @@
 import { AxiosInstance } from 'axios';
 import React, { JSXElementConstructor, ReactElement, ReactNode, Suspense, useCallback, useMemo, useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { z } from 'zod';
+
+
 
 import EndOfPage from '@/components/common/end-of-page';
 import ErrorMessage from '@/components/common/error-message';
@@ -15,6 +16,9 @@ import useSearchQuery from '@/hooks/use-search-query';
 import { QuerySchema } from '@/types/schema/search-query';
 
 import { QueryKey } from '@tanstack/react-query';
+
+import { z } from 'zod/v4';
+
 
 type InfinitePageProps<T, P extends QuerySchema, P2> = {
 	className?: string;

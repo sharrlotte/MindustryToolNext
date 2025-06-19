@@ -1,12 +1,12 @@
 import { ChevronsUpDownIcon, SearchIcon } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import { cn } from '@/lib/utils';
 
-type Value<T> = { label?: string; value: T };
+type Value<T> = { label: string; value: T };
 
 type RequiredComboBox<T> = {
 	required: true;
@@ -26,6 +26,7 @@ type ComboBoxProps<T> = {
 	values: Array<Value<T>>;
 	searchBar?: boolean;
 	chevron?: boolean;
+	mapper?: (value: Value<T>) => ReactNode;
 } & (RequiredComboBox<T> | NoneComboBox<T>);
 
 export default function ComboBox<T>({
@@ -37,6 +38,7 @@ export default function ComboBox<T>({
 	chevron = true,
 	required,
 	onChange,
+	mapper,
 }: ComboBoxProps<T>) {
 	const [open, setOpen] = useState(false);
 	const [input, setInput] = useState('');
@@ -56,12 +58,12 @@ export default function ComboBox<T>({
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
-					className={cn('w-[200px] gap-1 items-center border border-border justify-between shadow-md', className)}
+					className={cn('w-[200px] text-sm gap-1 items-center border border-border justify-between shadow-md', className)}
 					aria-label="combobox"
 					role="combobox"
 					variant="outline"
 				>
-					{value?.label?.toLowerCase() || placeholder}
+					{mapper ? (value ? mapper(value) : placeholder) : value?.label || placeholder}
 					{chevron && <ChevronsUpDownIcon className="size-4 shrink-0" />}
 				</Button>
 			</PopoverTrigger>
@@ -81,18 +83,20 @@ export default function ComboBox<T>({
 						</div>
 					)}
 					<div className="grid gap-1 p-1 max-h-[50dvh] overflow-y-auto">
-						{values.map((item) => (
-							<Button
-								className={cn('justify-start hover:bg-brand text-foreground hover:text-brand-foreground', {
-									'bg-brand text-brand-foreground': item.label === currentLabel,
-								})}
-								key={item.label}
-								variant="ghost"
-								onClick={() => handleSelect(item)}
-							>
-								{item.label?.toLowerCase()}
-							</Button>
-						))}
+						{values
+							.filter((item) => item.label.toLowerCase().includes(input.toLowerCase()))
+							.map((item) => (
+								<Button
+									className={cn('justify-start text-sm hover:bg-brand text-inherit hover:text-brand-foreground', {
+										'bg-brand text-brand-foreground': item.label === currentLabel,
+									})}
+									key={item.label}
+									variant="ghost"
+									onClick={() => handleSelect(item)}
+								>
+									{mapper ? mapper(item) : item.label}
+								</Button>
+							))}
 					</div>
 				</div>
 			</PopoverContent>

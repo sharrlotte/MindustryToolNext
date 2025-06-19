@@ -1,161 +1,117 @@
-import { useState } from 'react';
+import { memo } from 'react';
 
-import { useWorkflowEditor, WorkflowNodeState } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor.context';
+import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
+import NodeItem from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node-item';
+import { updateOutput } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
-import ComboBox from '@/components/common/combo-box';
+import { CatchError } from '@/components/common/catch-error';
 
-import { cn } from '@/lib/utils';
-import { type WorkflowNode } from '@/types/response/WorkflowNode';
+import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
-import { Handle, Node, Position } from '@xyflow/react';
+import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { Connection, useNodeConnections } from '@xyflow/react';
 
-const workflowNodes: Record<string, WorkflowNode> = {};
+export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y'>, 'workflow'>;
 
-export function OutputHandle(props: Parameters<typeof Handle>[0] & { label: string }) {
-	const { setEdges } = useWorkflowEditor();
-	const connections = useNodeConnections({
-		handleType: props.type,
-		handleId: props.id ?? '',
-		onConnect(connections: Connection[]) {
-			setEdges((prevEdges) =>
-				prevEdges.map((edge) => (edge.id === (connections[0] as unknown as any).edgeId ? { ...edge, label: props.label } : edge)),
-			);
-		},
-	});
-
-	return <Handle {...props} id={props.id} isConnectable={connections.length < 1} />;
-}
-
-export type WorkflowNodeData<T extends (keyof typeof workflowNodes)[number] = (keyof typeof workflowNodes)[number]> = {
-	data: { type: T; index?: number; state: Pick<WorkflowNode, 'parameters' | 'consumers'> };
-	isConnectable?: boolean;
-	type: 'workflow';
-	id: string;
-};
-
-export type WorkflowNodeProps = Omit<Node, 'data' | 'type'> & WorkflowNodeData;
-
-export default function WorkflowNodeComponent({ id, data }: WorkflowNodeData) {
-	const { state, type } = data;
-	const node = workflowNodes[type];
-	const { color, outputs, consumers, name } = node;
-
-	const items = consumers.length;
-	const inputs = 1;
+function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
+	const { name, color, outputs, consumers, group, inputs } = data;
 
 	return (
-		<div
-			className={cn('p-1.5 rounded-sm text-sm text-white w-[220px] min-h-[80px] sm:w-[330px] md:w-[540px] lg:[w-650px]', {
-				'w-fit min-h-0 sm:w-fit md:w-fit lg:w-fit px-6': items === 0,
-			})}
-			style={{ backgroundColor: color }}
-		>
-			{Array(inputs)
-				.fill(1)
-				.map((_, i) => (
-					<Handle
-						style={{ marginTop: 20 * i - ((inputs - 1) / 2) * 20 + 'px' }}
-						key={i}
-						type={'target'}
-						position={Position.Left}
-						isConnectable={true}
-					/>
-				))}
-			{outputs.map((output, i) => (
-				<OutputHandle
-					id={`${id}-source-handle-${i}`}
-					style={{ marginTop: 20 * i - ((outputs.length - 1) / 2) * 20 + 'px' }}
-					label={output.name}
-					key={i}
-					type={'source'}
-					position={Position.Right}
-				/>
-			))}
-			<div
-				className={cn('flex justify-between text-sm font-bold', {
-					'w-full h-full items-center justify-center m-auto text-xl align-middle': items === 0,
-				})}
-			>
-				<span className="font-outline-2">{name}</span>
-				<span>{data.index}</span>
-			</div>
-			{items > 0 && (
-				<div className="bg-black p-2 rounded-sm flex gap-1 items-end jus flex-wrap">
-					{consumers.map((item, i) => (
-						<NodeItemComponent key={i} nodeId={id} color={color} data={item} state={state} />
+		<div className="min-w-[220px] min-h-[80px] rounded-md overflow-hidden">
+			<CatchError>
+				{Array(inputs)
+					.fill(1)
+					.map((_, index) => (
+						<InputHandle index={index} offset={index - (inputs - 1) / 2} key={index} parentId={id} />
 					))}
+				{outputs.map((output, index) => (
+					<OutputHandle key={name} index={index} parentId={id} offset={index - (outputs.length - 1) / 2} {...output} />
+				))}
+				<div
+					className="w-full h-full p-2 gap-1 flex items-center"
+					style={{
+						backgroundColor: color,
+					}}
+				>
+					<span>{name}</span>
+					<span className="border-white bg-white/50 backdrop-brightness-90 backdrop-blur-sm rounded-full px-1.5">{group}</span>
 				</div>
-			)}
+				{consumers.length > 0 && (
+					<section
+						className="p-1 grid gap-1 w-full border border-t-0 border-border overflow-hidden bg-background rounded"
+						style={{
+							borderBottomLeftRadius: 'calc(var(--radius) - 2px)',
+							borderBottomRightRadius: 'calc(var(--radius) - 2px)',
+						}}
+						onClick={(event) => event.stopPropagation()}
+					>
+						{consumers.map((consumer) => (
+							<NodeItem variant="inline" key={consumer.name} parentId={id} data={consumer} />
+						))}
+					</section>
+				)}
+			</CatchError>
 		</div>
 	);
 }
-type NodeItemComponentProps<T> = { nodeId: string; color: string; state: WorkflowNodeState; data: T };
 
-function NodeItemComponent(props: NodeItemComponentProps<any>) {
-	// if (props.data.type === 'input') {
-	// 	return <InputNodeComponent {...(props as NodeItemComponentProps<InputItem>)} />;
-	// }
+export default memo(WorkflowNodeComponent);
 
-	// if (props.data.type === 'option') {
-	// 	return <OptionNodeComponent {...(props as NodeItemComponentProps<OptionItem>)} />;
-	// }
+export function OutputHandle({
+	parentId,
+	name,
+	offset,
+	index,
+}: { parentId: string; offset: number; index: number } & WorkflowNodeData['outputs'][number]) {
+	const { nodes, setEdges, setNode } = useWorkflowEditor();
 
-	if (props.data.type === 'label') {
-		return <span className="border-transparent border-b-[3px]">{props.data.value}</span>;
+	const id = `${parentId}-source-handle-${index}`;
+	const parent = nodes.find((node) => node.id === parentId);
+
+	if (!parent) {
+		throw new Error(`Parent node with id ${parentId} not found.`);
 	}
+
+	const connections = useNodeConnections({
+		handleType: 'source',
+		handleId: id,
+		onConnect(connections: Connection[]) {
+			setEdges((prevEdges) =>
+				prevEdges.map((edge) => {
+					if (edge.id === (connections[0] as unknown as any).edgeId) {
+						return { ...edge, label: name === 'Next' ? '' : name };
+					}
+					return edge;
+				}),
+			);
+
+			setNode(parentId, (prev) => updateOutput(prev, name, connections[0].target));
+		},
+	});
+
+	return (
+		<Handle
+			className="size-3 bg-emerald-500"
+			id={id}
+			type="source"
+			style={{ marginTop: offset * 20 + 'px' }}
+			position={Position.Right}
+			isConnectable={connections.length < 1}
+		/>
+	);
 }
 
-// function InputNodeComponent({ data, color, state, nodeId }: NodeItemComponentProps<InputItem>) {
-// 	const { variables, setNodeState } = useWorkflowEditor();
-// 	const [focus, setFocus] = useState(false);
-// 	const value = state[data.name];
+export function InputHandle({ parentId, offset, index }: { parentId: string; offset: number; index: number }) {
+	const id = `${parentId}-target-handle-${index}`;
 
-// 	const matchedVariable = Object.values(variables).filter((variable) => variable.includes(value));
-// 	const showSuggestion = focus && data.accept.includes('variable') && matchedVariable.length > 0;
-
-// 	return (
-// 		<div className="flex gap-1">
-// 			{data.label && <span className="border-transparent border-b-[3px]">{data.label}</span>}
-// 			<div className="relative">
-// 				<input
-// 					className="bg-transparent border-b-[3px] px-2 hover min-w-10 max-w-20 sm:max-w-40 md:max-w-60 focus:outline-none" //
-// 					style={{ borderColor: color }}
-// 					type="text"
-// 					value={value ?? data.value ?? ''}
-// 					onChange={(e) => setNodeState(nodeId, (prev) => ({ ...prev, [data.name]: e.target.value }))}
-// 					onFocus={() => setFocus(true)}
-// 					onBlur={() => setTimeout(() => setFocus(false), 100)}
-// 				/>
-// 				<div className={cn('absolute -bottom-1 translate-y-[100%] z-50 hidden', { block: showSuggestion })}>
-// 					<div className="p-4 border rounded-md bg-card min-w-60">
-// 						{matchedVariable.map((variable) => (
-// 							<div key={variable} onClick={() => setNodeState(nodeId, (prev) => ({ ...prev, [data.name]: variable }))}>
-// 								{variable}
-// 							</div>
-// 						))}
-// 					</div>
-// 				</div>
-// 			</div>
-// 		</div>
-// 	);
-// }
-
-// function OptionNodeComponent({ data, color, state, nodeId }: NodeItemComponentProps<OptionItem>) {
-// 	const { setNodeState } = useWorkflowEditor();
-
-// 	return (
-// 		<div className="bg-transparent border-b-[3px] flex items-end" style={{ borderColor: color }}>
-// 			<ComboBox
-// 				className="bg-transparent px-2 py-0 text-center w-fit font-bold border-transparent items-end justify-end"
-// 				value={{ value: state[data.name], label: state[data.name].toString() }}
-// 				values={data.options.map((option) => ({ value: option, label: option.toString() }))}
-// 				onChange={(value) => {
-// 					if (value) setNodeState(nodeId, (prev) => ({ ...prev, [data.name]: value }));
-// 				}}
-// 				searchBar={false}
-// 				chevron={false}
-// 			/>
-// 		</div>
-// 	);
-// }
+	return (
+		<Handle
+			className="size-3 bg-blue-400"
+			id={id}
+			style={{ marginTop: offset * 20 + 'px' }}
+			type={'target'}
+			position={Position.Left}
+			isConnectable={true}
+		/>
+	);
+}

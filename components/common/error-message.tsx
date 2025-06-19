@@ -1,12 +1,17 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
+
 
 import ReportErrorDialog from '@/components/common/report-error.dialog';
 import Tran from '@/components/common/tran';
 
+
+
 import { getErrorMessage, reportError } from '@/lib/error';
 import { cn } from '@/lib/utils';
+
 
 type Props = {
 	className?: string;

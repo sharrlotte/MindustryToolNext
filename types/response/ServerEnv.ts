@@ -1,4 +1,4 @@
-export default interface ServerEnv {
+export type ServerEnv =  {
   id: string;
   serverId: string;
   name: string;
