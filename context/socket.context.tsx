@@ -41,7 +41,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 		if (authState !== 'authenticated') return;
 
 		if (socket.getState() === 'connected') {
-			setState('connected');
+			setState(socket.getState());
 		}
 
 		if (socket.getState() !== 'connected') {
@@ -49,7 +49,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 		}
 
 		socket.onDisconnect(() => {
-			setState('disconnected');
+			setState(socket.getState());
 
 			if (!isShowDisconnected.current) {
 				isShowDisconnected.current = true;
@@ -58,9 +58,9 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 				});
 			}
 		});
-        
+
 		socket.onConnect(() => {
-			setState('connected');
+			setState(socket.getState());
 		});
 
 		socket.onError(() => {
