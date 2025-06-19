@@ -1,7 +1,6 @@
 'use client';
 
 import { ImageIcon, Pencil } from 'lucide-react';
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -14,15 +13,20 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-import { acceptedImageFormats } from '@/constant/constant';
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
+import { TagDto } from '@/types/response/Tag';
+
 import { getMods } from '@/query/mod';
 import { UpdateTagRequest, UpdateTagSchema, getTagCategories, updateTag } from '@/query/tag';
-import { TagDto } from '@/types/response/Tag';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+
+import { acceptedImageFormats } from '@/constant/constant';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+
+import Image from 'next/image';
 
 type Props = {
 	tag: TagDto;
@@ -142,7 +146,7 @@ export default function UpdateTagDialog({ tag }: Props) {
 									<FormControl>
 										<ComboBox
 											className="w-full overflow-hidden"
-											value={{ label: mods.find((mod) => mod.id === field.value)?.name, value: field.value }}
+											value={{ label: mods.find((mod) => mod.id === field.value)?.name ?? '', value: field.value }}
 											values={mods.map((mod) => ({ value: mod.id, label: mod.name }))}
 											onChange={field.onChange}
 										/>
@@ -162,7 +166,10 @@ export default function UpdateTagDialog({ tag }: Props) {
 									<FormControl>
 										<ComboBox
 											className="w-full overflow-hidden"
-											value={{ label: categories.find((category) => category.id === field.value)?.name, value: field.value }}
+											value={{
+												label: categories.find((category) => category.id === field.value)?.name ?? '',
+												value: field.value,
+											}}
 											values={categories.map((category) => ({ value: category.id, label: category.name }))}
 											onChange={field.onChange}
 										/>
