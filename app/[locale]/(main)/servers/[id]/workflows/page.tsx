@@ -3,7 +3,7 @@
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import './style.css';
+import './workflow.module.css';
 import '@xyflow/react/dist/style.css';
 
 import { WorkflowEditorProvider } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
