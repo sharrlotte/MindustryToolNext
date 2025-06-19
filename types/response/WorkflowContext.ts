@@ -1,6 +1,7 @@
 import { z } from 'zod/v4';
 
 export const WorkflowNodeDataSchema = z.object({
+	id: z.string().optional().nullable(),
 	name: z.string(),
 	group: z.string(),
 	color: z.string(),

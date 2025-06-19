@@ -323,9 +323,11 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				}
 			});
 
+			copy.id = uuid();
+
 			const newNode: Node = {
 				...copy,
-				id: uuid(),
+				id: copy.id,
 				type: 'workflow',
 				data: copy,
 				position,
