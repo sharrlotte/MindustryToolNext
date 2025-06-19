@@ -40,6 +40,10 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		if (authState !== 'authenticated') return;
 
+		if (socket.getState() === 'connected') {
+			setState('connected');
+		}
+
 		if (socket.getState() !== 'connected') {
 			socket.connect();
 		}
@@ -54,11 +58,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 				});
 			}
 		});
-
-		if (socket.getState() === 'connected') {
-			setState('connected');
-		}
-
+        
 		socket.onConnect(() => {
 			setState('connected');
 		});
