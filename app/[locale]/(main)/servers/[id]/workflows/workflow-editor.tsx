@@ -1,8 +1,10 @@
 'use client';
 
 import { Identifier } from 'dnd-core';
+import { UploadIcon } from 'lucide-react';
 import { Suspense, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
+import { createPortal } from 'react-dom';
 import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
 import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
@@ -15,7 +17,7 @@ import ErrorMessage from '@/components/common/error-message';
 import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/sonner';
 
 import { WorkflowNodeData } from '@/types/response/WorkflowContext';
@@ -113,7 +115,7 @@ const WORKFLOW_PERSISTENT_KEY = `workflows`;
 
 export function WorkflowEditorProvider({ children }: { children: React.ReactNode }) {
 	const id = usePathId();
-	const [isLoaded, setLoaded] = useState(false);
+	const [loadState, setLoadState] = useState<'loaded' | 'loading' | 'not-loaded'>('not-loaded');
 	const [errors, setErrors] = useState<Record<string, any>>({});
 	const [name, setName] = useState('');
 	const [nodes, setNodes] = useState<Node[]>([]);
@@ -127,10 +129,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 	const [isDeleteOnClick, setDeleteOnClick] = useState(false);
 	const [showMiniMap, setShowMiniMap] = useLocalStorage('workflow.editor.show-mini-map', false);
-	const [showPropertiesPanel, setShowPropertiesPanel] = useLocalStorage<WorkflowNode | null>(
-		'workflow.editor.show-properties',
-		null,
-	);
+	const [showPropertiesPanel, setShowPropertiesPanel] = useState<WorkflowNode | null>(null);
 
 	const { setViewport } = useReactFlow();
 	const ref = useRef<HTMLDivElement>(null);
@@ -141,11 +140,10 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
 
 	useEffect(() => {
+		if (loadState !== 'loaded') {
+			return;
+		}
 		try {
-			if (isLoaded === false) {
-				return;
-			}
-
 			if (rfInstance) {
 				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
 				const data: LocalWorkflow = { ...flow, [id]: { createdAt: Date.now(), data: rfInstance.toObject() } };
@@ -156,22 +154,29 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			setErrors((prev) => ({ ...prev, 'save-error': e }));
 			console.error('Error saving workflow', e);
 		}
-	}, [rfInstance, id, debouncedEdges, debouncedNodes, isLoaded]);
+	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState]);
 
 	useEffect(() => {
+		if (!nodeTypes || Object.keys(nodeTypes).length === 0 || loadState !== 'not-loaded') {
+			return;
+		}
+
 		try {
-			if (!nodeTypes || Object.keys(nodeTypes).length === 0) {
-				return;
-			}
+			console.log('Loading workflow');
+			setLoadState('loading');
 
 			const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
 			const data = result[id]?.data;
 
-			console.dir({ load: data, result });
+			console.dir({ load: data });
 
-			if (!data) return;
+			if (!data) {
+				console.log('No workflow data');
+				setLoadState('loaded');
+				return;
+			}
 
-			const { x = 0, y = 0, zoom = 1 } = data.viewport;
+			const { x = viewport.x, y = viewport.y, zoom = viewport.zoom } = data.viewport;
 			const nodes = data.nodes ?? [];
 			const edges = data.edges ?? [];
 
@@ -225,14 +230,15 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				}),
 			);
 			setEdges(edges);
-			setViewport({ x, y, zoom });
+			setViewport({ x, y, zoom }, { duration: 1000 });
+			console.log('Workflow loaded');
 		} catch (error) {
 			setErrors((prev) => ({ ...prev, 'load-error': error }));
 			console.error('Error parsing workflow data from localStorage:', error);
 		} finally {
-			setLoaded(true);
+			setLoadState('loaded');
 		}
-	}, [id, setViewport]);
+	}, [id, viewport, nodeTypes, setViewport]);
 
 	const variables = useMemo(
 		() =>
@@ -586,6 +592,8 @@ function UploadContextButton() {
 		queryFn: () => getServerWorkflowVersion(axios, id),
 	});
 
+	const serverVersion = data ?? 0;
+
 	const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
 	const localVersion = result[id]?.createdAt ?? 0;
 
@@ -597,15 +605,31 @@ function UploadContextButton() {
 		return <ErrorMessage error={error} />;
 	}
 
+	const container = document.getElementById('server-nav-right');
+
+	if (!container) {
+		throw new Error('Server nav right container not found');
+	}
+
 	return (
 		<div>
-			{(data ?? 0) > localVersion && <span className="text-destructive-foreground">Your local version is outdated</span>}
-			<Dialog>
-				<DialogTrigger>Load workflow</DialogTrigger>
-				<DialogContent>
-					<UploadWorkflowDialog version={localVersion} />
-				</DialogContent>
-			</Dialog>
+			{serverVersion > localVersion && <span className="text-destructive-foreground">Your local version is outdated</span>}
+			{serverVersion !== localVersion &&
+				createPortal(
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button variant="primary">
+								<UploadIcon className="size-4" />
+								<span>Load workflow</span>
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="p-6 border rounded-dm">
+							<DialogTitle>Confirm</DialogTitle>
+							<UploadWorkflowDialog version={localVersion} />
+						</DialogContent>
+					</Dialog>,
+					container,
+				)}
 		</div>
 	);
 }
@@ -634,11 +658,16 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 
 	return (
 		<>
-			<DialogTitle>Confirm</DialogTitle>
-			<DialogClose>Cancel</DialogClose>
-			<DialogClose onClick={() => mutate()} disabled={isPending || !payload}>
-				Ok
-			</DialogClose>
+			<DialogFooter>
+				<DialogClose asChild>
+					<Button variant="secondary">Cancel</Button>
+				</DialogClose>
+				<DialogClose asChild>
+					<Button onClick={() => mutate()} disabled={isPending || !payload} variant="primary">
+						Ok
+					</Button>
+				</DialogClose>
+			</DialogFooter>
 		</>
 	);
 }

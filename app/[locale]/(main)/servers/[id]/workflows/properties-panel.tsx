@@ -1,9 +1,9 @@
 import { XIcon } from 'lucide-react';
 import { useState } from 'react';
 
-import NodeItem from '@/app/[locale]/(main)/servers/[id]/workflows/node-item';
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
+import NodeItem from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node-item';
 
 import ComboBox from '@/components/common/combo-box';
 import { Button } from '@/components/ui/button';

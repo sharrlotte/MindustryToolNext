@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 import { cn } from '@/lib/utils';
 
-type Value<T> = { label?: string; value: T };
+type Value<T> = { label: string; value: T };
 
 type RequiredComboBox<T> = {
 	required: true;
@@ -83,18 +83,20 @@ export default function ComboBox<T>({
 						</div>
 					)}
 					<div className="grid gap-1 p-1 max-h-[50dvh] overflow-y-auto">
-						{values.map((item) => (
-							<Button
-								className={cn('justify-start text-sm hover:bg-brand text-inherit hover:text-brand-foreground', {
-									'bg-brand text-brand-foreground': item.label === currentLabel,
-								})}
-								key={item.label}
-								variant="ghost"
-								onClick={() => handleSelect(item)}
-							>
-								{mapper ? mapper(item) : item.label}
-							</Button>
-						))}
+						{values
+							.filter((item) => item.label.toLowerCase().includes(input.toLowerCase()))
+							.map((item) => (
+								<Button
+									className={cn('justify-start text-sm hover:bg-brand text-inherit hover:text-brand-foreground', {
+										'bg-brand text-brand-foreground': item.label === currentLabel,
+									})}
+									key={item.label}
+									variant="ghost"
+									onClick={() => handleSelect(item)}
+								>
+									{mapper ? mapper(item) : item.label}
+								</Button>
+							))}
 					</div>
 				</div>
 			</PopoverContent>

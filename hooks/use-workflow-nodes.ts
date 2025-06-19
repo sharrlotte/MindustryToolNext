@@ -1,6 +1,9 @@
+import { useMemo } from 'react';
+
+import { getServerWorkflowNodes } from '@/query/server';
+
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
-import { getServerWorkflowNodes } from '@/query/server';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -12,8 +15,11 @@ export default function useWorkflowNodes() {
 		queryFn: () => getServerWorkflowNodes(axios, id),
 	});
 
-	return {
-		data: data ?? {},
-		...rest,
-	};
+	return useMemo(
+		() => ({
+			data: data ?? {},
+			...rest,
+		}),
+		[data, rest],
+	);
 }

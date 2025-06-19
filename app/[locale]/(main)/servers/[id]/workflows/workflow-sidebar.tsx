@@ -9,6 +9,7 @@ import NodeListPanel from '@/app/[locale]/(main)/servers/[id]/workflows/node-lis
 import { CatchError } from '@/components/common/catch-error';
 
 import useQueryState from '@/hooks/use-query-state';
+
 import { cn } from '@/lib/utils';
 
 type TabType = {
@@ -63,7 +64,7 @@ export default function WorkflowSideBar() {
 					<button
 						key={id}
 						className={cn(
-							'cursor-pointer p-2 size-12 rounded-md bg-secondary/70 hover:bg-secondary flex items-center justify-center aspect-square', 
+							'cursor-pointer p-2 size-12 rounded-md bg-secondary/70 hover:bg-secondary flex items-center justify-center aspect-square',
 							{
 								'bg-secondary border border-foreground': id === currentTab,
 							},
