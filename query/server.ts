@@ -345,12 +345,6 @@ export async function getServerWorkflowVersion(axios: AxiosInstance, serverId: s
 	return result.data;
 }
 
-export async function loadServerWorkflow(
-	axios: AxiosInstance,
-	serverId: string,
-	payload: WorkflowContext,
-): Promise<WorkflowContext> {
-	const result = await axios.post(`/servers/${serverId}/workflow`, payload);
-
-	return WorkflowContextSchema.parse(result.data);
+export async function loadServerWorkflow(axios: AxiosInstance, serverId: string, payload: WorkflowContext): Promise<void> {
+	await axios.post(`/servers/${serverId}/workflow`, payload);
 }
