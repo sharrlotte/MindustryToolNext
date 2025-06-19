@@ -18,7 +18,7 @@ import Divider from '@/components/ui/divider';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
 
-import './style.css';
+import './document.module.css';
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 

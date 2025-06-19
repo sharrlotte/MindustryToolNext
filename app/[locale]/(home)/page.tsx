@@ -46,7 +46,7 @@ import { ItemPaginationQueryType } from '@/types/schema/search-query';
 import { YouTubeEmbed } from '@next/third-parties/google';
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
-import './style.css';
+import './home.module.css';
 
 export const experimental_ppr = true;
 

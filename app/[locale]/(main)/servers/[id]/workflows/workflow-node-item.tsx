@@ -162,6 +162,7 @@ function OptionNodeComponent({ data, parentId }: NodeItemProps) {
 				className="w-full"
 				value={v ?? first}
 				required={required}
+				searchBar={options.length > 15}
 				values={options}
 				onChange={(value: any) => {
 					if (required && !data) {

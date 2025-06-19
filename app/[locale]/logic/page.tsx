@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import React from 'react';
 
+import './logic.module.css';
+import '@xyflow/react/dist/style.css';
+
 import LogicDndContext from '@/app/[locale]/logic/logic-dnd.context';
 import { LogicEditorProvider } from '@/app/[locale]/logic/logic-editor.context';
 
@@ -12,9 +15,6 @@ import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
 
 import { Background, ReactFlowProvider } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-
-import './style.css';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale } = await params;
