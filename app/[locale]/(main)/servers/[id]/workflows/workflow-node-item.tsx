@@ -17,7 +17,7 @@ type NodeItemProps = { variant: 'inline' | 'panel'; parentId: string; data: Work
 export default function NodeItem(props: NodeItemProps) {
 	return (
 		<div
-			className={cn('flex flex-col gap-1', {
+			className={cn('flex flex-col gap-1 z-50', {
 				'bg-card rounded-sm px-2 py-1 border': props.variant === 'inline',
 			})}
 		>
@@ -55,15 +55,12 @@ function NodeItemInternal(props: NodeItemProps) {
 }
 
 function SecondNodeComponent({ data, parentId }: NodeItemProps) {
-	const { variables, setNode } = useWorkflowEditor();
-	const { name, value, type, required } = data;
-	const [focus, setFocus] = useState(false);
+	const { setNode } = useWorkflowEditor();
+	const { name, value, required } = data;
 
-	const matchedVariable = value
-		? Object.values(variables).filter((variable) => variable.includes(value))
-		: Object.values(variables);
-
-	const showSuggestion = focus && type.includes('variable') && matchedVariable.length > 0;
+	const hours = Math.floor(Number(value ?? 0) / 3600);
+	const minutes = Math.floor((Number(value ?? 0) % 3600) / 60);
+	const seconds = Number(value ?? 0) % 60;
 
 	return (
 		<>
@@ -71,24 +68,18 @@ function SecondNodeComponent({ data, parentId }: NodeItemProps) {
 				<span>{name}</span>
 				{required && <span className="text-destructive-foreground">*</span>}
 			</div>
-			<div className="relative">
+			<div className="relative flex items-center">
 				<Input
 					className="bg-transparent min-w-10 max-w-20 sm:max-w-40 md:max-w-60 focus:outline-none" //
 					type="text"
 					value={value ?? value ?? ''}
 					onChange={(e) => setNode(parentId, (prev) => updateConsumer(prev, name, e.currentTarget.value))}
-					onFocus={() => setFocus(true)}
-					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>
-				<div className={cn('absolute -bottom-1 translate-y-[100%] z-50 hidden', { block: showSuggestion })}>
-					<div className="p-4 border rounded-md bg-card min-w-60">
-						{matchedVariable.map((variable) => (
-							<div key={variable} onClick={() => setNode(parentId, (prev) => ({ ...prev, [data.name]: variable }))}>
-								{variable}
-							</div>
-						))}
-					</div>
-				</div>
+				<span className="text-muted-foreground text-sm ml-0.5">
+					{hours > 0 ? `${hours}h ` : ''}
+					{minutes > 0 ? `${minutes}m ` : ''}
+					{seconds > 0 ? `${seconds}s` : ''}
+				</span>
 			</div>
 		</>
 	);
