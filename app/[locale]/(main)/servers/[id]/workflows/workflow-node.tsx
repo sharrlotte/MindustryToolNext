@@ -33,7 +33,6 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 						backgroundColor: color,
 					}}
 				>
-					<span>{id}</span>
 					<span>{name}</span>
 					<span className="border-white bg-white/50 backdrop-brightness-90 backdrop-blur-sm rounded-full px-1.5">{group}</span>
 				</div>
@@ -93,17 +92,14 @@ export function OutputHandle({
 	const handle = nodes.find((node) => node.id === parentId)?.data.outputs?.find((output) => output.name === name);
 
 	return (
-		<>
-			<span>{handle?.nextId}</span>
-			<Handle
-				className="size-3 bg-emerald-500"
-				id={id}
-				type="source"
-				style={{ marginTop: offset * 20 + 'px' }}
-				position={Position.Right}
-				isConnectable={connections.length < 1}
-			/>
-		</>
+		<Handle
+			className="size-3 bg-emerald-500"
+			id={id}
+			type="source"
+			style={{ marginTop: offset * 20 + 'px' }}
+			position={Position.Right}
+			isConnectable={connections.length < 1}
+		/>
 	);
 }
 
