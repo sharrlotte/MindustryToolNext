@@ -1,10 +1,12 @@
 import { FileIcon, FolderIcon } from 'lucide-react';
 import React, { ReactNode, Suspense } from 'react';
 
+import JsonDisplay from '@/components/common/json-display';
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from '@/components/ui/context-menu';
 
-import { byteToSize } from '@/lib/utils';
 import { ServerFile } from '@/types/response/ServerFile';
+
+import { byteToSize } from '@/lib/utils';
 
 type Props = {
 	file: ServerFile;
@@ -16,6 +18,10 @@ export default function FileCard({ file, children, onClick }: Props) {
 	const { data, name, size, directory } = file;
 
 	if (data !== null) {
+		if (name.endsWith('.json')) {
+			return <JsonDisplay json={data} />;
+		}
+
 		return <p className="whitespace-pre-line">{data}</p>;
 	}
 
