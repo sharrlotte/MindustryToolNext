@@ -181,75 +181,79 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 	const loadWorkflow = useCallback(
 		({ data }: WorkflowSave) => {
-			setLoadState('loading');
+			try {
+				setLoadState('loading');
 
-			const { x = 0, y = 0, zoom = 0 } = data.viewport;
-			const nodes = data.nodes ?? [];
-			const edges = data.edges ?? [];
+				const { x = 0, y = 0, zoom = 0 } = data.viewport;
+				const nodes = data.nodes ?? [];
+				const edges = data.edges ?? [];
 
-			setNodes(
-				nodes.filter((node) => {
-					if (node.type !== 'workflow') {
-						return true;
-					}
-
-					const base = nodeTypes[node.data.name];
-
-					if (!base) {
-						console.warn('Invalid node name: ' + node.data.name);
-						return false;
-					}
-
-					if (node.data.color !== base.color) {
-						node.data.color = base.color;
-					}
-
-					if (node.data.group !== base.group) {
-						node.data.group = base.group;
-					}
-
-					if (node.data.inputs !== base.inputs) {
-						node.data.inputs = base.inputs;
-					}
-
-					if (
-						node.data.outputs.length !== base.outputs.length ||
-						node.data.outputs.some((output) => base.outputs.find((baseOutput) => output.name === baseOutput.name) === undefined)
-					) {
-						node.data.outputs = base.outputs;
-					}
-
-					if (
-						node.data.consumers.length !== base.consumers.length ||
-						node.data.consumers.some(
-							(consumer) => base.consumers.find((baseConsumer) => consumer.name === baseConsumer.name) === undefined,
-						)
-					) {
-						node.data.consumers = base.consumers;
-					}
-
-					if (
-						node.data.producers.length !== base.producers.length ||
-						node.data.producers.some(
-							(producer) => base.producers.find((baseProducer) => producer.name === baseProducer.name) === undefined,
-						)
-					) {
-						node.data.producers = base.producers;
-					}
-
-					for (const consumer of node.data.consumers) {
-						const baseConsumer = base.consumers.find((c) => c.name === consumer.name);
-
-						if (baseConsumer) {
-							consumer.options = baseConsumer.options;
+				setNodes(
+					nodes.filter((node) => {
+						if (node.type !== 'workflow') {
+							return true;
 						}
-					}
 
-					return true;
-				}),
-			);
-			setEdges(edges);
-			setViewport({ x, y, zoom }, { duration: 1000 });
+						const base = nodeTypes[node.data.name];
+
+						if (!base) {
+							console.warn('Invalid node name: ' + node.data.name);
+							return false;
+						}
+
+						if (node.data.color !== base.color) {
+							node.data.color = base.color;
+						}
+
+						if (node.data.group !== base.group) {
+							node.data.group = base.group;
+						}
+
+						if (node.data.inputs !== base.inputs) {
+							node.data.inputs = base.inputs;
+						}
+
+						if (
+							node.data.outputs.length !== base.outputs.length ||
+							node.data.outputs.some((output) => base.outputs.find((baseOutput) => output.name === baseOutput.name) === undefined)
+						) {
+							node.data.outputs = base.outputs;
+						}
+
+						if (
+							node.data.consumers.length !== base.consumers.length ||
+							node.data.consumers.some(
+								(consumer) => base.consumers.find((baseConsumer) => consumer.name === baseConsumer.name) === undefined,
+							)
+						) {
+							node.data.consumers = base.consumers;
+						}
+
+						if (
+							node.data.producers.length !== base.producers.length ||
+							node.data.producers.some(
+								(producer) => base.producers.find((baseProducer) => producer.name === baseProducer.name) === undefined,
+							)
+						) {
+							node.data.producers = base.producers;
+						}
+
+						for (const consumer of node.data.consumers) {
+							const baseConsumer = base.consumers.find((c) => c.name === consumer.name);
+
+							if (baseConsumer) {
+								consumer.options = baseConsumer.options;
+							}
+						}
+
+						return true;
+					}),
+				);
+				setEdges(edges);
+				setViewport({ x, y, zoom }, { duration: 1000 });
+			} finally {
+				setLoadState('loaded');
+			}
 		},
 		[nodeTypes, setViewport],
 	);
@@ -729,8 +733,8 @@ function LoadServerWorkflowDialog({ setLocalVersion }: { setLocalVersion: React.
 		mutationFn: () =>
 			getServerWorkflow(axios, id).then((data) => {
 				setLocalVersion(data.createdAt);
-				writeSave(data);
 				loadWorkflow(data);
+				writeSave(data);
 			}),
 		onMutate: () => toast.loading(<Tran text="upload.loading" />),
 		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
