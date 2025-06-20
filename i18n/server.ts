@@ -97,7 +97,7 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 	return options;
 }
 
-const initI18next = async (language: Locale, namespace?: string) => {
+const initI18next = async (language: Locale, namespace?: string | string[]) => {
 	const i18nInstance = createInstance();
 	await i18nInstance
 		.use(initReactI18next) //

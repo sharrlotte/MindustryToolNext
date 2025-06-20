@@ -9,4 +9,4 @@ export type Locale = (typeof locales)[number];
 
 export type TranslateFunction = (key: string, args?: Record<string, any>) => string;
 
-export const defaultNamespace: string = 'common';
+export const defaultNamespace: string | string[] = 'common';
