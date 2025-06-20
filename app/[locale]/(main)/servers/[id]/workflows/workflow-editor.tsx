@@ -22,7 +22,7 @@ import { toast } from '@/components/ui/sonner';
 
 import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
-import { WorkflowSave, getServerWorkflowVersion, loadServerWorkflow, saveServerWorkflow } from '@/query/server';
+import { WorkflowSave, getServerWorkflow, getServerWorkflowVersion, loadServerWorkflow, saveServerWorkflow } from '@/query/server';
 
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
@@ -85,6 +85,7 @@ type WorkflowEditorContextType = {
 		setShowMiniMap: (show: boolean) => void;
 		setSelectedWorkflow: (node: WorkflowNode | null) => void;
 		generateSave: () => WorkflowSave;
+		loadWorkflow: (data: WorkflowSave) => void;
 	};
 };
 
@@ -163,27 +164,14 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		return { createdAt: Date.now(), data: rfInstance.toObject(), version: 1 };
 	}, [rfInstance]);
 
-	useEffect(() => {
-		if (loadState !== 'loaded') {
-			return;
-		}
-		try {
-			if (rfInstance) {
-				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
-				const data: LocalWorkflow = { ...flow, [id]: generateSave() };
-				localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
-			}
-		} catch (e) {
-			console.error('Error saving workflow', e);
-		}
-	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState, generateSave]);
+	const loadWorkflow = useCallback(
+		({ data }: WorkflowSave) => {
+			setLoadState('loading');
 
-	useEffect(() => {
-		if (!nodeTypes || Object.keys(nodeTypes).length === 0 || loadState !== 'not-loaded') {
-			return;
-		}
+			const { x = 0, y = 0, zoom = 0 } = data.viewport;
+			const nodes = data.nodes ?? [];
+			const edges = data.edges ?? [];
 
-		function filterNodes(nodes: Node[]) {
 			setNodes(
 				nodes.filter((node) => {
 					if (node.type !== 'workflow') {
@@ -245,11 +233,33 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					return true;
 				}),
 			);
+			setEdges(edges);
+			setViewport({ x, y, zoom }, { duration: 1000 });
+		},
+		[nodeTypes, setViewport],
+	);
+
+	useEffect(() => {
+		if (loadState !== 'loaded') {
+			return;
+		}
+		try {
+			if (rfInstance) {
+				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
+				const data: LocalWorkflow = { ...flow, [id]: generateSave() };
+				localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
+			}
+		} catch (e) {
+			console.error('Error saving workflow', e);
+		}
+	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState, generateSave]);
+
+	useEffect(() => {
+		if (!nodeTypes || Object.keys(nodeTypes).length === 0 || loadState !== 'not-loaded') {
+			return;
 		}
 
 		try {
-			setLoadState('loading');
-
 			const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
 			const data = result[id]?.data;
 
@@ -257,14 +267,6 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				setLoadState('loaded');
 				return;
 			}
-
-			const { x = viewport.x, y = viewport.y, zoom = viewport.zoom } = data.viewport;
-			const nodes = data.nodes ?? [];
-			const edges = data.edges ?? [];
-
-			filterNodes(nodes);
-			setEdges(edges);
-			setViewport({ x, y, zoom }, { duration: 1000 });
 		} catch (error) {
 			console.error('Error parsing workflow data from localStorage:', error);
 		} finally {
@@ -553,8 +555,9 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev),
 			setShowMiniMap,
 			generateSave,
+			loadWorkflow,
 		}),
-		[redo, undo, addNode, setShowMiniMap, generateSave],
+		[redo, undo, addNode, setShowMiniMap, generateSave, loadWorkflow],
 	);
 
 	return (
@@ -655,24 +658,71 @@ function UploadContextButton() {
 
 	return (
 		<div>
-			{serverVersion > localVersion && <span className="text-destructive-foreground">Your local version is outdated</span>}
-			{serverVersion !== localVersion &&
-				createPortal(
+			{createPortal(
+				<div>
+					{serverVersion > localVersion && <span className="text-destructive-foreground">Your local version is outdated</span>}
 					<Dialog>
 						<DialogTrigger asChild>
 							<Button variant="primary">
 								<UploadIcon className="size-4" />
-								<span>Load workflow</span>
+								<span>Upload workflow</span>
 							</Button>
 						</DialogTrigger>
 						<DialogContent className="p-6 border rounded-dm">
 							<DialogTitle>Confirm</DialogTitle>
-							<UploadWorkflowDialog version={localVersion} />
+							<LoadServerWorkflowDialog />
 						</DialogContent>
-					</Dialog>,
-					container,
-				)}
+					</Dialog>
+					{serverVersion !== localVersion && (
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="primary">
+									<UploadIcon className="size-4" />
+									<span>Upload workflow</span>
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="p-6 border rounded-dm">
+								<DialogTitle>Confirm</DialogTitle>
+								<UploadWorkflowDialog version={localVersion} />
+							</DialogContent>
+						</Dialog>
+					)}
+				</div>,
+				container,
+			)}
 		</div>
+	);
+}
+
+function LoadServerWorkflowDialog() {
+	const id = usePathId();
+	const axios = useClientApi();
+
+	const {
+		actions: { loadWorkflow },
+	} = useWorkflowEditor();
+
+	const { mutate, isPending } = useMutation({
+		mutationKey: ['server', id, 'workflow', 'upload'],
+		mutationFn: () => getServerWorkflow(axios, id).then((data) => loadWorkflow(data)),
+		onMutate: () => toast.loading(<Tran text="upload.loading" />),
+		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
+		onError: (error, _variables, id) => toast.error(<Tran text="upload.fail" />, { error, id }),
+	});
+
+	return (
+		<>
+			<DialogFooter>
+				<DialogClose asChild>
+					<Button variant="secondary">Cancel</Button>
+				</DialogClose>
+				<DialogClose asChild>
+					<Button onClick={() => mutate()} disabled={isPending} variant="primary">
+						Ok
+					</Button>
+				</DialogClose>
+			</DialogFooter>
+		</>
 	);
 }
 
@@ -695,7 +745,7 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	}, [nodes, version]);
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['server', id, 'workflow', 'load'],
+		mutationKey: ['server', id, 'workflow', 'upload'],
 		mutationFn: () => Promise.all([loadServerWorkflow(axios, id, payload), saveServerWorkflow(axios, id, generateSave())]),
 		onMutate: () => toast.loading(<Tran text="upload.loading" />),
 		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
