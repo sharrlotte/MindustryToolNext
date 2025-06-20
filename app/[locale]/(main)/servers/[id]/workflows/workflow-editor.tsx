@@ -639,6 +639,8 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 function UploadContextButton() {
 	const id = usePathId();
 	const axios = useClientApi();
+	const { errors } = useWorkflowEditor();
+
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ['server', id, 'workflow', 'version'],
 		queryFn: () => getServerWorkflowVersion(axios, id),
@@ -687,7 +689,7 @@ function UploadContextButton() {
 					{serverVersion !== localVersion && (
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="secondary">
+								<Button variant="secondary" disabled={Object.keys(errors).length > 0}>
 									<UploadIcon className="size-4" />
 									<span>Upload</span>
 								</Button>
