@@ -29,7 +29,7 @@ export default function NodeItem(props: NodeItemProps) {
 		>
 			<CatchError>
 				<NodeItemInternal {...props} />
-				{produce.produceType && <div>{produce.produceType}</div>}
+				{produce.produceType && <div>{produce.variableName}</div>}
 				{error && <span className="text-destructive-foreground text-xs">{error}</span>}
 			</CatchError>
 		</div>
