@@ -1,7 +1,7 @@
 'use client';
 
 import { Identifier } from 'dnd-core';
-import { UploadIcon } from 'lucide-react';
+import { DownloadIcon, UploadIcon } from 'lucide-react';
 import { Suspense, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { createPortal } from 'react-dom';
@@ -22,7 +22,13 @@ import { toast } from '@/components/ui/sonner';
 
 import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
-import { WorkflowSave, getServerWorkflow, getServerWorkflowVersion, loadServerWorkflow, saveServerWorkflow } from '@/query/server';
+import {
+	WorkflowSave,
+	getServerWorkflow,
+	getServerWorkflowVersion,
+	loadServerWorkflow,
+	saveServerWorkflow,
+} from '@/query/server';
 
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
@@ -130,7 +136,6 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const ref = useRef<HTMLDivElement>(null);
 	const viewport = useViewport();
 	const { data: nodeTypes } = useWorkflowNodes();
-	const axios = useClientApi();
 
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
@@ -261,18 +266,20 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 		try {
 			const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
-			const data = result[id]?.data;
+			const data = result[id];
 
 			if (!data) {
 				setLoadState('loaded');
 				return;
 			}
+
+			loadWorkflow(data);
 		} catch (error) {
 			console.error('Error parsing workflow data from localStorage:', error);
 		} finally {
 			setLoadState('loaded');
 		}
-	}, [id, viewport, nodeTypes, setViewport, loadState, axios]);
+	}, [id, viewport, nodeTypes, setViewport, loadState, loadWorkflow]);
 
 	const variables = useMemo(
 		() =>
@@ -639,8 +646,10 @@ function UploadContextButton() {
 
 	const serverVersion = data ?? 0;
 
-	const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
-	const localVersion = result[id]?.createdAt ?? 0;
+	const localVersion = useMemo(() => {
+		const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
+		return result[id]?.createdAt ?? 0;
+	}, [id]);
 
 	if (isLoading) {
 		return undefined;
@@ -659,13 +668,15 @@ function UploadContextButton() {
 	return (
 		<div>
 			{createPortal(
-				<div>
-					{serverVersion > localVersion && <span className="text-destructive-foreground">Your local version is outdated</span>}
+				<div className="flex gap-1">
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant="primary">
-								<UploadIcon className="size-4" />
-								<span>Upload workflow</span>
+							<Button variant="secondary">
+								{serverVersion > localVersion && (
+									<span className="text-warning-foreground underline">Your local version is outdated</span>
+								)}
+								<DownloadIcon className="size-4" />
+								<span>Download</span>
 							</Button>
 						</DialogTrigger>
 						<DialogContent className="p-6 border rounded-dm">
@@ -676,9 +687,9 @@ function UploadContextButton() {
 					{serverVersion !== localVersion && (
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="primary">
+								<Button variant="secondary">
 									<UploadIcon className="size-4" />
-									<span>Upload workflow</span>
+									<span>Upload</span>
 								</Button>
 							</DialogTrigger>
 							<DialogContent className="p-6 border rounded-dm">
