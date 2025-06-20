@@ -13,7 +13,6 @@ import HelperLines from '@/app/[locale]/logic/helper-lines';
 import { getHelperLines } from '@/app/[locale]/logic/utils';
 
 import { CatchError } from '@/components/common/catch-error';
-import ErrorMessage from '@/components/common/error-message';
 import Hydrated from '@/components/common/hydrated';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
@@ -654,7 +653,7 @@ function UploadContextButton() {
 	const axios = useClientApi();
 	const { errors } = useWorkflowEditor();
 
-	const { data, isLoading, isError, error } = useQuery({
+	const { data } = useQuery({
 		queryKey: ['server', id, 'workflow', 'version'],
 		queryFn: () => getServerWorkflowVersion(axios, id),
 	});
@@ -665,14 +664,6 @@ function UploadContextButton() {
 	});
 
 	const serverVersion = data ?? 0;
-
-	if (isLoading) {
-		return undefined;
-	}
-
-	if (isError) {
-		return <ErrorMessage error={error} />;
-	}
 
 	const container = document.getElementById('server-nav-right');
 
