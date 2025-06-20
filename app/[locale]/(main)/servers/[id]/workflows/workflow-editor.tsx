@@ -729,8 +729,8 @@ function LoadServerWorkflowDialog({ setLocalVersion }: { setLocalVersion: React.
 		mutationFn: () =>
 			getServerWorkflow(axios, id).then((data) => {
 				setLocalVersion(data.createdAt);
-				loadWorkflow(data);
 				writeSave(data);
+				loadWorkflow(data);
 			}),
 		onMutate: () => toast.loading(<Tran text="upload.loading" />),
 		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
