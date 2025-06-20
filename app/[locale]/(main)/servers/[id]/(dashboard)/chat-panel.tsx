@@ -24,7 +24,7 @@ export default async function ChatPanel({ id }: Props) {
 			</h3>
 			<Divider />
 			<ChatList />
-			<ChatInput className="p-2" room={`SERVER_CHAT-${id}`} />
+			<ChatInput className="p-2 mt-auto" room={`SERVER_CHAT-${id}`} />
 		</div>
 	);
 }

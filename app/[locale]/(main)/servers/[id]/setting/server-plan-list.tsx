@@ -3,6 +3,7 @@
 import { CpuIcon, MemoryStickIcon } from 'lucide-react';
 
 import ErrorMessage from '@/components/common/error-message';
+import InternalLink from '@/components/common/internal-link';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import Tran from '@/components/common/tran';
 import { Badge } from '@/components/ui/badge';
@@ -11,14 +12,18 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
 import { toast } from '@/components/ui/sonner';
 
-import { revalidate } from '@/action/server-action';
-import { useSession } from '@/context/session.context';
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import { cn, hasAccess } from '@/lib/utils';
-import { getServerPlans, updateServerPlan } from '@/query/server';
 import { ServerPlan } from '@/types/response/ServerPlan';
 import { ServerSetting } from '@/types/response/ServerSetting';
+
+import { getServerPlans, updateServerPlan } from '@/query/server';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+
+import { revalidate } from '@/action/server-action';
+import env from '@/constant/env';
+import { useSession } from '@/context/session.context';
+import { cn, hasAccess } from '@/lib/utils';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -54,8 +59,11 @@ export default function ServerPlanList({ server }: Props) {
 				<h2 className="text-xl">
 					<Tran text="server.plan" asChild />
 				</h2>
-				<p className="text-muted-foreground">
+				<p className="text-muted-foreground space-x-1">
 					<Tran text="server.plan-description" defaultValue="Contact admin if you need a higher plan" asChild />
+					<InternalLink className="underline" href={env.url.discordServer}>
+						Contact admin
+					</InternalLink>
 				</p>
 			</div>
 			<Divider />

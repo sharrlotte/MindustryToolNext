@@ -1,7 +1,7 @@
 'use client';
 
 import { Identifier } from 'dnd-core';
-import { UploadIcon } from 'lucide-react';
+import { DownloadIcon, UploadIcon } from 'lucide-react';
 import { Suspense, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { createPortal } from 'react-dom';
@@ -22,7 +22,13 @@ import { toast } from '@/components/ui/sonner';
 
 import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
-import { getServerWorkflowVersion, loadServerWorkflow } from '@/query/server';
+import {
+	WorkflowSave,
+	getServerWorkflow,
+	getServerWorkflowVersion,
+	loadServerWorkflow,
+	saveServerWorkflow,
+} from '@/query/server';
 
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
@@ -56,24 +62,18 @@ const WorkflowSideBar = dynamic(() => import('@/app/[locale]/(main)/servers/[id]
 
 type Node = WorkflowNode;
 
-type LocalWorkflow = Record<
-	string,
-	{
-		data: ReturnType<ReactFlowInstance<Node, Edge>['toObject']>;
-		createdAt: number;
-	}
->;
+type LocalWorkflow = Record<string, WorkflowSave>;
 
 type WorkflowEditorContextType = {
 	isDeleteOnClick: boolean;
 	showMiniMap: boolean;
-	showPropertiesPanel: WorkflowNode | null;
+	selectedWorkflow: WorkflowNode | null;
 	canUndo: boolean;
 	canRedo: boolean;
 	name: string;
 
 	variables: Record<string, string>;
-
+	errors: Record<string, Record<string, string>>;
 	nodes: Node[];
 	edges: Edge[];
 	debouncedNodes: Node[];
@@ -89,7 +89,9 @@ type WorkflowEditorContextType = {
 		addNode: (type: string) => void;
 		toggleDeleteOnClick: () => void;
 		setShowMiniMap: (show: boolean) => void;
-		setShowPropertiesPanel: (node: WorkflowNode | null) => void;
+		setSelectedWorkflow: (node: WorkflowNode | null) => void;
+		generateSave: () => WorkflowSave;
+		loadWorkflow: (data: WorkflowSave) => void;
 	};
 };
 
@@ -116,7 +118,6 @@ const WORKFLOW_PERSISTENT_KEY = `workflows`;
 export function WorkflowEditorProvider({ children }: { children: React.ReactNode }) {
 	const id = usePathId();
 	const [loadState, setLoadState] = useState<'loaded' | 'loading' | 'not-loaded'>('not-loaded');
-	const [errors, setErrors] = useState<Record<string, any>>({});
 	const [name, setName] = useState('');
 	const [nodes, setNodes] = useState<Node[]>([]);
 	const [edges, setEdges] = useState<Edge[]>([]);
@@ -129,7 +130,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 	const [isDeleteOnClick, setDeleteOnClick] = useState(false);
 	const [showMiniMap, setShowMiniMap] = useLocalStorage('workflow.editor.show-mini-map', false);
-	const [showPropertiesPanel, setShowPropertiesPanel] = useState<WorkflowNode | null>(null);
+	const [selectedWorkflow, setSelectedWorkflow] = useState<WorkflowNode | null>(null);
 
 	const { setViewport } = useReactFlow();
 	const ref = useRef<HTMLDivElement>(null);
@@ -139,49 +140,49 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
 
-	useEffect(() => {
-		if (loadState !== 'loaded') {
-			return;
-		}
-		try {
-			if (rfInstance) {
-				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
-				const data: LocalWorkflow = { ...flow, [id]: { createdAt: Date.now(), data: rfInstance.toObject() } };
-				console.dir({ save: data });
-				localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
+	const errors = useMemo(() => {
+		const errors: Record<string, Record<string, string>> = {};
+
+		debouncedNodes.forEach((node) => {
+			if (node.type !== 'workflow') return;
+
+			const data = node.data as WorkflowNodeData;
+
+			for (const consumer of data.consumers) {
+				if (consumer.required && !consumer.value) {
+					if (!errors[node.id]) {
+						errors[node.id] = {};
+					}
+					errors[node.id][consumer.name] = `Consumer ${consumer.name} on node ${node.data.name} is required but not set.`;
+				}
 			}
-		} catch (e) {
-			setErrors((prev) => ({ ...prev, 'save-error': e }));
-			console.error('Error saving workflow', e);
-		}
-	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState]);
+		});
 
-	useEffect(() => {
-		if (!nodeTypes || Object.keys(nodeTypes).length === 0 || loadState !== 'not-loaded') {
-			return;
+		return errors;
+	}, [debouncedNodes]);
+
+	const generateSave = useCallback(() => {
+		if (!rfInstance) {
+			throw new Error('React Flow instance is not initialized');
 		}
 
-		try {
-			console.log('Loading workflow');
+		return { createdAt: Date.now(), data: rfInstance.toObject(), version: 1 };
+	}, [rfInstance]);
+
+	const loadWorkflow = useCallback(
+		({ data }: WorkflowSave) => {
 			setLoadState('loading');
 
-			const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
-			const data = result[id]?.data;
-
-			console.dir({ load: data });
-
-			if (!data) {
-				console.log('No workflow data');
-				setLoadState('loaded');
-				return;
-			}
-
-			const { x = viewport.x, y = viewport.y, zoom = viewport.zoom } = data.viewport;
+			const { x = 0, y = 0, zoom = 0 } = data.viewport;
 			const nodes = data.nodes ?? [];
 			const edges = data.edges ?? [];
 
 			setNodes(
 				nodes.filter((node) => {
+					if (node.type !== 'workflow') {
+						return true;
+					}
+
 					const base = nodeTypes[node.data.name];
 
 					if (!base) {
@@ -239,14 +240,46 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			);
 			setEdges(edges);
 			setViewport({ x, y, zoom }, { duration: 1000 });
-			console.log('Workflow loaded');
+		},
+		[nodeTypes, setViewport],
+	);
+
+	useEffect(() => {
+		if (loadState !== 'loaded') {
+			return;
+		}
+		try {
+			if (rfInstance) {
+				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
+				const data: LocalWorkflow = { ...flow, [id]: generateSave() };
+				localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
+			}
+		} catch (e) {
+			console.error('Error saving workflow', e);
+		}
+	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState, generateSave]);
+
+	useEffect(() => {
+		if (!nodeTypes || Object.keys(nodeTypes).length === 0 || loadState !== 'not-loaded') {
+			return;
+		}
+
+		try {
+			const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
+			const data = result[id];
+
+			if (!data) {
+				setLoadState('loaded');
+				return;
+			}
+
+			loadWorkflow(data);
 		} catch (error) {
-			setErrors((prev) => ({ ...prev, 'load-error': error }));
 			console.error('Error parsing workflow data from localStorage:', error);
 		} finally {
 			setLoadState('loaded');
 		}
-	}, [id, viewport, nodeTypes, setViewport, loadState]);
+	}, [id, viewport, nodeTypes, setViewport, loadState, loadWorkflow]);
 
 	const variables = useMemo(
 		() =>
@@ -361,6 +394,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const onNodeChange = useCallback(
 		(changes: NodeChange[]) => {
 			const newNodes = customApplyNodeChanges(changes, nodes);
+
 			setNodes(newNodes);
 		},
 		[customApplyNodeChanges, nodes],
@@ -382,7 +416,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					...params,
 					animated: true,
 					markerEnd: {
-						type: MarkerType.Arrow,
+						type: MarkerType.ArrowClosed,
 					},
 				},
 				edges,
@@ -424,7 +458,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			}
 
 			if (node.type === 'workflow') {
-				setShowPropertiesPanel((prev) => (prev?.id === node.id ? null : node));
+				setSelectedWorkflow((prev) => (prev?.id === node.id ? null : node));
 			}
 		},
 		[isDeleteOnClick, nodes, edges, updateHistory],
@@ -495,18 +529,6 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		}
 	}, [historyIndex, nodeHistory, edgeHistory]);
 
-	const actions = useMemo(
-		() => ({
-			redo,
-			undo,
-			addNode,
-			setShowPropertiesPanel,
-			toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev),
-			setShowMiniMap,
-		}),
-		[redo, undo, addNode, setShowMiniMap],
-	);
-
 	const [{ handlerId }, drop] = useDrop<any, void, { handlerId: Identifier | null }>({
 		accept: 'workflow',
 		collect(monitor) {
@@ -520,7 +542,30 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		},
 	});
 
+	const handleClick = useCallback(
+		(_event: React.MouseEvent) => {
+			if (selectedWorkflow) {
+				setSelectedWorkflow(null);
+			}
+		},
+		[selectedWorkflow],
+	);
+
 	drop(ref);
+
+	const actions = useMemo(
+		() => ({
+			redo,
+			undo,
+			addNode,
+			setSelectedWorkflow,
+			toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev),
+			setShowMiniMap,
+			generateSave,
+			loadWorkflow,
+		}),
+		[redo, undo, addNode, setShowMiniMap, generateSave, loadWorkflow],
+	);
 
 	return (
 		<WorkflowEditorContext.Provider
@@ -530,10 +575,11 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				variables,
 				edges,
 				nodes,
+				errors,
 				debouncedNodes,
 				debouncedEdges,
 				showMiniMap,
-				showPropertiesPanel,
+				selectedWorkflow,
 				canUndo: historyIndex > 0,
 				canRedo: historyIndex < nodeHistory.length - 1,
 				setEdges,
@@ -568,17 +614,13 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				proOptions={proOptions}
 				fitView
 				data-handler-id={handlerId}
+				onClick={handleClick}
 			>
 				<CatchError>
 					<Suspense>
 						{children}
 						<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
 						<Hydrated>{showMiniMap && <MiniMap />}</Hydrated>
-						<p className="absolute z-50 top-1 left-0 right-0 w-1/2 translate-x-1/2 flex justify-center text-xs text-destructive-foreground">
-							{Object.entries(errors)
-								.map(([key, value]) => `${key.toUpperCase()}: ${value.message}`)
-								.join()}
-						</p>
 						<div className="absolute z-50 bottom-0 top-0 right-1 p-1 space-x-1 flex text-sm text-muted-foreground">
 							<span>x: {Math.round(viewport.x)}</span>
 							<span>y: {Math.round(viewport.y)}</span>
@@ -589,7 +631,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					</Suspense>
 				</CatchError>
 			</ReactFlow>
-			<Suspense>{showPropertiesPanel && <PropertiesPanel node={showPropertiesPanel} />}</Suspense>
+			<Suspense>{selectedWorkflow && <PropertiesPanel node={selectedWorkflow} />}</Suspense>
 		</WorkflowEditorContext.Provider>
 	);
 }
@@ -604,8 +646,10 @@ function UploadContextButton() {
 
 	const serverVersion = data ?? 0;
 
-	const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
-	const localVersion = result[id]?.createdAt ?? 0;
+	const localVersion = useMemo(() => {
+		const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
+		return result[id]?.createdAt ?? 0;
+	}, [id]);
 
 	if (isLoading) {
 		return undefined;
@@ -623,24 +667,73 @@ function UploadContextButton() {
 
 	return (
 		<div>
-			{serverVersion > localVersion && <span className="text-destructive-foreground">Your local version is outdated</span>}
-			{serverVersion !== localVersion &&
-				createPortal(
+			{createPortal(
+				<div className="flex gap-1">
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant="primary">
-								<UploadIcon className="size-4" />
-								<span>Load workflow</span>
+							<Button variant="secondary">
+								{serverVersion > localVersion && (
+									<span className="text-warning-foreground underline">Your local version is outdated</span>
+								)}
+								<DownloadIcon className="size-4" />
+								<span>Download</span>
 							</Button>
 						</DialogTrigger>
 						<DialogContent className="p-6 border rounded-dm">
 							<DialogTitle>Confirm</DialogTitle>
-							<UploadWorkflowDialog version={localVersion} />
+							<LoadServerWorkflowDialog />
 						</DialogContent>
-					</Dialog>,
-					container,
-				)}
+					</Dialog>
+					{serverVersion !== localVersion && (
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="secondary">
+									<UploadIcon className="size-4" />
+									<span>Upload</span>
+								</Button>
+							</DialogTrigger>
+							<DialogContent className="p-6 border rounded-dm">
+								<DialogTitle>Confirm</DialogTitle>
+								<UploadWorkflowDialog version={localVersion} />
+							</DialogContent>
+						</Dialog>
+					)}
+				</div>,
+				container,
+			)}
 		</div>
+	);
+}
+
+function LoadServerWorkflowDialog() {
+	const id = usePathId();
+	const axios = useClientApi();
+
+	const {
+		actions: { loadWorkflow },
+	} = useWorkflowEditor();
+
+	const { mutate, isPending } = useMutation({
+		mutationKey: ['server', id, 'workflow', 'upload'],
+		mutationFn: () => getServerWorkflow(axios, id).then((data) => loadWorkflow(data)),
+		onMutate: () => toast.loading(<Tran text="upload.loading" />),
+		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
+		onError: (error, _variables, id) => toast.error(<Tran text="upload.fail" />, { error, id }),
+	});
+
+	return (
+		<>
+			<DialogFooter>
+				<DialogClose asChild>
+					<Button variant="secondary">Cancel</Button>
+				</DialogClose>
+				<DialogClose asChild>
+					<Button onClick={() => mutate()} disabled={isPending} variant="primary">
+						Ok
+					</Button>
+				</DialogClose>
+			</DialogFooter>
+		</>
 	);
 }
 
@@ -648,7 +741,11 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	const id = usePathId();
 	const axios = useClientApi();
 
-	const { nodes } = useWorkflowEditor();
+	const {
+		nodes,
+		actions: { generateSave },
+	} = useWorkflowEditor();
+
 	const payload = useMemo(() => {
 		const result = nodes.filter((node) => node.type === 'workflow').map((node) => JSON.parse(JSON.stringify(node.data)));
 
@@ -659,8 +756,8 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	}, [nodes, version]);
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: ['server', id, 'workflow', 'load'],
-		mutationFn: () => loadServerWorkflow(axios, id, payload),
+		mutationKey: ['server', id, 'workflow', 'upload'],
+		mutationFn: () => Promise.all([loadServerWorkflow(axios, id, payload), saveServerWorkflow(axios, id, generateSave())]),
 		onMutate: () => toast.loading(<Tran text="upload.loading" />),
 		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
 		onError: (error, _variables, id) => toast.error(<Tran text="upload.fail" />, { error, id }),
