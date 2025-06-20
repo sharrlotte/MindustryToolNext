@@ -21,11 +21,13 @@ import { ServerPlan } from '@/types/response/ServerPlan';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { ServerSetting } from '@/types/response/ServerSetting';
 import { ServerStats } from '@/types/response/ServerStats';
-import { GetWorkflowNodeDataSchema, WorkflowContextSchema, WorkflowNodeData } from '@/types/response/WorkflowContext';
+import { GetWorkflowNodeDataSchema, WorkflowNodeData } from '@/types/response/WorkflowContext';
 import { PaginationQuery } from '@/types/schema/search-query';
 
 import { MetricUnit } from '@/lib/metric.utils';
 import { toForm } from '@/lib/utils';
+
+import { Edge } from '@xyflow/react';
 
 import { WorkflowContext } from './../types/response/WorkflowContext';
 import { z } from 'zod/v4';
@@ -346,5 +348,60 @@ export async function getServerWorkflowVersion(axios: AxiosInstance, serverId: s
 }
 
 export async function loadServerWorkflow(axios: AxiosInstance, serverId: string, payload: WorkflowContext): Promise<void> {
+	await axios.post(`/servers/${serverId}/workflow/load`, payload);
+}
+
+export async function saveServerWorkflow(axios: AxiosInstance, serverId: string, payload: WorkflowContext): Promise<void> {
 	await axios.post(`/servers/${serverId}/workflow`, payload);
+}
+
+export async function getServerWorkflow(axios: AxiosInstance, serverId: string): Promise<any> {
+	const result = await axios.post(`/servers/${serverId}/workflow`);
+
+	return result.data;
+}
+
+export async function updateWorkflowNode(
+	axios: AxiosInstance,
+	serverId: string,
+	nodeId: string,
+	payload: WorkflowNodeData,
+): Promise<void> {
+	await axios.put(`/servers/${serverId}/workflow/nodes/${nodeId}`, payload, {
+		data: payload,
+	});
+}
+
+export async function createWorkflowNode(axios: AxiosInstance, serverId: string, payload: WorkflowNodeData): Promise<void> {
+	await axios.post(`/servers/${serverId}/workflow/nodes`, payload, {
+		data: payload,
+	});
+}
+
+export async function deleteWorkflowNode(axios: AxiosInstance, serverId: string, nodeId: string): Promise<void> {
+	const result = await axios.delete(`/servers/${serverId}/workflow/nodes/${nodeId}`);
+
+	return result.data;
+}
+
+export async function updateWorkflowEdge(axios: AxiosInstance, serverId: string, edge: Edge): Promise<void> {
+	const result = await axios.put(`/servers/${serverId}/workflow/edges/${edge.id}`, edge, {
+		data: edge,
+	});
+
+	return result.data;
+}
+
+export async function createWorkflowEdge(axios: AxiosInstance, serverId: string, edge: Edge): Promise<void> {
+	const result = await axios.post(`/servers/${serverId}/workflow/edges`, edge, {
+		data: edge,
+	});
+
+	return result.data;
+}
+
+export async function deleteWorkflowEdge(axios: AxiosInstance, serverId: string, edgeId: string): Promise<void> {
+	const result = await axios.delete(`/servers/${serverId}/workflow/edges/${edgeId}`);
+
+	return result.data;
 }
