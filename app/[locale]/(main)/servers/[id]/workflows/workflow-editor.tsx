@@ -747,7 +747,15 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	} = useWorkflowEditor();
 
 	const payload = useMemo(() => {
-		const result = nodes.filter((node) => node.type === 'workflow').map((node) => JSON.parse(JSON.stringify(node.data)));
+		const result = nodes
+			.filter((node) => node.type === 'workflow')
+			.map((node) => JSON.parse(JSON.stringify(node.data))) as WorkflowNodeData[];
+
+		result.forEach((node) => {
+			node.consumers.forEach((consumer) => {
+				consumer.options = [];
+			});
+		});
 
 		return {
 			nodes: result,
