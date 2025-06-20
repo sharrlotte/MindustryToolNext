@@ -1,5 +1,7 @@
 import { AxiosInstance } from 'axios';
 
+import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
+
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
 import { CreateServerRequest } from '@/types/request/CreateServerRequest';
@@ -27,7 +29,7 @@ import { PaginationQuery } from '@/types/schema/search-query';
 import { MetricUnit } from '@/lib/metric.utils';
 import { toForm } from '@/lib/utils';
 
-import { Edge } from '@xyflow/react';
+import { Edge, ReactFlowInstance } from '@xyflow/react';
 
 import { WorkflowContext } from './../types/response/WorkflowContext';
 import { z } from 'zod/v4';
@@ -351,7 +353,13 @@ export async function loadServerWorkflow(axios: AxiosInstance, serverId: string,
 	await axios.post(`/servers/${serverId}/workflow/load`, payload);
 }
 
-export async function saveServerWorkflow(axios: AxiosInstance, serverId: string, payload: WorkflowContext): Promise<void> {
+export type WorkflowSave = {
+	data: ReturnType<ReactFlowInstance<WorkflowNode, Edge>['toObject']>;
+	createdAt: number;
+	version: number;
+};
+
+export async function saveServerWorkflow(axios: AxiosInstance, serverId: string, payload: WorkflowSave): Promise<void> {
 	await axios.post(`/servers/${serverId}/workflow`, payload);
 }
 

@@ -22,7 +22,7 @@ import { toast } from '@/components/ui/sonner';
 
 import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
-import { getServerWorkflowVersion, loadServerWorkflow } from '@/query/server';
+import { WorkflowSave, getServerWorkflowVersion, loadServerWorkflow, saveServerWorkflow } from '@/query/server';
 
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
@@ -56,13 +56,7 @@ const WorkflowSideBar = dynamic(() => import('@/app/[locale]/(main)/servers/[id]
 
 type Node = WorkflowNode;
 
-type LocalWorkflow = Record<
-	string,
-	{
-		data: ReturnType<ReactFlowInstance<Node, Edge>['toObject']>;
-		createdAt: number;
-	}
->;
+type LocalWorkflow = Record<string, WorkflowSave>;
 
 type WorkflowEditorContextType = {
 	isDeleteOnClick: boolean;
@@ -90,6 +84,7 @@ type WorkflowEditorContextType = {
 		toggleDeleteOnClick: () => void;
 		setShowMiniMap: (show: boolean) => void;
 		setSelectedWorkflow: (node: WorkflowNode | null) => void;
+		generateSave: () => WorkflowSave;
 	};
 };
 
@@ -134,6 +129,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const ref = useRef<HTMLDivElement>(null);
 	const viewport = useViewport();
 	const { data: nodeTypes } = useWorkflowNodes();
+	const axios = useClientApi();
 
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
@@ -159,6 +155,14 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		return errors;
 	}, [debouncedNodes]);
 
+	const generateSave = useCallback(() => {
+		if (!rfInstance) {
+			throw new Error('React Flow instance is not initialized');
+		}
+
+		return { createdAt: Date.now(), data: rfInstance.toObject(), version: 1 };
+	}, [rfInstance]);
+
 	useEffect(() => {
 		if (loadState !== 'loaded') {
 			return;
@@ -166,36 +170,26 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		try {
 			if (rfInstance) {
 				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
-				const data: LocalWorkflow = { ...flow, [id]: { createdAt: Date.now(), data: rfInstance.toObject() } };
+				const data: LocalWorkflow = { ...flow, [id]: generateSave() };
 				localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
 			}
 		} catch (e) {
 			console.error('Error saving workflow', e);
 		}
-	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState]);
+	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState, generateSave]);
 
 	useEffect(() => {
 		if (!nodeTypes || Object.keys(nodeTypes).length === 0 || loadState !== 'not-loaded') {
 			return;
 		}
 
-		try {
-			setLoadState('loading');
-
-			const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
-			const data = result[id]?.data;
-
-			if (!data) {
-				setLoadState('loaded');
-				return;
-			}
-
-			const { x = viewport.x, y = viewport.y, zoom = viewport.zoom } = data.viewport;
-			const nodes = data.nodes ?? [];
-			const edges = data.edges ?? [];
-
+		function filterNodes(nodes: Node[]) {
 			setNodes(
 				nodes.filter((node) => {
+					if (node.type !== 'workflow') {
+						return true;
+					}
+
 					const base = nodeTypes[node.data.name];
 
 					if (!base) {
@@ -251,6 +245,24 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					return true;
 				}),
 			);
+		}
+
+		try {
+			setLoadState('loading');
+
+			const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
+			const data = result[id]?.data;
+
+			if (!data) {
+				setLoadState('loaded');
+				return;
+			}
+
+			const { x = viewport.x, y = viewport.y, zoom = viewport.zoom } = data.viewport;
+			const nodes = data.nodes ?? [];
+			const edges = data.edges ?? [];
+
+			filterNodes(nodes);
 			setEdges(edges);
 			setViewport({ x, y, zoom }, { duration: 1000 });
 		} catch (error) {
@@ -258,7 +270,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		} finally {
 			setLoadState('loaded');
 		}
-	}, [id, viewport, nodeTypes, setViewport, loadState]);
+	}, [id, viewport, nodeTypes, setViewport, loadState, axios]);
 
 	const variables = useMemo(
 		() =>
@@ -373,6 +385,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const onNodeChange = useCallback(
 		(changes: NodeChange[]) => {
 			const newNodes = customApplyNodeChanges(changes, nodes);
+
 			setNodes(newNodes);
 		},
 		[customApplyNodeChanges, nodes],
@@ -507,18 +520,6 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		}
 	}, [historyIndex, nodeHistory, edgeHistory]);
 
-	const actions = useMemo(
-		() => ({
-			redo,
-			undo,
-			addNode,
-			setSelectedWorkflow,
-			toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev),
-			setShowMiniMap,
-		}),
-		[redo, undo, addNode, setShowMiniMap],
-	);
-
 	const [{ handlerId }, drop] = useDrop<any, void, { handlerId: Identifier | null }>({
 		accept: 'workflow',
 		collect(monitor) {
@@ -542,6 +543,19 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	);
 
 	drop(ref);
+
+	const actions = useMemo(
+		() => ({
+			redo,
+			undo,
+			addNode,
+			setSelectedWorkflow,
+			toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev),
+			setShowMiniMap,
+			generateSave,
+		}),
+		[redo, undo, addNode, setShowMiniMap, generateSave],
+	);
 
 	return (
 		<WorkflowEditorContext.Provider
@@ -666,7 +680,11 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	const id = usePathId();
 	const axios = useClientApi();
 
-	const { nodes } = useWorkflowEditor();
+	const {
+		nodes,
+		actions: { generateSave },
+	} = useWorkflowEditor();
+
 	const payload = useMemo(() => {
 		const result = nodes.filter((node) => node.type === 'workflow').map((node) => JSON.parse(JSON.stringify(node.data)));
 
@@ -678,7 +696,7 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server', id, 'workflow', 'load'],
-		mutationFn: () => loadServerWorkflow(axios, id, payload),
+		mutationFn: () => Promise.all([loadServerWorkflow(axios, id, payload), saveServerWorkflow(axios, id, generateSave())]),
 		onMutate: () => toast.loading(<Tran text="upload.loading" />),
 		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
 		onError: (error, _variables, id) => toast.error(<Tran text="upload.fail" />, { error, id }),
