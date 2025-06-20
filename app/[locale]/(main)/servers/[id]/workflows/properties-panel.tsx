@@ -3,10 +3,12 @@ import { Suspense, useCallback } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
+import { updateProducer } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
+import { Input } from '@/components/ui/input';
 
 import { useReactFlow } from '@xyflow/react';
 
@@ -15,6 +17,8 @@ import dynamic from 'next/dynamic';
 const NodeItem = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/workflow-node-item'));
 
 export default function PropertiesPanel({ node }: { node: WorkflowNode }) {
+	const { id } = node;
+
 	const {
 		data: { name, consumers, producers, outputs },
 	} = node;
@@ -45,23 +49,45 @@ export default function PropertiesPanel({ node }: { node: WorkflowNode }) {
 					</div>
 				</>
 			)}
-			{producers.length > 0 && (
-				<>
-					<Divider />
-					<div className="grid gap-1">
-						<span>Produces</span>
-						<div className="flex flex-col gap-2 text-muted-foreground text-sm">
-							{producers.map((producer, index) => (
-								<div key={index} className="flex items-center gap-2">
-									{producer.name}: {producer.type}
-								</div>
-							))}
-						</div>
-					</div>
-				</>
-			)}
+			{producers.length > 0 && <Producers nodeId={id} producers={producers} />}
 			{outputs.length > 0 && <Outputs outputs={outputs} />}
 		</ScrollContainer>
+	);
+}
+
+function Producers({ producers, nodeId }: { nodeId: string; producers: WorkflowNode['data']['producers'] }) {
+	return (
+		<>
+			<Divider />
+			<div className="grid gap-1">
+				<span>Produces</span>
+				<div className="flex flex-col gap-2 text-muted-foreground text-sm">
+					{producers.map((producer, index) => (
+						<Producer key={index} producer={producer} nodeId={nodeId} />
+					))}
+				</div>
+			</div>
+		</>
+	);
+}
+
+function Producer({
+	nodeId,
+	producer: { name, variableName },
+}: {
+	nodeId: string;
+	producer: WorkflowNode['data']['producers'][number];
+}) {
+	const { setNode } = useWorkflowEditor();
+
+	return (
+		<div className="grid gap-1">
+			<span>{name}</span>
+			<Input
+				value={variableName}
+				onChange={(e) => setNode(nodeId, (prev) => updateProducer(prev, name, e.currentTarget.value))}
+			/>
+		</div>
 	);
 }
 
