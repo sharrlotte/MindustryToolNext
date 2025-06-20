@@ -3,7 +3,7 @@ import env from '@/constant/env';
 export const defaultLocale = 'en';
 export const cookieName = 'Locale';
 export const locales = env.locales;
-export const i18nCachePrefix = 'i18next';
+export const i18nCachePrefix = 'i18next-';
 
 export type Locale = (typeof locales)[number];
 

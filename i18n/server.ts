@@ -49,7 +49,7 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 		defaultNS: defaultNamespace,
 		ns,
 		backend: {
-			loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=1`,
+			loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=2`,
 			addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 			request(options, url, payload, callback) {
 				try {

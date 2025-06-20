@@ -54,7 +54,7 @@ export function getClientOptions(ns = defaultNamespace) {
 					prefix: i18nCachePrefix,
 				},
 				{
-					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=1`,
+					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=2`,
 					addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 					request(options, url, payload, callback) {
 						try {
