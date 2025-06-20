@@ -99,10 +99,7 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 
 const initI18next = async (language: Locale, namespace?: string) => {
 	const i18nInstance = createInstance();
-	await i18nInstance
-		.use(initReactI18next) //
-		.use(HttpApi)
-		.init<HttpBackendOptions>(getServerOptions(language, namespace));
+	await i18nInstance.use(initReactI18next).use(HttpApi).init<HttpBackendOptions>(getServerOptions(language, namespace));
 
 	return i18nInstance;
 };
