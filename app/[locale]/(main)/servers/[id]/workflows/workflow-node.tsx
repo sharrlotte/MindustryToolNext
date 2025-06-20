@@ -1,7 +1,6 @@
-import { memo } from 'react';
+import { Suspense, memo, useMemo } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
-import NodeItem from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node-item';
 import { updateOutput } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
 import { CatchError } from '@/components/common/catch-error';
@@ -11,13 +10,17 @@ import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { Connection, useNodeConnections } from '@xyflow/react';
 
+import dynamic from 'next/dynamic';
+
+const NodeItem = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/workflow-node-item'));
+
 export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y'>, 'workflow'>;
 
 function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 	const { name, color, outputs, consumers, group, inputs } = data;
 
 	return (
-		<div className="min-w-[220px] min-h-[80px] rounded-md overflow-hidden">
+		<div className="min-w-[220px] rounded-md overflow-hidden bg-card">
 			<CatchError>
 				{Array(inputs)
 					.fill(1)
@@ -34,20 +37,22 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 					}}
 				>
 					<span>{name}</span>
-					<span className="border-white bg-white/50 backdrop-brightness-90 backdrop-blur-sm rounded-full px-1.5">{group}</span>
+					<span className="border-white bg-white/30 backdrop-brightness-90 backdrop-blur-sm rounded-full px-1.5">{group}</span>
 				</div>
 				{consumers.length > 0 && (
 					<section
-						className="p-1 grid gap-1 w-full border border-t-0 border-border overflow-hidden bg-background rounded"
+						className="p-1 grid gap-1 w-full border border-t-0 border-border overflow-hidden bg-background"
 						style={{
 							borderBottomLeftRadius: 'calc(var(--radius) - 2px)',
 							borderBottomRightRadius: 'calc(var(--radius) - 2px)',
 						}}
 						onClick={(event) => event.stopPropagation()}
 					>
-						{consumers.map((consumer) => (
-							<NodeItem variant="inline" key={consumer.name} parentId={id} data={consumer} />
-						))}
+						<Suspense>
+							{consumers.map((consumer) => (
+								<NodeItem variant="inline" key={consumer.name} parentId={id} data={consumer} />
+							))}
+						</Suspense>
 					</section>
 				)}
 			</CatchError>
@@ -66,11 +71,7 @@ export function OutputHandle({
 	const { nodes, setEdges, setNode } = useWorkflowEditor();
 
 	const id = `${parentId}-source-handle-${index}`;
-	const parent = nodes.find((node) => node.id === parentId);
-
-	if (!parent) {
-		throw new Error(`Parent node with id ${parentId} not found.`);
-	}
+	const parent = useMemo(() => nodes.find((node) => node.id === parentId), [nodes, parentId]);
 
 	const connections = useNodeConnections({
 		handleType: 'source',
@@ -89,9 +90,14 @@ export function OutputHandle({
 		},
 	});
 
+	if (!parent) {
+		console.warn(`Parent node with id ${parentId} not found.`);
+		return null;
+	}
+
 	return (
 		<Handle
-			className="size-3 bg-emerald-500"
+			className="size-3 bg-emerald-500 -right-2"
 			id={id}
 			type="source"
 			style={{ marginTop: offset * 20 + 'px' }}
@@ -106,7 +112,7 @@ export function InputHandle({ parentId, offset, index }: { parentId: string; off
 
 	return (
 		<Handle
-			className="size-3 bg-blue-400"
+			className="size-3 bg-blue-400 -left-2"
 			id={id}
 			style={{ marginTop: offset * 20 + 'px' }}
 			type={'target'}

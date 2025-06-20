@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 import { updateConsumer } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
+import { CatchError } from '@/components/common/catch-error';
 import ComboBox from '@/components/common/combo-box';
 import ErrorMessage from '@/components/common/error-message';
 import { Input } from '@/components/ui/input';
@@ -15,13 +16,20 @@ import { cn } from '@/lib/utils';
 type NodeItemProps = { variant: 'inline' | 'panel'; parentId: string; data: WorkflowNodeData['consumers'][number] };
 
 export default function NodeItem(props: NodeItemProps) {
+	const { data, parentId } = props;
+	const { errors } = useWorkflowEditor();
+	const error = errors[parentId]?.[data.name];
+
 	return (
 		<div
 			className={cn('flex flex-col gap-1 z-50 nowheel', {
 				'bg-card rounded-sm px-2 py-1 border': props.variant === 'inline',
 			})}
 		>
-			<NodeItemInternal {...props} />
+			<CatchError>
+				<NodeItemInternal {...props} />
+				{error && <span className="text-destructive-foreground text-xs">{error}</span>}
+			</CatchError>
 		</div>
 	);
 }
@@ -70,7 +78,7 @@ function SecondNodeComponent({ data, parentId }: NodeItemProps) {
 			</div>
 			<div className="relative flex items-center">
 				<Input
-					className="bg-transparent min-w-10 max-w-20 sm:max-w-40 md:max-w-60 focus:outline-none" //
+					className="bg-transparent min-w-60 w-full focus:outline-none" //
 					type="text"
 					value={value ?? value ?? ''}
 					onChange={(e) => setNode(parentId, (prev) => updateConsumer(prev, name, e.currentTarget.value))}
@@ -104,7 +112,7 @@ function InputNodeComponent({ data, parentId }: NodeItemProps) {
 			</div>
 			<div className="relative">
 				<Input
-					className="bg-transparent min-w-10 max-w-20 sm:max-w-40 md:max-w-60 focus:outline-none" //
+					className="bg-transparent min-w-60 focus:outline-none" //
 					type="text"
 					value={value ?? value ?? ''}
 					onChange={(e) => setNode(parentId, (prev) => updateConsumer(prev, name, e.currentTarget.value))}
@@ -152,6 +160,12 @@ function OptionNodeComponent({ data, parentId }: NodeItemProps) {
 	const { setNode } = useWorkflowEditor();
 	const v = options.find((option) => option.value === value);
 
+	useEffect(() => {
+		if (required && !v && options.length > 0) {
+			setNode(parentId, (prev) => updateConsumer(prev, name, first.value));
+		}
+	}, [first.value, name, options.length, parentId, required, setNode, v]);
+
 	return (
 		<>
 			<div className="text-muted-foreground text-sm flex items-center">
@@ -159,7 +173,7 @@ function OptionNodeComponent({ data, parentId }: NodeItemProps) {
 				{required && <span className="text-destructive-foreground">*</span>}
 			</div>
 			<ComboBox<string>
-				className="w-full"
+				className="w-full min-w-60"
 				value={v ?? first}
 				required={required}
 				searchBar={options.length > 15}

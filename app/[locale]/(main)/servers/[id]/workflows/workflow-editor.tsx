@@ -67,13 +67,13 @@ type LocalWorkflow = Record<
 type WorkflowEditorContextType = {
 	isDeleteOnClick: boolean;
 	showMiniMap: boolean;
-	showPropertiesPanel: WorkflowNode | null;
+	selectedWorkflow: WorkflowNode | null;
 	canUndo: boolean;
 	canRedo: boolean;
 	name: string;
 
 	variables: Record<string, string>;
-
+	errors: Record<string, Record<string, string>>;
 	nodes: Node[];
 	edges: Edge[];
 	debouncedNodes: Node[];
@@ -89,7 +89,7 @@ type WorkflowEditorContextType = {
 		addNode: (type: string) => void;
 		toggleDeleteOnClick: () => void;
 		setShowMiniMap: (show: boolean) => void;
-		setShowPropertiesPanel: (node: WorkflowNode | null) => void;
+		setSelectedWorkflow: (node: WorkflowNode | null) => void;
 	};
 };
 
@@ -116,7 +116,6 @@ const WORKFLOW_PERSISTENT_KEY = `workflows`;
 export function WorkflowEditorProvider({ children }: { children: React.ReactNode }) {
 	const id = usePathId();
 	const [loadState, setLoadState] = useState<'loaded' | 'loading' | 'not-loaded'>('not-loaded');
-	const [errors, setErrors] = useState<Record<string, any>>({});
 	const [name, setName] = useState('');
 	const [nodes, setNodes] = useState<Node[]>([]);
 	const [edges, setEdges] = useState<Edge[]>([]);
@@ -129,7 +128,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 	const [isDeleteOnClick, setDeleteOnClick] = useState(false);
 	const [showMiniMap, setShowMiniMap] = useLocalStorage('workflow.editor.show-mini-map', false);
-	const [showPropertiesPanel, setShowPropertiesPanel] = useState<WorkflowNode | null>(null);
+	const [selectedWorkflow, setSelectedWorkflow] = useState<WorkflowNode | null>(null);
 
 	const { setViewport } = useReactFlow();
 	const ref = useRef<HTMLDivElement>(null);
@@ -139,6 +138,27 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
 
+	const errors = useMemo(() => {
+		const errors: Record<string, Record<string, string>> = {};
+
+		debouncedNodes.forEach((node) => {
+			if (node.type !== 'workflow') return;
+
+			const data = node.data as WorkflowNodeData;
+
+			for (const consumer of data.consumers) {
+				if (consumer.required && !consumer.value) {
+					if (!errors[node.id]) {
+						errors[node.id] = {};
+					}
+					errors[node.id][consumer.name] = `Consumer ${consumer.name} on node ${node.data.name} is required but not set.`;
+				}
+			}
+		});
+
+		return errors;
+	}, [debouncedNodes]);
+
 	useEffect(() => {
 		if (loadState !== 'loaded') {
 			return;
@@ -147,11 +167,9 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			if (rfInstance) {
 				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
 				const data: LocalWorkflow = { ...flow, [id]: { createdAt: Date.now(), data: rfInstance.toObject() } };
-				console.dir({ save: data });
 				localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
 			}
 		} catch (e) {
-			setErrors((prev) => ({ ...prev, 'save-error': e }));
 			console.error('Error saving workflow', e);
 		}
 	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState]);
@@ -162,16 +180,12 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		}
 
 		try {
-			console.log('Loading workflow');
 			setLoadState('loading');
 
 			const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
 			const data = result[id]?.data;
 
-			console.dir({ load: data });
-
 			if (!data) {
-				console.log('No workflow data');
 				setLoadState('loaded');
 				return;
 			}
@@ -239,9 +253,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			);
 			setEdges(edges);
 			setViewport({ x, y, zoom }, { duration: 1000 });
-			console.log('Workflow loaded');
 		} catch (error) {
-			setErrors((prev) => ({ ...prev, 'load-error': error }));
 			console.error('Error parsing workflow data from localStorage:', error);
 		} finally {
 			setLoadState('loaded');
@@ -382,7 +394,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					...params,
 					animated: true,
 					markerEnd: {
-						type: MarkerType.Arrow,
+						type: MarkerType.ArrowClosed,
 					},
 				},
 				edges,
@@ -424,7 +436,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			}
 
 			if (node.type === 'workflow') {
-				setShowPropertiesPanel((prev) => (prev?.id === node.id ? null : node));
+				setSelectedWorkflow((prev) => (prev?.id === node.id ? null : node));
 			}
 		},
 		[isDeleteOnClick, nodes, edges, updateHistory],
@@ -500,7 +512,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			redo,
 			undo,
 			addNode,
-			setShowPropertiesPanel,
+			setSelectedWorkflow,
 			toggleDeleteOnClick: () => setDeleteOnClick((prev) => !prev),
 			setShowMiniMap,
 		}),
@@ -520,6 +532,15 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		},
 	});
 
+	const handleClick = useCallback(
+		(_event: React.MouseEvent) => {
+			if (selectedWorkflow) {
+				setSelectedWorkflow(null);
+			}
+		},
+		[selectedWorkflow],
+	);
+
 	drop(ref);
 
 	return (
@@ -530,10 +551,11 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				variables,
 				edges,
 				nodes,
+				errors,
 				debouncedNodes,
 				debouncedEdges,
 				showMiniMap,
-				showPropertiesPanel,
+				selectedWorkflow,
 				canUndo: historyIndex > 0,
 				canRedo: historyIndex < nodeHistory.length - 1,
 				setEdges,
@@ -568,17 +590,13 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				proOptions={proOptions}
 				fitView
 				data-handler-id={handlerId}
+				onClick={handleClick}
 			>
 				<CatchError>
 					<Suspense>
 						{children}
 						<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
 						<Hydrated>{showMiniMap && <MiniMap />}</Hydrated>
-						<p className="absolute z-50 top-1 left-0 right-0 w-1/2 translate-x-1/2 flex justify-center text-xs text-destructive-foreground">
-							{Object.entries(errors)
-								.map(([key, value]) => `${key.toUpperCase()}: ${value.message}`)
-								.join()}
-						</p>
 						<div className="absolute z-50 bottom-0 top-0 right-1 p-1 space-x-1 flex text-sm text-muted-foreground">
 							<span>x: {Math.round(viewport.x)}</span>
 							<span>y: {Math.round(viewport.y)}</span>
@@ -589,7 +607,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					</Suspense>
 				</CatchError>
 			</ReactFlow>
-			<Suspense>{showPropertiesPanel && <PropertiesPanel node={showPropertiesPanel} />}</Suspense>
+			<Suspense>{selectedWorkflow && <PropertiesPanel node={selectedWorkflow} />}</Suspense>
 		</WorkflowEditorContext.Provider>
 	);
 }

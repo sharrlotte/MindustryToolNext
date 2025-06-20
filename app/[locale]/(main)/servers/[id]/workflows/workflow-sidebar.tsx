@@ -64,9 +64,9 @@ export default function WorkflowSideBar() {
 					<button
 						key={id}
 						className={cn(
-							'cursor-pointer p-2 size-12 rounded-md bg-secondary/70 hover:bg-secondary flex items-center justify-center aspect-square',
+							'cursor-pointer p-2 border bg-card size-12 rounded-md hover:bg-secondary flex items-center justify-center aspect-square', 
 							{
-								'bg-secondary border border-foreground': id === currentTab,
+								'bg-secondary border': id === currentTab,
 							},
 						)}
 						onClick={() => setCurrentTab((prev) => (prev === id ? null : id))}
