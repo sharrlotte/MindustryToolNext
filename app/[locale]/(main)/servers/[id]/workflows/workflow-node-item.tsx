@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 type NodeItemProps = { variant: 'inline' | 'panel'; parentId: string; data: WorkflowNodeData['consumers'][number] };
 
 export default function NodeItem(props: NodeItemProps) {
-	const { data, parentId } = props;
+	const { data, parentId, variant } = props;
 	const { errors } = useWorkflowEditor();
 	const error = errors[parentId]?.[data.name];
 	const { produce } = data;
@@ -29,7 +29,7 @@ export default function NodeItem(props: NodeItemProps) {
 		>
 			<CatchError>
 				<NodeItemInternal {...props} />
-				{produce.produceType && <div>{produce.produceType}</div>}
+				{produce.produceType && variant === 'panel' && <div>{produce.variableName}</div>}
 				{error && <span className="text-destructive-foreground text-xs">{error}</span>}
 			</CatchError>
 		</div>

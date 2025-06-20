@@ -664,7 +664,6 @@ function UploadContextButton() {
 	});
 
 	const serverVersion = data ?? 0;
-
 	const container = document.getElementById('server-nav-right');
 
 	if (!container) {
