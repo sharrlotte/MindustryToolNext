@@ -91,6 +91,7 @@ type WorkflowEditorContextType = {
 		setShowMiniMap: (show: boolean) => void;
 		setSelectedWorkflow: (node: WorkflowNode | null) => void;
 		generateSave: () => WorkflowSave;
+		writeSave: (save: WorkflowSave) => void;
 		loadWorkflow: (data: WorkflowSave) => void;
 	};
 };
@@ -168,6 +169,15 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 		return { createdAt: Date.now(), data: rfInstance.toObject(), version: 1 };
 	}, [rfInstance]);
+
+	const writeSave = useCallback(
+		(save: WorkflowSave) => {
+			const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
+			const data: LocalWorkflow = { ...flow, [id]: save };
+			localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
+		},
+		[id],
+	);
 
 	const loadWorkflow = useCallback(
 		({ data }: WorkflowSave) => {
@@ -250,14 +260,12 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		}
 		try {
 			if (rfInstance) {
-				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
-				const data: LocalWorkflow = { ...flow, [id]: generateSave() };
-				localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
+				writeSave(generateSave());
 			}
 		} catch (e) {
 			console.error('Error saving workflow', e);
 		}
-	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState, generateSave]);
+	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState, generateSave, writeSave]);
 
 	useEffect(() => {
 		if (!nodeTypes || Object.keys(nodeTypes).length === 0 || loadState !== 'not-loaded') {
@@ -563,8 +571,9 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			setShowMiniMap,
 			generateSave,
 			loadWorkflow,
+			writeSave,
 		}),
-		[redo, undo, addNode, setShowMiniMap, generateSave, loadWorkflow],
+		[redo, undo, addNode, setShowMiniMap, generateSave, loadWorkflow, writeSave],
 	);
 
 	return (
@@ -646,12 +655,12 @@ function UploadContextButton() {
 		queryFn: () => getServerWorkflowVersion(axios, id),
 	});
 
-	const serverVersion = data ?? 0;
-
-	const localVersion = useMemo(() => {
+	const [localVersion, setLocalVersion] = useState(() => {
 		const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
 		return result[id]?.createdAt ?? 0;
-	}, [id]);
+	});
+
+	const serverVersion = data ?? 0;
 
 	if (isLoading) {
 		return undefined;
@@ -683,7 +692,7 @@ function UploadContextButton() {
 						</DialogTrigger>
 						<DialogContent className="p-6 border rounded-dm">
 							<DialogTitle>Confirm</DialogTitle>
-							<LoadServerWorkflowDialog />
+							<LoadServerWorkflowDialog setLocalVersion={setLocalVersion} />
 						</DialogContent>
 					</Dialog>
 					{serverVersion !== localVersion && (
@@ -707,17 +716,22 @@ function UploadContextButton() {
 	);
 }
 
-function LoadServerWorkflowDialog() {
+function LoadServerWorkflowDialog({ setLocalVersion }: { setLocalVersion: React.Dispatch<React.SetStateAction<number>> }) {
 	const id = usePathId();
 	const axios = useClientApi();
 
 	const {
-		actions: { loadWorkflow },
+		actions: { loadWorkflow, writeSave },
 	} = useWorkflowEditor();
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server', id, 'workflow', 'upload'],
-		mutationFn: () => getServerWorkflow(axios, id).then((data) => loadWorkflow(data)),
+		mutationFn: () =>
+			getServerWorkflow(axios, id).then((data) => {
+				setLocalVersion(data.createdAt);
+				loadWorkflow(data);
+				writeSave(data);
+			}),
 		onMutate: () => toast.loading(<Tran text="upload.loading" />),
 		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
 		onError: (error, _variables, id) => toast.error(<Tran text="upload.fail" />, { error, id }),
