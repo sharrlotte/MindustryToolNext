@@ -34,11 +34,10 @@ const getTranslationCached = cache((url: string) =>
 	}),
 );
 
-export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
+export function getClientOptions(ns = defaultNamespace) {
 	const options: InitOptions<ChainedBackendOptions> = {
 		// debug: process.env.NODE_ENV === 'development',
 		supportedLngs: locales,
-		lng,
 		interpolation: {
 			escapeValue: false,
 		},
