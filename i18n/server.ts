@@ -1,12 +1,13 @@
 import { createInstance } from 'i18next';
 import { InitOptions } from 'i18next';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
-import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
-import { initReactI18next } from 'react-i18next/initReactI18next';
 
 import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
+
+import { unstable_cache } from 'next/cache';
+import { initReactI18next } from 'react-i18next/initReactI18next';
 
 const getTranslationCached = cache(
 	unstable_cache(
@@ -96,7 +97,7 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 	return options;
 }
 
-const initI18next = async (language: Locale, namespace?: string | string[]) => {
+const initI18next = async (language: Locale, namespace?: string) => {
 	const i18nInstance = createInstance();
 	await i18nInstance
 		.use(initReactI18next) //
