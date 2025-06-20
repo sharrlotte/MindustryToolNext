@@ -17,7 +17,7 @@ export const WorkflowNodeDataSchema = z.object({
 			defaultValue: z.any().optional().nullable(),
 			produce: z.object({
 				produceType: z.any().optional().nullable(),
-				variableName: z.string().optional().nullable(),
+				variableName: z.string(),
 			}),
 			options: z.array(
 				z.object({
