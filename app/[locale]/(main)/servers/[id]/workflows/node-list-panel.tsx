@@ -99,7 +99,7 @@ function WorkflowItem({ item: { name, color, consumers, producers, outputs } }: 
 				<section className="flex gap-1 flex-wrap text-xs items-center">
 					<ArrowRight className="size-4" />
 					{consumers.map(({ name }) => (
-						<span className="border border-success-foreground/50 bg-success rounded-full px-1.5" key={name}>
+						<span className="border border-emerald-400 text-white bg-emerald-800/50 rounded-full px-1.5" key={name}>
 							{name}
 						</span>
 					))}
@@ -109,7 +109,7 @@ function WorkflowItem({ item: { name, color, consumers, producers, outputs } }: 
 				<section className="flex gap-1 flex-wrap items-center text-xs">
 					<ArrowLeft className="size-4" />
 					{producers.map(({ name }) => (
-						<span className="border border-purple-400 bg-purple-800/50 rounded-full px-1.5" key={name}>
+						<span className="border border-purple-400 text-white bg-purple-800/50 rounded-full px-1.5" key={name}>
 							{name}
 						</span>
 					))}
@@ -119,7 +119,10 @@ function WorkflowItem({ item: { name, color, consumers, producers, outputs } }: 
 				<section className="flex gap-1 flex-wrap items-center text-xs">
 					<PlayIcon className="size-4" />
 					{outputs.map(({ name }) => (
-						<span className="border  border-white/70 backdrop-blur-sm backdrop-brightness-75 rounded-full px-1.5" key={name}>
+						<span
+							className="border  border-white/70 text-white backdrop-blur-sm backdrop-brightness-75 rounded-full px-1.5"
+							key={name}
+						>
 							{name}
 						</span>
 					))}
