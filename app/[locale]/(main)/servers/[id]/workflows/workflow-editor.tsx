@@ -466,7 +466,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			}
 
 			if (node.type === 'workflow') {
-				setSelectedWorkflow((prev) => (prev?.id === node.id ? null : node));
+				setTimeout(() => setSelectedWorkflow((prev) => (prev?.id === node.id ? null : node)), 0);
 			}
 		},
 		[isDeleteOnClick, nodes, edges, updateHistory],
