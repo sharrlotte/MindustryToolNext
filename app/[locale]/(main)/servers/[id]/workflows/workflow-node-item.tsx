@@ -95,7 +95,7 @@ function SecondNodeComponent({ data, parentId }: NodeItemProps) {
 
 function InputNodeComponent({ data, parentId }: NodeItemProps) {
 	const { variables, setNode } = useWorkflowEditor();
-	const { name, value, type, required } = data;
+	const { name, value, type, required, produce } = data;
 	const [focus, setFocus] = useState(false);
 
 	const matchedVariable = value
@@ -119,6 +119,7 @@ function InputNodeComponent({ data, parentId }: NodeItemProps) {
 					onFocus={() => setFocus(true)}
 					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>
+				{produce?.produceType && <div>{produce.produceType}</div>}
 				<div className={cn('absolute -bottom-1 translate-y-[100%] z-50 hidden', { block: showSuggestion })}>
 					<div className="p-4 border rounded-md bg-card min-w-60">
 						{matchedVariable.map((variable) => (

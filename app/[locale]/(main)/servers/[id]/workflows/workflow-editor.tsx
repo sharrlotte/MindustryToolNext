@@ -150,7 +150,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			const data = node.data as WorkflowNodeData;
 
 			for (const consumer of data.consumers) {
-				if (consumer.required && !consumer.value) {
+				if (consumer.required && (consumer.value === null || consumer.value === undefined)) {
 					if (!errors[node.id]) {
 						errors[node.id] = {};
 					}
