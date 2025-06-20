@@ -363,7 +363,7 @@ export async function saveServerWorkflow(axios: AxiosInstance, serverId: string,
 	await axios.post(`/servers/${serverId}/workflow`, payload);
 }
 
-export async function getServerWorkflow(axios: AxiosInstance, serverId: string): Promise<any> {
+export async function getServerWorkflow(axios: AxiosInstance, serverId: string): Promise<WorkflowSave> {
 	const result = await axios.get(`/servers/${serverId}/workflow`);
 
 	return result.data;

@@ -91,6 +91,7 @@ type WorkflowEditorContextType = {
 		setShowMiniMap: (show: boolean) => void;
 		setSelectedWorkflow: (node: WorkflowNode | null) => void;
 		generateSave: () => WorkflowSave;
+		writeSave: (save: WorkflowSave) => void;
 		loadWorkflow: (data: WorkflowSave) => void;
 	};
 };
@@ -149,7 +150,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			const data = node.data as WorkflowNodeData;
 
 			for (const consumer of data.consumers) {
-				if (consumer.required && !consumer.value) {
+				if (consumer.required && (consumer.value === null || consumer.value === undefined)) {
 					if (!errors[node.id]) {
 						errors[node.id] = {};
 					}
@@ -169,77 +170,90 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		return { createdAt: Date.now(), data: rfInstance.toObject(), version: 1 };
 	}, [rfInstance]);
 
+	const writeSave = useCallback(
+		(save: WorkflowSave) => {
+			const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
+			const data: LocalWorkflow = { ...flow, [id]: save };
+			localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
+		},
+		[id],
+	);
+
 	const loadWorkflow = useCallback(
 		({ data }: WorkflowSave) => {
-			setLoadState('loading');
+			try {
+				setLoadState('loading');
 
-			const { x = 0, y = 0, zoom = 0 } = data.viewport;
-			const nodes = data.nodes ?? [];
-			const edges = data.edges ?? [];
+				const { x = 0, y = 0, zoom = 0 } = data.viewport;
+				const nodes = data.nodes ?? [];
+				const edges = data.edges ?? [];
 
-			setNodes(
-				nodes.filter((node) => {
-					if (node.type !== 'workflow') {
-						return true;
-					}
-
-					const base = nodeTypes[node.data.name];
-
-					if (!base) {
-						console.warn('Invalid node name: ' + node.data.name);
-						return false;
-					}
-
-					if (node.data.color !== base.color) {
-						node.data.color = base.color;
-					}
-
-					if (node.data.group !== base.group) {
-						node.data.group = base.group;
-					}
-
-					if (node.data.inputs !== base.inputs) {
-						node.data.inputs = base.inputs;
-					}
-
-					if (
-						node.data.outputs.length !== base.outputs.length ||
-						node.data.outputs.some((output) => base.outputs.find((baseOutput) => output.name === baseOutput.name) === undefined)
-					) {
-						node.data.outputs = base.outputs;
-					}
-
-					if (
-						node.data.consumers.length !== base.consumers.length ||
-						node.data.consumers.some(
-							(consumer) => base.consumers.find((baseConsumer) => consumer.name === baseConsumer.name) === undefined,
-						)
-					) {
-						node.data.consumers = base.consumers;
-					}
-
-					if (
-						node.data.producers.length !== base.producers.length ||
-						node.data.producers.some(
-							(producer) => base.producers.find((baseProducer) => producer.name === baseProducer.name) === undefined,
-						)
-					) {
-						node.data.producers = base.producers;
-					}
-
-					for (const consumer of node.data.consumers) {
-						const baseConsumer = base.consumers.find((c) => c.name === consumer.name);
-
-						if (baseConsumer) {
-							consumer.options = baseConsumer.options;
+				setNodes(
+					nodes.filter((node) => {
+						if (node.type !== 'workflow') {
+							return true;
 						}
-					}
 
-					return true;
-				}),
-			);
-			setEdges(edges);
-			setViewport({ x, y, zoom }, { duration: 1000 });
+						const base = nodeTypes[node.data.name];
+
+						if (!base) {
+							console.warn('Invalid node name: ' + node.data.name);
+							return false;
+						}
+
+						if (node.data.color !== base.color) {
+							node.data.color = base.color;
+						}
+
+						if (node.data.group !== base.group) {
+							node.data.group = base.group;
+						}
+
+						if (node.data.inputs !== base.inputs) {
+							node.data.inputs = base.inputs;
+						}
+
+						if (
+							node.data.outputs.length !== base.outputs.length ||
+							node.data.outputs.some((output) => base.outputs.find((baseOutput) => output.name === baseOutput.name) === undefined)
+						) {
+							node.data.outputs = base.outputs;
+						}
+
+						if (
+							node.data.consumers.length !== base.consumers.length ||
+							node.data.consumers.some(
+								(consumer) => base.consumers.find((baseConsumer) => consumer.name === baseConsumer.name) === undefined,
+							)
+						) {
+							node.data.consumers = base.consumers;
+						}
+
+						if (
+							node.data.producers.length !== base.producers.length ||
+							node.data.producers.some(
+								(producer) => base.producers.find((baseProducer) => producer.name === baseProducer.name) === undefined,
+							)
+						) {
+							node.data.producers = base.producers;
+						}
+
+						for (const consumer of node.data.consumers) {
+							const baseConsumer = base.consumers.find((c) => c.name === consumer.name);
+
+							if (baseConsumer) {
+								consumer.options = baseConsumer.options;
+							}
+						}
+
+						return true;
+					}),
+				);
+				setEdges(edges);
+				setViewport({ x, y, zoom }, { duration: 1000 });
+			} finally {
+				setLoadState('loaded');
+			}
 		},
 		[nodeTypes, setViewport],
 	);
@@ -250,14 +264,12 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 		}
 		try {
 			if (rfInstance) {
-				const flow = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) || '{}') as LocalWorkflow;
-				const data: LocalWorkflow = { ...flow, [id]: generateSave() };
-				localStorage.setItem(WORKFLOW_PERSISTENT_KEY, JSON.stringify(data));
+				writeSave(generateSave());
 			}
 		} catch (e) {
 			console.error('Error saving workflow', e);
 		}
-	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState, generateSave]);
+	}, [rfInstance, id, debouncedEdges, debouncedNodes, loadState, generateSave, writeSave]);
 
 	useEffect(() => {
 		if (!nodeTypes || Object.keys(nodeTypes).length === 0 || loadState !== 'not-loaded') {
@@ -458,7 +470,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			}
 
 			if (node.type === 'workflow') {
-				setSelectedWorkflow((prev) => (prev?.id === node.id ? null : node));
+				setTimeout(() => setSelectedWorkflow((prev) => (prev?.id === node.id ? null : node)), 0);
 			}
 		},
 		[isDeleteOnClick, nodes, edges, updateHistory],
@@ -563,8 +575,9 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			setShowMiniMap,
 			generateSave,
 			loadWorkflow,
+			writeSave,
 		}),
-		[redo, undo, addNode, setShowMiniMap, generateSave, loadWorkflow],
+		[redo, undo, addNode, setShowMiniMap, generateSave, loadWorkflow, writeSave],
 	);
 
 	return (
@@ -639,17 +652,19 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 function UploadContextButton() {
 	const id = usePathId();
 	const axios = useClientApi();
+	const { errors } = useWorkflowEditor();
+
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ['server', id, 'workflow', 'version'],
 		queryFn: () => getServerWorkflowVersion(axios, id),
 	});
 
-	const serverVersion = data ?? 0;
-
-	const localVersion = useMemo(() => {
+	const [localVersion, setLocalVersion] = useState(() => {
 		const result = JSON.parse(localStorage.getItem(WORKFLOW_PERSISTENT_KEY) ?? '{}') as LocalWorkflow;
 		return result[id]?.createdAt ?? 0;
-	}, [id]);
+	});
+
+	const serverVersion = data ?? 0;
 
 	if (isLoading) {
 		return undefined;
@@ -681,13 +696,13 @@ function UploadContextButton() {
 						</DialogTrigger>
 						<DialogContent className="p-6 border rounded-dm">
 							<DialogTitle>Confirm</DialogTitle>
-							<LoadServerWorkflowDialog />
+							<LoadServerWorkflowDialog setLocalVersion={setLocalVersion} />
 						</DialogContent>
 					</Dialog>
 					{serverVersion !== localVersion && (
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="secondary">
+								<Button variant="secondary" disabled={Object.keys(errors).length > 0}>
 									<UploadIcon className="size-4" />
 									<span>Upload</span>
 								</Button>
@@ -705,17 +720,22 @@ function UploadContextButton() {
 	);
 }
 
-function LoadServerWorkflowDialog() {
+function LoadServerWorkflowDialog({ setLocalVersion }: { setLocalVersion: React.Dispatch<React.SetStateAction<number>> }) {
 	const id = usePathId();
 	const axios = useClientApi();
 
 	const {
-		actions: { loadWorkflow },
+		actions: { loadWorkflow, writeSave },
 	} = useWorkflowEditor();
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server', id, 'workflow', 'upload'],
-		mutationFn: () => getServerWorkflow(axios, id).then((data) => loadWorkflow(data)),
+		mutationFn: () =>
+			getServerWorkflow(axios, id).then((data) => {
+				setLocalVersion(data.createdAt);
+				loadWorkflow(data);
+				writeSave(data);
+			}),
 		onMutate: () => toast.loading(<Tran text="upload.loading" />),
 		onSuccess: (_data, _variables, id) => toast.success(<Tran text="upload.success" />, { id }),
 		onError: (error, _variables, id) => toast.error(<Tran text="upload.fail" />, { error, id }),
@@ -747,7 +767,15 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	} = useWorkflowEditor();
 
 	const payload = useMemo(() => {
-		const result = nodes.filter((node) => node.type === 'workflow').map((node) => JSON.parse(JSON.stringify(node.data)));
+		const result = nodes
+			.filter((node) => node.type === 'workflow')
+			.map((node) => JSON.parse(JSON.stringify(node.data))) as WorkflowNodeData[];
+
+		result.forEach((node) => {
+			node.consumers.forEach((consumer) => {
+				consumer.options = [];
+			});
+		});
 
 		return {
 			nodes: result,

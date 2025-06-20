@@ -15,10 +15,15 @@ export const WorkflowNodeDataSchema = z.object({
 			required: z.boolean(),
 			unit: z.enum(WorkflowConsumerUnits).optional().nullable(),
 			defaultValue: z.any().optional().nullable(),
+			produce: z.object({
+				produceType: z.any().optional().nullable(),
+				variableName: z.string(),
+			}),
 			options: z.array(
 				z.object({
 					label: z.string(),
 					value: z.string(),
+					produceType: z.any().optional().nullable(),
 				}),
 			),
 		}),

@@ -5,13 +5,14 @@ import LanguageDetector, { DetectorOptions } from 'i18next-browser-languagedetec
 import Backend, { ChainedBackendOptions } from 'i18next-chained-backend';
 import HttpApi, { HttpBackendOptions } from 'i18next-http-backend';
 import LocalStorageBackend from 'i18next-localstorage-backend';
-import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { cache, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { initReactI18next, useTranslation as useTranslationOrg } from 'react-i18next';
 
 import env from '@/constant/env';
 import { Locale, cookieName, defaultLocale, defaultNamespace, i18nCachePrefix, locales } from '@/i18n/config';
+
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 const getTranslationCached = cache((url: string) =>
 	fetch(url, {
@@ -33,11 +34,10 @@ const getTranslationCached = cache((url: string) =>
 	}),
 );
 
-export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
+export function getClientOptions(ns = defaultNamespace) {
 	const options: InitOptions<ChainedBackendOptions> = {
 		// debug: process.env.NODE_ENV === 'development',
 		supportedLngs: locales,
-		lng,
 		interpolation: {
 			escapeValue: false,
 		},
@@ -54,7 +54,7 @@ export function getClientOptions(lng = defaultLocale, ns = defaultNamespace) {
 					prefix: i18nCachePrefix,
 				},
 				{
-					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=1`,
+					loadPath: `${env.url.api}/translations/{{lng}}/{{ns}}?v=2`,
 					addPath: `${env.url.api}/translations/{{lng}}/{{ns}}/create-missing`,
 					request(options, url, payload, callback) {
 						try {

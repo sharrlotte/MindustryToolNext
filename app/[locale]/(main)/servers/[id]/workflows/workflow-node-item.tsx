@@ -19,6 +19,7 @@ export default function NodeItem(props: NodeItemProps) {
 	const { data, parentId } = props;
 	const { errors } = useWorkflowEditor();
 	const error = errors[parentId]?.[data.name];
+	const { produce } = data;
 
 	return (
 		<div
@@ -28,6 +29,7 @@ export default function NodeItem(props: NodeItemProps) {
 		>
 			<CatchError>
 				<NodeItemInternal {...props} />
+				{produce.produceType && <div>{produce.produceType}</div>}
 				{error && <span className="text-destructive-foreground text-xs">{error}</span>}
 			</CatchError>
 		</div>
