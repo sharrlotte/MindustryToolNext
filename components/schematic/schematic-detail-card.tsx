@@ -1,5 +1,4 @@
 import { Share2Icon } from 'lucide-react';
-import dynamic from 'next/dynamic';
 
 import CopyButton from '@/components/button/copy.button';
 import DownloadButton from '@/components/button/download.button';
@@ -32,6 +31,8 @@ import env from '@/constant/env';
 import { Locale } from '@/i18n/config';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
+
+import dynamic from 'next/dynamic';
 
 const DeleteSchematicButton = dynamic(() => import('@/components/schematic/delete-schematic.button'));
 const TakeDownSchematicButton = dynamic(() => import('@/components/schematic/take-down-schematic.button'));
@@ -132,7 +133,7 @@ export default async function SchematicDetailCard({ id, locale }: SchematicDetai
 							<ProtectedElement
 								session={session}
 								filter={{
-									any: [{ authorId: userId }, { authority: 'DELETE_SCHEMATIC' }],
+									authority: 'DELETE_SCHEMATIC',
 								}}
 							>
 								<DeleteSchematicButton variant="command" id={id} name={name} />
