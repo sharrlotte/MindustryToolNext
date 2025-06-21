@@ -3,7 +3,7 @@ import { Suspense, useCallback } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
-import { updateProducer } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
+import { updateProduce } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import { Button } from '@/components/ui/button';
@@ -83,10 +83,7 @@ function Producer({
 	return (
 		<div className="grid gap-1">
 			<span>{name}</span>
-			<Input
-				value={variableName}
-				onChange={(e) => setNode(nodeId, (prev) => updateProducer(prev, name, e.currentTarget.value))}
-			/>
+			<Input value={variableName} onChange={(e) => setNode(nodeId, (prev) => updateProduce(prev, name, e.currentTarget.value))} />
 		</div>
 	);
 }

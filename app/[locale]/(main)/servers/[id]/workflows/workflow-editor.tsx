@@ -149,7 +149,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			const data = node.data as WorkflowNodeData;
 
 			for (const fields of data.fields) {
-				if (fields.required && (fields.value === null || fields.value === undefined)) {
+				if (fields.consumer && fields.consumer.required && (fields.consumer.value === null || fields.consumer.value === undefined)) {
 					if (!errors[node.id]) {
 						errors[node.id] = {};
 					}
@@ -226,20 +226,11 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 							node.data.fields = base.fields;
 						}
 
-						if (
-							node.data.producers.length !== base.producers.length ||
-							node.data.producers.some(
-								(producer) => base.producers.find((baseProducer) => producer.name === baseProducer.name) === undefined,
-							)
-						) {
-							node.data.producers = base.producers;
-						}
+						for (const field of node.data.fields) {
+							const baseField = base.fields.find((c) => c.name === field.name);
 
-						for (const fields of node.data.fields) {
-							const baseField = base.fields.find((c) => c.name === fields.name);
-
-							if (baseField) {
-								fields.options = baseField.options;
+							if (baseField && baseField.consumer && field.consumer) {
+								field.consumer.options = baseField.consumer.options;
 							}
 						}
 
@@ -360,8 +351,8 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			const copy = JSON.parse(JSON.stringify(node)) as WorkflowNodeData;
 
 			copy.fields.forEach((fields) => {
-				if (fields.defaultValue) {
-					fields.value = fields.defaultValue;
+				if (fields.consumer && fields.consumer.defaultValue) {
+					fields.consumer.value = fields.consumer.defaultValue;
 				}
 			});
 
@@ -761,7 +752,9 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 
 		result.forEach((node) => {
 			node.fields.forEach((fields) => {
-				fields.options = [];
+				if (fields.consumer) {
+					fields.consumer.options = [];
+				}
 			});
 		});
 

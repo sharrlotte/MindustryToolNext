@@ -75,7 +75,7 @@ function WorkflowGroup({ group: { key, value } }: { group: { key: string; value:
 	);
 }
 
-function WorkflowItem({ item: { name, color, fields, producers, outputs } }: { item: WorkflowNodeData }) {
+function WorkflowItem({ item: { name, color, fields, outputs } }: { item: WorkflowNodeData }) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	const [_, drag] = useDrag({
@@ -97,21 +97,23 @@ function WorkflowItem({ item: { name, color, fields, producers, outputs } }: { i
 			</span>
 			{fields.length > 0 && (
 				<section className="flex gap-1 flex-wrap text-xs items-center">
-					<ArrowRight className="size-4" />
-					{fields.map(({ name }) => (
-						<span className="border border-emerald-400 text-white bg-emerald-800/50 rounded-full px-1.5" key={name}>
-							{name}
-						</span>
-					))}
-				</section>
-			)}
-			{producers.length > 0 && (
-				<section className="flex gap-1 flex-wrap items-center text-xs">
-					<ArrowLeft className="size-4" />
-					{producers.map(({ name }) => (
-						<span className="border border-purple-400 text-white bg-purple-800/50 rounded-full px-1.5" key={name}>
-							{name}
-						</span>
+					{fields.map(({ name, consumer, producer }) => (
+						<div key={name} className="flex gap-2">
+							{consumer && (
+								<>
+									<ArrowRight className="size-4" />
+									<span className="border border-emerald-400 text-white bg-emerald-800/50 rounded-full px-1.5">{name}</span>
+								</>
+							)}
+							{producer && (
+								<>
+									<ArrowLeft className="size-4" />
+									<span className="border border-purple-400 text-white bg-purple-800/50 rounded-full px-1.5">
+										{producer.variableName}
+									</span>
+								</>
+							)}
+						</div>
 					))}
 				</section>
 			)}

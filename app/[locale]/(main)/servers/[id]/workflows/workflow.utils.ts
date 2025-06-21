@@ -1,9 +1,9 @@
 import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
 
-export function updateField(node: WorkflowNode, name: string, value: any) {
+export function updateConsume(node: WorkflowNode, name: string, value: any) {
 	const fields = node.data.fields.find((fields) => fields.name === name);
-	if (fields) {
-		fields.value = value;
+	if (fields && fields.consumer) {
+		fields.consumer.value = value;
 	}
 
 	return { ...node, data: { ...node.data, fields: node.data.fields } };
@@ -18,11 +18,11 @@ export function updateOutput(node: WorkflowNode, name: string, nextId: string) {
 	return { ...node, data: { ...node.data, outputs: node.data.outputs } };
 }
 
-export function updateProducer(node: WorkflowNode, name: string, variableName: string) {
-	const producer = node.data.producers.find((producer) => producer.name === name);
-	if (producer) {
-		producer.variableName = variableName;
+export function updateProduce(node: WorkflowNode, name: string, variableName: string) {
+	const field = node.data.fields.find((field) => field.name === name);
+	if (field && field.producer) {
+		field.producer.variableName = variableName;
 	}
 
-	return { ...node, data: { ...node.data, producers: node.data.producers } };
+	return { ...node, data: { ...node.data, producers: node.data.fields } };
 }
