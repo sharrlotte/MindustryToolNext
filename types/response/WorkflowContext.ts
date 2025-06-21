@@ -57,7 +57,6 @@ export type WorkflowField = z.infer<typeof WorkflowFieldSchema>;
 export const WorkflowOutputSchema = z.object({
 	name: z.string(),
 	description: z.string().optional().nullable(),
-	nextId: z.string().optional().nullable(),
 });
 
 export type WorkflowOutput = z.infer<typeof WorkflowOutputSchema>;
