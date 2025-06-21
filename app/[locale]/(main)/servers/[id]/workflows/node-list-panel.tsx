@@ -75,7 +75,7 @@ function WorkflowGroup({ group: { key, value } }: { group: { key: string; value:
 	);
 }
 
-function WorkflowItem({ item: { name, color, consumers, producers, outputs } }: { item: WorkflowNodeData }) {
+function WorkflowItem({ item: { name, color, fields, producers, outputs } }: { item: WorkflowNodeData }) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	const [_, drag] = useDrag({
@@ -95,10 +95,10 @@ function WorkflowItem({ item: { name, color, consumers, producers, outputs } }: 
 			<span className="font-semibold" style={{ color }}>
 				{name}
 			</span>
-			{consumers.length > 0 && (
+			{fields.length > 0 && (
 				<section className="flex gap-1 flex-wrap text-xs items-center">
 					<ArrowRight className="size-4" />
-					{consumers.map(({ name }) => (
+					{fields.map(({ name }) => (
 						<span className="border border-emerald-400 text-white bg-emerald-800/50 rounded-full px-1.5" key={name}>
 							{name}
 						</span>

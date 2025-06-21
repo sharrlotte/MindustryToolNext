@@ -2,10 +2,7 @@
 
 import { FilterIcon, SearchIcon } from 'lucide-react';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
-import { debounce } from 'throttle-debounce';
-import { useLocalStorage } from 'usehooks-ts';
-
-
+import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -16,20 +13,22 @@ import { Card, CardFooter } from '@/components/ui/card';
 import Divider from '@/components/ui/divider';
 import { Separator } from '@/components/ui/separator';
 
-import { TagType } from '@/constant/constant';
-import { defaultSortTag } from '@/constant/env';
-import useSearchQuery from '@/hooks/use-search-query';
-import useTags from '@/hooks/use-tags';
-import { cn } from '@/lib/utils';
-import { QueryParams } from '@/query/config/search-query-params';
 import { Mod } from '@/types/response/Mod';
 import SortTag, { sortTag } from '@/types/response/SortTag';
 import { Tag } from '@/types/response/Tag';
 import { TagGroup, TagGroups } from '@/types/response/TagGroup';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
 
-import dynamic from 'next/dynamic';
+import { QueryParams } from '@/query/config/search-query-params';
 
+import useSearchQuery from '@/hooks/use-search-query';
+import useTags from '@/hooks/use-tags';
+
+import { TagType } from '@/constant/constant';
+import { defaultSortTag } from '@/constant/env';
+import { cn } from '@/lib/utils';
+
+import dynamic from 'next/dynamic';
 
 const AuthorFilter = dynamic(() => import('@/components/search/author-filter'));
 const ModFilter = dynamic(() => import('@/components/search/mod-filter'));
@@ -53,6 +52,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
 	const [page, setPage] = useState(0);
 	const [name, setName] = useState('');
+	const [debouncedName] = useDebounceValue(name, 300);
 	const [sortBy, setSortBy] = useState<SortTag>(defaultSortTag);
 	const [filterBy, setFilterBy] = useState<TagGroup[]>([]);
 	const [authorId, setAuthorId] = useState<string | null>(null);
@@ -95,8 +95,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 				params.set(QueryParams.sort, sortBy);
 			}
 
-			if (name) {
-				params.set(QueryParams.name, name);
+			if (debouncedName) {
+				params.set(QueryParams.name, debouncedName);
 			}
 
 			if (authorId) {
@@ -113,7 +113,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		if (!showFilterDialog && isChanged) {
 			handleSearch();
 		}
-	}, [name, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged, authorId]);
+	}, [debouncedName, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged, authorId]);
 
 	const handleTagGroupChange = useCallback(
 		(name: string, values: FilterTag[]) => {
@@ -164,8 +164,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		setChanged(true);
 	}, []);
 
-	const handleEditName = debounce(100, handleNameChange);
-
 	const handleResetName = useCallback(() => {
 		handleNameChange('');
 		setChanged(true);
@@ -196,7 +194,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 				<SearchBar className="overflow-hidden bg-card">
 					<SearchIcon className="size-5 shrink-0" />
 					{filterBy.length > 0 && <TagBadgeContainer tagGroups={filterBy} handleDeleteTag={handleDeleteTag} />}
-					<SearchInput placeholder="search-by-name" value={name} onChange={handleEditName} onClear={handleResetName} />
+					<SearchInput placeholder="search-by-name" value={name} onChange={handleNameChange} onClear={handleResetName} />
 				</SearchBar>
 				{useTag && (
 					<Button className="ml-auto h-10 shadow-md bg-card" title="filter" variant="outline" onClick={handleShowFilterDialog}>

@@ -20,7 +20,7 @@ export default function PropertiesPanel({ node }: { node: WorkflowNode }) {
 	const { id } = node;
 
 	const {
-		data: { name, consumers, producers, outputs },
+		data: { name, fields, producers, outputs },
 	} = node;
 	const {
 		actions: { setSelectedWorkflow },
@@ -34,15 +34,15 @@ export default function PropertiesPanel({ node }: { node: WorkflowNode }) {
 					<XIcon />
 				</Button>
 			</div>
-			{consumers.length > 0 && (
+			{fields.length > 0 && (
 				<>
 					<Divider />
 					<div className="grid gap-1">
 						<span>Properties</span>
 						<div className="flex flex-col gap-2 text-muted-foreground text-sm">
 							<Suspense>
-								{consumers.map((consumer) => (
-									<NodeItem variant="panel" key={consumer.name} parentId={node.id} data={consumer} />
+								{fields.map((fields) => (
+									<NodeItem variant="panel" key={fields.name} parentId={node.id} data={fields} />
 								))}
 							</Suspense>
 						</div>

@@ -1,12 +1,12 @@
 import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
 
-export function updateConsumer(node: WorkflowNode, name: string, value: any) {
-	const consumer = node.data.consumers.find((consumer) => consumer.name === name);
-	if (consumer) {
-		consumer.value = value;
+export function updateField(node: WorkflowNode, name: string, value: any) {
+	const fields = node.data.fields.find((fields) => fields.name === name);
+	if (fields) {
+		fields.value = value;
 	}
 
-	return { ...node, data: { ...node.data, consumers: node.data.consumers } };
+	return { ...node, data: { ...node.data, fields: node.data.fields } };
 }
 
 export function updateOutput(node: WorkflowNode, name: string, nextId: string) {

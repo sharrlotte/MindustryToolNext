@@ -125,11 +125,7 @@ export default async function MapDetailCard({ id, locale }: MapDetailCardProps) 
 							>
 								<TakeDownMapButton id={id} name={name} />
 							</ClientProtectedElement>
-							<ClientProtectedElement
-								filter={{
-									any: [{ authorId: userId }, { authority: 'DELETE_MAP' }],
-								}}
-							>
+							<ClientProtectedElement filter={{ authority: 'DELETE_MAP' }}>
 								<DeleteMapButton variant="command" id={id} name={name} />
 							</ClientProtectedElement>
 						</EllipsisButton>
