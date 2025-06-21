@@ -1,5 +1,6 @@
-import { Locale } from '@/i18n/config';
 import { AllTagGroup } from '@/types/response/TagGroup';
+
+import { Locale } from '@/i18n/config';
 
 import { z } from 'zod/v4';
 
@@ -162,4 +163,6 @@ export const colours: Record<string, string> = {
 	clear: '#00000000',
 	'': 'var(--foreground)',
 	accent: 'yellow',
+	W: 'yellow',
+	E: 'red',
 };
