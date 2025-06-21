@@ -95,6 +95,11 @@ export function OutputHandle({
 				state.outputs[name] = connections[0].target;
 			});
 		},
+		onDisconnect() {
+			update((state) => {
+				delete state.outputs[name];
+			});
+		},
 	});
 
 	return (
