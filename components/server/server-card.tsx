@@ -7,8 +7,9 @@ import Tran from '@/components/common/tran';
 import ServerStatusBadge from '@/components/server/server-status-badge';
 import ServerVersion from '@/components/server/server-version';
 
-import { cn } from '@/lib/utils';
 import { ServerDto } from '@/types/response/ServerDto';
+
+import { cn } from '@/lib/utils';
 
 import Image from 'next/image';
 
@@ -81,7 +82,7 @@ export default function ServerCard({
 									<MapIcon className="size-4" size={16} />
 									<Tran text="server.map" />
 								</span>
-								<ColorText className="font-semibold" text={mapName} />
+								<ColorText className="font-semibold text-wrap" text={mapName} />
 							</Fragment>
 						)}
 					</div>
