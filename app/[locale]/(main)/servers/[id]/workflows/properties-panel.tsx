@@ -1,5 +1,5 @@
 import { ArrowRight, XIcon } from 'lucide-react';
-import { Suspense, useCallback } from 'react';
+import { Suspense, useCallback, useMemo } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-node';
@@ -10,6 +10,7 @@ import Divider from '@/components/ui/divider';
 
 import { WorkflowNodeType } from '@/types/response/WorkflowContext';
 
+import useWorkflowNodeState from '@/hooks/use-workflow-node-state';
 import useWorkflowNodeType from '@/hooks/use-workflow-node-type';
 
 import { useReactFlow } from '@xyflow/react';
@@ -45,7 +46,7 @@ export default function PropertiesPanel({ node }: { node: WorkflowNode }) {
 				</Button>
 			</div>
 			{fields.length > 0 && <Fields parentId={id} fields={fields} />}
-			{outputs.length > 0 && <Outputs outputs={outputs} />}
+			{outputs.length > 0 && <Outputs parentId={id} outputs={outputs} />}
 		</ScrollContainer>
 	);
 }
@@ -68,7 +69,7 @@ function Fields({ fields, parentId }: { parentId: string; fields: WorkflowNodeTy
 	);
 }
 
-function Outputs({ outputs }: { outputs: WorkflowNodeType['outputs'] }) {
+function Outputs({ outputs, parentId }: { parentId: string; outputs: WorkflowNodeType['outputs'] }) {
 	return (
 		<>
 			<Divider />
@@ -76,7 +77,7 @@ function Outputs({ outputs }: { outputs: WorkflowNodeType['outputs'] }) {
 				<span>Outputs</span>
 				<div className="flex gap-2 text-muted-foreground text-sm">
 					{outputs.map((output, index) => (
-						<Output key={index} output={output} />
+						<Output key={index} output={output} parentId={parentId} />
 					))}
 				</div>
 			</div>
@@ -84,9 +85,12 @@ function Outputs({ outputs }: { outputs: WorkflowNodeType['outputs'] }) {
 	);
 }
 
-function Output({ output: { name, nextId } }: { output: WorkflowNodeType['outputs'][number] }) {
+function Output({ output: { name }, parentId }: { parentId: string; output: WorkflowNodeType['outputs'][number] }) {
 	const { nodes } = useWorkflowEditor();
-	const nextNode = nodes.find((node) => node.id === nextId);
+	const { state } = useWorkflowNodeState(parentId);
+	const nextId = state.outputs[name];
+
+	const nextNode = useMemo(() => nodes.find((node) => node.id === nextId), [nextId, nodes]);
 
 	return (
 		<div className="flex items-center px-1.5 gap-0.5 py-0.5 rounded-full border text-xs text-muted-foreground">
