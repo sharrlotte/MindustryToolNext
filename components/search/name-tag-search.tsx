@@ -117,6 +117,10 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		}
 	}, [debouncedName, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged, authorId]);
 
+	useEffect(() => {
+		setChanged(true);
+	}, [debouncedName]);
+
 	const handleTagGroupChange = useCallback(
 		(name: string, values: FilterTag[]) => {
 			setChanged(true);
