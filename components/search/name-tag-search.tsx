@@ -97,6 +97,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
 			if (debouncedName) {
 				params.set(QueryParams.name, debouncedName);
+			} else {
+				params.delete(QueryParams.name);
 			}
 
 			if (authorId) {
