@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/sonner';
 
-import { WorkflowNodeData } from '@/types/response/WorkflowContext';
+import { WorkflowNodeDataSchema } from '@/types/response/WorkflowContext';
 
 import {
 	WorkflowSave,
@@ -31,7 +31,7 @@ import {
 
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
-import useWorkflowNodes from '@/hooks/use-workflow-nodes';
+import useWorkflowNodeTypes from '@/hooks/use-workflow-nodes';
 
 import { uuid } from '@/lib/utils';
 
@@ -135,7 +135,8 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const { setViewport } = useReactFlow();
 	const ref = useRef<HTMLDivElement>(null);
 	const viewport = useViewport();
-	const { data: nodeTypes } = useWorkflowNodes();
+
+	const [nodeTypes] = useWorkflowNodeTypes();
 
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
@@ -143,23 +144,32 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const errors = useMemo(() => {
 		const errors: Record<string, Record<string, string>> = {};
 
+		if (!nodeTypes) {
+			return errors;
+		}
+
 		debouncedNodes.forEach((node) => {
 			if (node.type !== 'workflow') return;
 
-			const data = node.data as WorkflowNodeData;
+			const state = node.data.state;
+			const type = nodeTypes[node.data.name];
 
-			for (const fields of data.fields) {
-				if (fields.required && (fields.value === null || fields.value === undefined)) {
+			for (const field of type.fields) {
+				if (
+					field.consumer &&
+					field.consumer.required &&
+					(state.fields[field.name] === null || state.fields[field.name] === undefined)
+				) {
 					if (!errors[node.id]) {
 						errors[node.id] = {};
 					}
-					errors[node.id][fields.name] = `Field ${fields.name} on node ${node.data.name} is required but not set.`;
+					errors[node.id][field.name] = `Field ${field.name} on node ${node.data.name} is required but not set.`;
 				}
 			}
 		});
 
 		return errors;
-	}, [debouncedNodes]);
+	}, [debouncedNodes, nodeTypes]);
 
 	const generateSave = useCallback(() => {
 		if (!rfInstance) {
@@ -193,57 +203,13 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 							return true;
 						}
 
-						const base = nodeTypes[node.data.name];
+						const { success } = WorkflowNodeDataSchema.safeParse(node.data);
 
-						if (!base) {
-							console.warn('Invalid node name: ' + node.data.name);
-							return false;
+						if (!success) {
+							console.warn('Invalid node data: ' + node.data);
 						}
 
-						if (node.data.color !== base.color) {
-							node.data.color = base.color;
-						}
-
-						if (node.data.group !== base.group) {
-							node.data.group = base.group;
-						}
-
-						if (node.data.inputs !== base.inputs) {
-							node.data.inputs = base.inputs;
-						}
-
-						if (
-							node.data.outputs.length !== base.outputs.length ||
-							node.data.outputs.some((output) => base.outputs.find((baseOutput) => output.name === baseOutput.name) === undefined)
-						) {
-							node.data.outputs = base.outputs;
-						}
-
-						if (
-							node.data.fields.length !== base.fields.length ||
-							node.data.fields.some((fields) => base.fields.find((baseField) => fields.name === baseField.name) === undefined)
-						) {
-							node.data.fields = base.fields;
-						}
-
-						if (
-							node.data.producers.length !== base.producers.length ||
-							node.data.producers.some(
-								(producer) => base.producers.find((baseProducer) => producer.name === baseProducer.name) === undefined,
-							)
-						) {
-							node.data.producers = base.producers;
-						}
-
-						for (const fields of node.data.fields) {
-							const baseField = base.fields.find((c) => c.name === fields.name);
-
-							if (baseField) {
-								fields.options = baseField.options;
-							}
-						}
-
-						return true;
+						return success;
 					}),
 				);
 				setEdges(edges);
@@ -252,17 +218,16 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				setLoadState('loaded');
 			}
 		},
-		[nodeTypes, setViewport],
+		[setViewport],
 	);
 
 	useEffect(() => {
-		if (loadState !== 'loaded') {
+		if (!rfInstance || loadState !== 'loaded') {
 			return;
 		}
+
 		try {
-			if (rfInstance) {
-				writeSave(generateSave());
-			}
+			writeSave(generateSave());
 		} catch (e) {
 			console.error('Error saving workflow', e);
 		}
@@ -350,6 +315,10 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				}
 			}
 
+			if (!nodeTypes) {
+				throw new Error('Node types not loaded');
+			}
+
 			const node = nodeTypes[type];
 
 			if (!node) {
@@ -357,23 +326,29 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				return;
 			}
 
-			const copy = JSON.parse(JSON.stringify(node)) as WorkflowNodeData;
-
-			copy.fields.forEach((fields) => {
-				if (fields.defaultValue) {
-					fields.value = fields.defaultValue;
-				}
-			});
-
-			copy.id = uuid();
+			const id = uuid();
 
 			const newNode: Node = {
-				...copy,
-				id: copy.id,
+				id,
 				type: 'workflow',
-				data: copy,
+				data: {
+					id,
+					name: type,
+					state: {
+						outputs: {},
+						fields: {},
+					},
+				},
 				position,
 			};
+
+			node.fields.forEach((field) => {
+				if (field.consumer?.defaultValue) {
+					newNode.data.state.fields[field.name] = {
+						consumer: field.consumer.defaultValue,
+					};
+				}
+			});
 
 			const newNodes = [...nodes, newNode];
 
@@ -755,15 +730,7 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	} = useWorkflowEditor();
 
 	const payload = useMemo(() => {
-		const result = nodes
-			.filter((node) => node.type === 'workflow')
-			.map((node) => JSON.parse(JSON.stringify(node.data))) as WorkflowNodeData[];
-
-		result.forEach((node) => {
-			node.fields.forEach((fields) => {
-				fields.options = [];
-			});
-		});
+		const result = nodes.filter((node) => node.type === 'workflow').map((node) => node.data);
 
 		return {
 			nodes: result,

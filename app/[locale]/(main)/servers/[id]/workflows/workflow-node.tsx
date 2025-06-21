@@ -1,11 +1,13 @@
-import { Suspense, memo, useMemo } from 'react';
+import { Suspense, memo } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
-import { updateOutput } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
 import { CatchError } from '@/components/common/catch-error';
 
-import { WorkflowNodeData } from '@/types/response/WorkflowContext';
+import { WorkflowNodeData, WorkflowNodeType } from '@/types/response/WorkflowContext';
+
+import useWorkflowNodeState from '@/hooks/use-workflow-node-state';
+import useWorkflowNodeType from '@/hooks/use-workflow-node-type';
 
 import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { Connection, useNodeConnections } from '@xyflow/react';
@@ -17,7 +19,13 @@ const NodeItem = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workfl
 export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y'>, 'workflow'>;
 
 function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
-	const { name, color, outputs, fields, group, inputs } = data;
+	const type = useWorkflowNodeType(data.name);
+
+	if (!type) {
+		return null;
+	}
+
+	const { name, color, outputs, fields, group, inputs } = type;
 
 	return (
 		<div className="min-w-[220px] rounded-md overflow-hidden bg-card">
@@ -67,33 +75,27 @@ export function OutputHandle({
 	name,
 	offset,
 	index,
-}: { parentId: string; offset: number; index: number } & WorkflowNodeData['outputs'][number]) {
-	const { nodes, setEdges, setNode } = useWorkflowEditor();
+}: { parentId: string; offset: number; index: number } & WorkflowNodeType['outputs'][number]) {
+	const { setEdges } = useWorkflowEditor();
+	const { update } = useWorkflowNodeState(parentId);
 
 	const id = `${parentId}-source-handle-${index}`;
-	const parent = useMemo(() => nodes.find((node) => node.id === parentId), [nodes, parentId]);
 
 	const connections = useNodeConnections({
 		handleType: 'source',
 		handleId: id,
 		onConnect(connections: Connection[]) {
-			setEdges((prevEdges) =>
-				prevEdges.map((edge) => {
-					if (edge.id === (connections[0] as unknown as any).edgeId) {
-						return { ...edge, label: name === 'Next' ? '' : name };
-					}
-					return edge;
-				}),
-			);
+			if (name !== 'Next') {
+				setEdges((prevEdges) =>
+					prevEdges.map((edge) => (edge.id === (connections[0] as unknown as any).edgeId ? { ...edge, label: name } : edge)),
+				);
+			}
 
-			setNode(parentId, (prev) => updateOutput(prev, name, connections[0].target));
+			update((state) => {
+				state.outputs[name] = connections[0].target;
+			});
 		},
 	});
-
-	if (!parent) {
-		console.warn(`Parent node with id ${parentId} not found.`);
-		return null;
-	}
 
 	return (
 		<Handle
