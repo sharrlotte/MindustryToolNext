@@ -17,7 +17,7 @@ const NodeItem = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workfl
 export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y'>, 'workflow'>;
 
 function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
-	const { name, color, outputs, consumers, group, inputs } = data;
+	const { name, color, outputs, fields, group, inputs } = data;
 
 	return (
 		<div className="min-w-[220px] rounded-md overflow-hidden bg-card">
@@ -39,7 +39,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 					<span>{name}</span>
 					<span className="border-white bg-white/30 backdrop-brightness-90 backdrop-blur-sm rounded-full px-1.5">{group}</span>
 				</div>
-				{consumers.length > 0 && (
+				{fields.length > 0 && (
 					<section
 						className="p-1 grid gap-1 w-full border border-t-0 border-border overflow-hidden bg-background"
 						style={{
@@ -49,8 +49,8 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 						onClick={(event) => event.stopPropagation()}
 					>
 						<Suspense>
-							{consumers.map((consumer) => (
-								<NodeItem variant="inline" key={consumer.name} parentId={id} data={consumer} />
+							{fields.map((fields) => (
+								<NodeItem variant="inline" key={fields.name} parentId={id} data={fields} />
 							))}
 						</Suspense>
 					</section>

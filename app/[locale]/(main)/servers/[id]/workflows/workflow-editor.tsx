@@ -148,12 +148,12 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 			const data = node.data as WorkflowNodeData;
 
-			for (const consumer of data.consumers) {
-				if (consumer.required && (consumer.value === null || consumer.value === undefined)) {
+			for (const fields of data.fields) {
+				if (fields.required && (fields.value === null || fields.value === undefined)) {
 					if (!errors[node.id]) {
 						errors[node.id] = {};
 					}
-					errors[node.id][consumer.name] = `Consumer ${consumer.name} on node ${node.data.name} is required but not set.`;
+					errors[node.id][fields.name] = `Field ${fields.name} on node ${node.data.name} is required but not set.`;
 				}
 			}
 		});
@@ -220,12 +220,10 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 						}
 
 						if (
-							node.data.consumers.length !== base.consumers.length ||
-							node.data.consumers.some(
-								(consumer) => base.consumers.find((baseConsumer) => consumer.name === baseConsumer.name) === undefined,
-							)
+							node.data.fields.length !== base.fields.length ||
+							node.data.fields.some((fields) => base.fields.find((baseField) => fields.name === baseField.name) === undefined)
 						) {
-							node.data.consumers = base.consumers;
+							node.data.fields = base.fields;
 						}
 
 						if (
@@ -237,11 +235,11 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 							node.data.producers = base.producers;
 						}
 
-						for (const consumer of node.data.consumers) {
-							const baseConsumer = base.consumers.find((c) => c.name === consumer.name);
+						for (const fields of node.data.fields) {
+							const baseField = base.fields.find((c) => c.name === fields.name);
 
-							if (baseConsumer) {
-								consumer.options = baseConsumer.options;
+							if (baseField) {
+								fields.options = baseField.options;
 							}
 						}
 
@@ -361,9 +359,9 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 			const copy = JSON.parse(JSON.stringify(node)) as WorkflowNodeData;
 
-			copy.consumers.forEach((consumer) => {
-				if (consumer.defaultValue) {
-					consumer.value = consumer.defaultValue;
+			copy.fields.forEach((fields) => {
+				if (fields.defaultValue) {
+					fields.value = fields.defaultValue;
 				}
 			});
 
@@ -762,8 +760,8 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 			.map((node) => JSON.parse(JSON.stringify(node.data))) as WorkflowNodeData[];
 
 		result.forEach((node) => {
-			node.consumers.forEach((consumer) => {
-				consumer.options = [];
+			node.fields.forEach((fields) => {
+				fields.options = [];
 			});
 		});
 

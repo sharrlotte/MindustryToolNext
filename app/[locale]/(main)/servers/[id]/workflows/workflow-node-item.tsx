@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
-import { updateConsumer } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
+import { updateField } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
 import { CatchError } from '@/components/common/catch-error';
 import ComboBox from '@/components/common/combo-box';
@@ -13,7 +13,7 @@ import { WorkflowNodeData } from '@/types/response/WorkflowContext';
 
 import { cn } from '@/lib/utils';
 
-type NodeItemProps = { variant: 'inline' | 'panel'; parentId: string; data: WorkflowNodeData['consumers'][number] };
+type NodeItemProps = { variant: 'inline' | 'panel'; parentId: string; data: WorkflowNodeData['fields'][number] };
 
 export default function NodeItem(props: NodeItemProps) {
 	const { data, parentId, variant } = props;
@@ -61,7 +61,7 @@ function NodeItemInternal(props: NodeItemProps) {
 		return <InputNodeComponent {...props} />;
 	}
 
-	return <ErrorMessage error={{ message: 'Invalid consumer type: ' + data.type + ' on consumer: ' + data.name }} />;
+	return <ErrorMessage error={{ message: 'Invalid fields type: ' + data.type + ' on fields: ' + data.name }} />;
 }
 
 function SecondNodeComponent({ data, parentId }: NodeItemProps) {
@@ -83,7 +83,7 @@ function SecondNodeComponent({ data, parentId }: NodeItemProps) {
 					className="bg-transparent min-w-60 w-full focus:outline-none" //
 					type="text"
 					value={value ?? value ?? ''}
-					onChange={(e) => setNode(parentId, (prev) => updateConsumer(prev, name, e.currentTarget.value))}
+					onChange={(e) => setNode(parentId, (prev) => updateField(prev, name, e.currentTarget.value))}
 				/>
 				<span className="text-muted-foreground text-sm ml-0.5">
 					{hours > 0 ? `${hours}h ` : ''}
@@ -117,7 +117,7 @@ function InputNodeComponent({ data, parentId }: NodeItemProps) {
 					className="bg-transparent min-w-60 focus:outline-none" //
 					type="text"
 					value={value ?? value ?? ''}
-					onChange={(e) => setNode(parentId, (prev) => updateConsumer(prev, name, e.currentTarget.value))}
+					onChange={(e) => setNode(parentId, (prev) => updateField(prev, name, e.currentTarget.value))}
 					onFocus={() => setFocus(true)}
 					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>
@@ -150,7 +150,7 @@ function BooleanNodeComponent({ data, parentId }: NodeItemProps) {
 	return (
 		<div className="flex gap-1 items-center justify-between">
 			<span className="text-muted-foreground text-sm">{name}</span>
-			<Switch checked={parsed} onCheckedChange={(value) => setNode(parentId, (prev) => updateConsumer(prev, name, value))} />
+			<Switch checked={parsed} onCheckedChange={(value) => setNode(parentId, (prev) => updateField(prev, name, value))} />
 		</div>
 	);
 }
@@ -164,7 +164,7 @@ function OptionNodeComponent({ data, parentId }: NodeItemProps) {
 
 	useEffect(() => {
 		if (required && !v && options.length > 0) {
-			setNode(parentId, (prev) => updateConsumer(prev, name, first.value));
+			setNode(parentId, (prev) => updateField(prev, name, first.value));
 		}
 	}, [first.value, name, options.length, parentId, required, setNode, v]);
 
@@ -185,7 +185,7 @@ function OptionNodeComponent({ data, parentId }: NodeItemProps) {
 						return;
 					}
 
-					setNode(parentId, (prev) => updateConsumer(prev, name, value));
+					setNode(parentId, (prev) => updateField(prev, name, value));
 				}}
 				mapper={({ label }) => (
 					<span key={label} className="text-xs">

@@ -1,19 +1,19 @@
 import { z } from 'zod/v4';
 
-const WorkflowConsumerUnits = ['SECOND'] as const;
+const WorkflowFieldUnits = ['SECOND'] as const;
 
 export const WorkflowNodeDataSchema = z.object({
 	id: z.string().optional().nullable(),
 	name: z.string(),
 	group: z.string(),
 	color: z.string(),
-	consumers: z.array(
+	fields: z.array(
 		z.object({
 			name: z.string(),
 			type: z.string(),
 			value: z.string().optional().nullable(),
 			required: z.boolean(),
-			unit: z.enum(WorkflowConsumerUnits).optional().nullable(),
+			unit: z.enum(WorkflowFieldUnits).optional().nullable(),
 			defaultValue: z.any().optional().nullable(),
 			produce: z.object({
 				produceType: z.any().optional().nullable(),
