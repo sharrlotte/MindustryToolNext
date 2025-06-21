@@ -332,6 +332,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				id,
 				type: 'workflow',
 				data: {
+					id,
 					name: type,
 					state: {
 						outputs: {},

@@ -3,6 +3,7 @@ import { z } from 'zod/v4';
 export const WorkflowNodeStateFieldSchema = z.object({
 	consumer: z.any().optional().nullable(),
 	producer: z.any().optional().nullable(),
+    variableName: z.string().optional().nullable(),
 });
 
 export const WorkflowNodeStateSchema = z.object({
@@ -11,6 +12,7 @@ export const WorkflowNodeStateSchema = z.object({
 });
 
 export const WorkflowNodeDataSchema = z.object({
+	id: z.string(),
 	name: z.string(),
 	state: WorkflowNodeStateSchema,
 });
