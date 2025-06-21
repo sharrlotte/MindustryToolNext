@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/sonner';
 
-import { WorkflowNodeDataSchema, WorkflowNodeType } from '@/types/response/WorkflowContext';
+import { WorkflowNodeDataSchema } from '@/types/response/WorkflowContext';
 
 import {
 	WorkflowSave,
@@ -340,6 +340,14 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				},
 				position,
 			};
+
+			node.fields.forEach((field) => {
+				if (field.consumer?.defaultValue) {
+					newNode.data.state.fields[field.name] = {
+						consumer: field.consumer.defaultValue,
+					};
+				}
+			});
 
 			const newNodes = [...nodes, newNode];
 
@@ -721,17 +729,7 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	} = useWorkflowEditor();
 
 	const payload = useMemo(() => {
-		const result = nodes
-			.filter((node) => node.type === 'workflow')
-			.map((node) => JSON.parse(JSON.stringify(node.data))) as WorkflowNodeType[];
-
-		result.forEach((node) => {
-			node.fields.forEach((fields) => {
-				if (fields.consumer) {
-					fields.consumer.options = [];
-				}
-			});
-		});
+		const result = nodes.filter((node) => node.type === 'workflow').map((node) => node.data);
 
 		return {
 			nodes: result,
