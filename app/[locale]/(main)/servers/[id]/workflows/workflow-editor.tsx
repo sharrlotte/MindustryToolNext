@@ -662,20 +662,18 @@ function UploadContextButton() {
 							<LoadServerWorkflowDialog setLocalVersion={setLocalVersion} />
 						</DialogContent>
 					</Dialog>
-					{serverVersion !== localVersion && (
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button variant="secondary" disabled={Object.keys(errors).length > 0}>
-									<UploadIcon className="size-4" />
-									<span>Upload</span>
-								</Button>
-							</DialogTrigger>
-							<DialogContent className="p-6 border rounded-dm">
-								<DialogTitle>Confirm</DialogTitle>
-								<UploadWorkflowDialog version={localVersion} />
-							</DialogContent>
-						</Dialog>
-					)}
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button variant="secondary" disabled={Object.keys(errors).length > 0}>
+								<UploadIcon className="size-4" />
+								<span>Upload</span>
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="p-6 border rounded-dm">
+							<DialogTitle>Confirm</DialogTitle>
+							<UploadWorkflowDialog version={localVersion} />
+						</DialogContent>
+					</Dialog>
 				</div>,
 				container,
 			)}
