@@ -4,7 +4,6 @@ const WorkflowFieldUnits = ['SECOND'] as const;
 
 export const WorkflowFieldConsume = z.object({
 	type: z.string(),
-	value: z.string().optional().nullable(),
 	required: z.boolean(),
 	unit: z.enum(WorkflowFieldUnits).optional().nullable(),
 	defaultValue: z.any().optional().nullable(),
@@ -42,7 +41,7 @@ export const WorkflowOutputSchema = z.object({
 
 export type WorkflowOutput = z.infer<typeof WorkflowOutputSchema>;
 
-export const WorkflowNodeDataSchema = z.object({
+export const WorkflowNodeTypeSchema = z.object({
 	id: z.string().optional().nullable(),
 	name: z.string(),
 	group: z.string(),
@@ -54,10 +53,29 @@ export const WorkflowNodeDataSchema = z.object({
 
 export const WorkflowContextSchema = z.object({
 	createdAt: z.number(),
-	nodes: z.array(WorkflowNodeDataSchema),
+	nodes: z.array(WorkflowNodeTypeSchema),
 });
 
-export const GetWorkflowNodeDataSchema = z.record(z.string(), WorkflowNodeDataSchema);
+export const GetWorkflowNodeTypeSchema = z.record(z.string(), WorkflowNodeTypeSchema);
 
 export type WorkflowContext = z.infer<typeof WorkflowContextSchema>;
+export type WorkflowNodeType = z.infer<typeof WorkflowNodeTypeSchema>;
+
+export const WorkflowNodeStateFieldSchema = z.object({
+	consumer: z.any().optional().nullable(),
+	producer: z.any().optional().nullable(),
+});
+
+export const WorkflowNodeStateSchema = z.object({
+	outputs: z.record(z.string(), z.string()),
+	fields: z.record(z.string(), WorkflowNodeStateFieldSchema),
+});
+
+export const WorkflowNodeDataSchema = z.object({
+	name: z.string(),
+	state: WorkflowNodeStateSchema,
+});
+
 export type WorkflowNodeData = z.infer<typeof WorkflowNodeDataSchema>;
+export type WorkflowNodeStateField = z.infer<typeof WorkflowNodeStateFieldSchema>;
+export type WorkflowNodeState = z.infer<typeof WorkflowNodeStateSchema>;

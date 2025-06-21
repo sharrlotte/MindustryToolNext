@@ -9,9 +9,9 @@ import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
 
-import { WorkflowNodeData } from '@/types/response/WorkflowContext';
+import { WorkflowNodeType } from '@/types/response/WorkflowContext';
 
-import useWorkflowNodes from '@/hooks/use-workflow-nodes';
+import useWorkflowNodeTypes from '@/hooks/use-workflow-nodes';
 
 import { groupBy } from '@/lib/utils';
 
@@ -35,7 +35,7 @@ export default function NodeListPanel() {
 }
 
 function WorkflowGroups({ filter }: { filter: string }) {
-	const { data, isLoading, isError, error } = useWorkflowNodes();
+	const [data, { isLoading, isError, error }] = useWorkflowNodeTypes();
 
 	const nodeGroups = useMemo(
 		() =>
@@ -61,7 +61,7 @@ function WorkflowGroups({ filter }: { filter: string }) {
 	return nodeGroups.map((group) => <WorkflowGroup key={group.key} group={group} />);
 }
 
-function WorkflowGroup({ group: { key, value } }: { group: { key: string; value: WorkflowNodeData[] } }) {
+function WorkflowGroup({ group: { key, value } }: { group: { key: string; value: WorkflowNodeType[] } }) {
 	return (
 		<>
 			<div className="space-y-1">
@@ -75,7 +75,7 @@ function WorkflowGroup({ group: { key, value } }: { group: { key: string; value:
 	);
 }
 
-function WorkflowItem({ item: { name, color, fields, outputs } }: { item: WorkflowNodeData }) {
+function WorkflowItem({ item: { name, color, fields, outputs } }: { item: WorkflowNodeType }) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	const [_, drag] = useDrag({
@@ -90,30 +90,31 @@ function WorkflowItem({ item: { name, color, fields, outputs } }: { item: Workfl
 
 	drag(ref);
 
+	const consumers = fields.filter(({ consumer }) => consumer);
+	const producers = fields.filter(({ producer }) => producer);
+
 	return (
 		<div className="p-2 bg-secondary/50 border rounded-md capitalize cursor-pointer select-none space-y-1" ref={ref}>
 			<span className="font-semibold" style={{ color }}>
 				{name}
 			</span>
-			{fields.length > 0 && (
-				<section className="flex gap-1 flex-wrap text-xs items-center">
-					{fields.map(({ name, consumer, producer }) => (
-						<div key={name} className="flex gap-2">
-							{consumer && (
-								<>
-									<ArrowRight className="size-4" />
-									<span className="border border-emerald-400 text-white bg-emerald-800/50 rounded-full px-1.5">{name}</span>
-								</>
-							)}
-							{producer && (
-								<>
-									<ArrowLeft className="size-4" />
-									<span className="border border-purple-400 text-white bg-purple-800/50 rounded-full px-1.5">
-										{producer.variableName}
-									</span>
-								</>
-							)}
-						</div>
+			{consumers.length > 0 && (
+				<section className="flex gap-1 flex-wrap items-center text-xs">
+					<ArrowRight className="size-4" />
+					{consumers.map(({ name }) => (
+						<span key={name} className="border border-emerald-400 text-white bg-emerald-800/50 rounded-full px-1.5">
+							{name}
+						</span>
+					))}
+				</section>
+			)}
+			{producers.length > 0 && (
+				<section className="flex gap-1 flex-wrap items-center text-xs">
+					<ArrowLeft className="size-4" />
+					{producers.map(({ name }) => (
+						<span key={name} className="border border-emerald-400 text-white bg-emerald-800/50 rounded-full px-1.5">
+							{name}
+						</span>
 					))}
 				</section>
 			)}

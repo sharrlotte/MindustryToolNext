@@ -23,7 +23,7 @@ import { ServerPlan } from '@/types/response/ServerPlan';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { ServerSetting } from '@/types/response/ServerSetting';
 import { ServerStats } from '@/types/response/ServerStats';
-import { GetWorkflowNodeDataSchema, WorkflowNodeData } from '@/types/response/WorkflowContext';
+import { GetWorkflowNodeTypeSchema, WorkflowNodeType } from '@/types/response/WorkflowContext';
 import { PaginationQuery } from '@/types/schema/search-query';
 
 import { MetricUnit } from '@/lib/metric.utils';
@@ -337,10 +337,10 @@ export async function getServerLoginMetrics(
 	return result.data;
 }
 
-export async function getServerWorkflowNodes(axios: AxiosInstance, serverId: string): Promise<Record<string, WorkflowNodeData>> {
+export async function getServerWorkflowNodes(axios: AxiosInstance, serverId: string): Promise<Record<string, WorkflowNodeType>> {
 	const result = await axios.get(`/servers/${serverId}/workflow/nodes`);
 
-	return GetWorkflowNodeDataSchema.parse(result.data);
+	return GetWorkflowNodeTypeSchema.parse(result.data);
 }
 
 export async function getServerWorkflowVersion(axios: AxiosInstance, serverId: string): Promise<number> {
@@ -373,14 +373,14 @@ export async function updateWorkflowNode(
 	axios: AxiosInstance,
 	serverId: string,
 	nodeId: string,
-	payload: WorkflowNodeData,
+	payload: WorkflowNodeType,
 ): Promise<void> {
 	await axios.put(`/servers/${serverId}/workflow/nodes/${nodeId}`, payload, {
 		data: payload,
 	});
 }
 
-export async function createWorkflowNode(axios: AxiosInstance, serverId: string, payload: WorkflowNodeData): Promise<void> {
+export async function createWorkflowNode(axios: AxiosInstance, serverId: string, payload: WorkflowNodeType): Promise<void> {
 	await axios.post(`/servers/${serverId}/workflow/nodes`, payload, {
 		data: payload,
 	});

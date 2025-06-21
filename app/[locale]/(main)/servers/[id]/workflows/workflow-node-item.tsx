@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
-import { updateConsume } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow.utils';
 
 import { CatchError } from '@/components/common/catch-error';
 import ComboBox from '@/components/common/combo-box';
@@ -10,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 
 import { WorkflowField, WorkflowFieldConsume } from '@/types/response/WorkflowContext';
+
+import useWorkflowNodeState from '@/hooks/use-workflow-node-state';
 
 import { cn } from '@/lib/utils';
 
@@ -65,8 +66,10 @@ function NodeItemInternal(props: NodeItemProps) {
 }
 
 function SecondNodeComponent({ name, consumer, parentId }: NodeItemProps) {
-	const { setNode } = useWorkflowEditor();
-	const { value, required } = consumer;
+	const { state, update } = useWorkflowNodeState(parentId);
+	const { required, defaultValue } = consumer;
+
+	const value = state.fields[name]?.consumer;
 
 	const hours = Math.floor(Number(value ?? 0) / 3600);
 	const minutes = Math.floor((Number(value ?? 0) % 3600) / 60);
@@ -82,8 +85,15 @@ function SecondNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 				<Input
 					className="bg-transparent min-w-60 w-full focus:outline-none" //
 					type="text"
-					value={value ?? value ?? ''}
-					onChange={(e) => setNode(parentId, (prev) => updateConsume(prev, name, e.currentTarget.value))}
+					value={value ?? defaultValue ?? ''}
+					onChange={(e) =>
+						update((state) => {
+							if (state.fields[name] === undefined) {
+								state.fields[name] = {};
+							}
+							state.fields[name].consumer = e.currentTarget.value;
+						})
+					}
 				/>
 				<span className="text-muted-foreground text-sm ml-0.5">
 					{hours > 0 ? `${hours}h ` : ''}
@@ -96,9 +106,11 @@ function SecondNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 }
 
 function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
-	const { variables, setNode } = useWorkflowEditor();
-	const { value, type, required } = consumer;
+	const { variables } = useWorkflowEditor();
+	const { state, update } = useWorkflowNodeState(parentId);
+	const { type, required } = consumer;
 	const [focus, setFocus] = useState(false);
+	const value = state.fields[name]?.consumer;
 
 	const matchedVariable = value
 		? Object.values(variables).filter((variable) => variable.includes(value))
@@ -117,14 +129,31 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 					className="bg-transparent min-w-60 focus:outline-none" //
 					type="text"
 					value={value ?? value ?? ''}
-					onChange={(e) => setNode(parentId, (prev) => updateConsume(prev, name, e.currentTarget.value))}
+					onChange={(e) =>
+						update((state) => {
+							if (state.fields[name] === undefined) {
+								state.fields[name] = {};
+							}
+							state.fields[name].consumer = e.currentTarget.value;
+						})
+					}
 					onFocus={() => setFocus(true)}
 					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>
 				<div className={cn('absolute -bottom-1 translate-y-[100%] z-50 hidden', { block: showSuggestion })}>
 					<div className="p-4 border rounded-md bg-card min-w-60">
 						{matchedVariable.map((variable) => (
-							<div key={variable} onClick={() => setNode(parentId, (prev) => ({ ...prev, [name]: variable }))}>
+							<div
+								key={variable}
+								onClick={() =>
+									update((state) => {
+										if (state.fields[name] === undefined) {
+											state.fields[name] = {};
+										}
+										state.fields[name].consumer = variable;
+									})
+								}
+							>
 								{variable}
 							</div>
 						))}
@@ -136,8 +165,9 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 }
 
 function BooleanNodeComponent({ name, consumer, parentId }: NodeItemProps) {
-	const { setNode } = useWorkflowEditor();
-	const { value } = consumer;
+	const { required } = consumer;
+	const { state, update } = useWorkflowNodeState(parentId);
+	const value = state.fields[name]?.consumer;
 
 	let parsed: boolean = false;
 
@@ -147,26 +177,54 @@ function BooleanNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 		parsed = false;
 	}
 
+	useEffect(() => {
+		if (required && value === undefined) {
+			update((state) => {
+				if (state.fields[name] === undefined) {
+					state.fields[name] = {};
+				}
+				state.fields[name].consumer = false;
+			});
+		}
+	}, [value, required, update, name]);
+
 	return (
 		<div className="flex gap-1 items-center justify-between">
 			<span className="text-muted-foreground text-sm">{name}</span>
-			<Switch checked={parsed} onCheckedChange={(value) => setNode(parentId, (prev) => updateConsume(prev, name, value))} />
+			<Switch
+				checked={parsed}
+				onCheckedChange={(value) =>
+					update((state) => {
+						if (state.fields[name] === undefined) {
+							state.fields[name] = {};
+						}
+						state.fields[name].consumer = value;
+					})
+				}
+			/>
 		</div>
 	);
 }
 
 function OptionNodeComponent({ name, consumer, parentId }: NodeItemProps) {
-	const { options, required, value } = consumer;
+	const { options, required } = consumer;
 	const first = options[0];
 
-	const { setNode } = useWorkflowEditor();
+	const { state, update } = useWorkflowNodeState(parentId);
+	const value = state.fields[name]?.consumer;
+
 	const v = options.find((option) => option.value === value);
 
 	useEffect(() => {
 		if (required && !v && options.length > 0) {
-			setNode(parentId, (prev) => updateConsume(prev, name, first.value));
+			update((state) => {
+				if (state.fields[name] === undefined) {
+					state.fields[name] = {};
+				}
+				state.fields[name].consumer = first.value;
+			});
 		}
-	}, [first.value, name, options.length, parentId, required, setNode, v]);
+	}, [first.value, name, options.length, parentId, required, update, v]);
 
 	return (
 		<>
@@ -185,7 +243,12 @@ function OptionNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 						return;
 					}
 
-					setNode(parentId, (prev) => updateConsume(prev, name, value));
+					update((state) => {
+						if (state.fields[name] === undefined) {
+							state.fields[name] = {};
+						}
+						state.fields[name].consumer = value;
+					});
 				}}
 				mapper={({ label }) => (
 					<span key={label} className="text-xs">
