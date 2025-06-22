@@ -35,7 +35,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 						<InputHandle index={index} offset={index - (inputs - 1) / 2} key={index} parentId={id} />
 					))}
 				{outputs.map((output, index) => (
-					<OutputHandle key={name} index={index} parentId={id} offset={index - (outputs.length - 1) / 2} {...output} />
+					<OutputHandle key={index} index={index} parentId={id} offset={index - (outputs.length - 1) / 2} {...output} />
 				))}
 				<div
 					className="w-full h-full p-2 gap-1 flex items-center"
