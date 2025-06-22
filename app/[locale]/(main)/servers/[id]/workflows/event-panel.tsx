@@ -11,7 +11,7 @@ import env from '@/constant/env';
 export default function EventPanel() {
 	const id = usePathId();
 	const { data, state } = useSse<WorkflowEvent>(`${env.url.api}/servers/${id}/workflow/events`, {
-		limit: 1000,
+		limit: 100,
 	});
 
 	return (
