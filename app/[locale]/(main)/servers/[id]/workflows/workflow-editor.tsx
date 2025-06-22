@@ -731,11 +731,14 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 	const payload = useMemo(() => {
 		const result = nodes
 			.filter((node) => node.type === 'workflow')
+			.map((node) => JSON.parse(JSON.stringify(node)) as WorkflowNode)
 			.map((node) => {
 				// Find connected node
-				const connectedNode = edges.find((edge) => edge.type === 'source' && edge.source === node.id);
+				const connectedNode = edges.find((edge) => edge.source === node.id);
 
-				if (connectedNode) {
+				node.data.state.outputs = {};
+
+				if (connectedNode && connectedNode.label) {
 					node.data.state.outputs[connectedNode.label as string] = connectedNode.source;
 				}
 

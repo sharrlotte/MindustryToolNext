@@ -350,7 +350,9 @@ export async function getServerWorkflowVersion(axios: AxiosInstance, serverId: s
 }
 
 export async function loadServerWorkflow(axios: AxiosInstance, serverId: string, payload: WorkflowContext): Promise<void> {
-	await axios.post(`/servers/${serverId}/workflow/load`, payload);
+	await axios.post(`/servers/${serverId}/workflow/load`, payload, {
+		timeout: 10000,
+	});
 }
 
 export type WorkflowSave = {
