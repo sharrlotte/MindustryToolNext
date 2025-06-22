@@ -746,12 +746,14 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 			.map((node) => JSON.parse(JSON.stringify(node)) as WorkflowNode)
 			.map((node) => {
 				// Find connected node
-				const connectedNode = edges.find((edge) => edge.source === node.id);
+				const connectedNodes = edges.filter((edge) => edge.source === node.id);
 
 				node.data.state.outputs = {};
 
-				if (connectedNode && connectedNode.label) {
-					node.data.state.outputs[connectedNode.label as string] = connectedNode.target;
+				for (const connectedNode of connectedNodes) {
+					if (connectedNode && connectedNode.label) {
+						node.data.state.outputs[connectedNode.label as string] = connectedNode.target;
+					}
 				}
 
 				return node.data;
