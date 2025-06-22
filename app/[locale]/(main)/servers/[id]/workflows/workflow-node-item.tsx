@@ -71,21 +71,16 @@ function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemP
 	const { state, update } = useWorkflowNodeState(parentId);
 	const { required, defaultValue } = consumer;
 
-	const value = Number(state.fields[name]?.consumer ?? '0') ?? 0;
+	let value = Number(state.fields[name]?.consumer ?? '0') ?? 0;
+	value = Number.isNaN(value) ? 0 : value;
 
-	let seconds = 0;
-	let milliseconds = 0;
+	const converted = duration === 'SECOND' ? value * 1000 : duration === 'MILLISECOND' ? value : 0;
 
-	if (duration === 'SECOND') {
-		milliseconds = 0;
-		seconds = value;
-	} else if (duration === 'MILLISECOND') {
-		seconds = value % 60;
-		milliseconds = value;
-	}
-
-	const minutes = Math.floor((Number(value ?? 0) % 3600) / 60);
-	const hours = Math.floor(Number(value ?? 0) / 3600);
+	const milliseconds = converted % 1000;
+	const seconds = Math.floor((converted / 1000) % 60);
+	const minutes = Math.floor((converted / 60000) % 60);
+	const hours = Math.floor((converted / 3600000) % 24);
+	const days = Math.floor((converted / 86400000) % 365);
 
 	return (
 		<>
@@ -108,6 +103,7 @@ function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemP
 					}
 				/>
 				<span className="text-muted-foreground text-sm ml-0.5">
+					{days > 0 ? `${days}d ` : ''}
 					{hours > 0 ? `${hours}h ` : ''}
 					{minutes > 0 ? `${minutes}m ` : ''}
 					{seconds > 0 ? `${seconds}s` : ''}
