@@ -724,17 +724,32 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 
 	const {
 		nodes,
+		edges,
 		actions: { generateSave },
 	} = useWorkflowEditor();
 
 	const payload = useMemo(() => {
-		const result = nodes.filter((node) => node.type === 'workflow').map((node) => node.data);
+		const result = nodes
+			.filter((node) => node.type === 'workflow')
+			.map((node) => JSON.parse(JSON.stringify(node)) as WorkflowNode)
+			.map((node) => {
+				// Find connected node
+				const connectedNode = edges.find((edge) => edge.source === node.id);
+
+				node.data.state.outputs = {};
+
+				if (connectedNode && connectedNode.label) {
+					node.data.state.outputs[connectedNode.label as string] = connectedNode.target;
+				}
+
+				return node.data;
+			});
 
 		return {
 			nodes: result,
 			createdAt: version,
 		};
-	}, [nodes, version]);
+	}, [edges, nodes, version]);
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server', id, 'workflow', 'upload'],
