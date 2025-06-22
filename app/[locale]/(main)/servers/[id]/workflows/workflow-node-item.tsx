@@ -46,8 +46,10 @@ function NodeItemInternal(props: NodeItemProps) {
 		return <ErrorMessage error={{ message: 'Invalid fields type: ' + props.name }} />;
 	}
 
-	if (consumer.unit === 'SECOND') {
-		return <SecondNodeComponent {...props} />;
+	const unit = consumer.unit;
+
+	if (unit && (unit === 'SECOND' || unit === 'MILLISECONDS')) {
+		return <DurationNodeComponent {...props} duration={unit} />;
 	}
 
 	if (consumer.options && consumer.options.length > 0) {
@@ -65,15 +67,25 @@ function NodeItemInternal(props: NodeItemProps) {
 	return <ErrorMessage error={{ message: 'Invalid fields type: ' + consumer.type + ' on fields: ' + props.name }} />;
 }
 
-function SecondNodeComponent({ name, consumer, parentId }: NodeItemProps) {
+function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemProps & { duration: string }) {
 	const { state, update } = useWorkflowNodeState(parentId);
 	const { required, defaultValue } = consumer;
 
-	const value = state.fields[name]?.consumer;
+	const value = Number(state.fields[name]?.consumer) ?? 0;
 
-	const hours = Math.floor(Number(value ?? 0) / 3600);
+	let seconds = 0;
+	let milliseconds = 0;
+
+	if (duration === 'SECOND') {
+		seconds = value % 60;
+		milliseconds = value;
+	} else if (duration === 'MILLISECONDS') {
+		milliseconds = 0;
+		seconds = value;
+	}
+
 	const minutes = Math.floor((Number(value ?? 0) % 3600) / 60);
-	const seconds = Number(value ?? 0) % 60;
+	const hours = Math.floor(Number(value ?? 0) / 3600);
 
 	return (
 		<>
@@ -99,6 +111,7 @@ function SecondNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 					{hours > 0 ? `${hours}h ` : ''}
 					{minutes > 0 ? `${minutes}m ` : ''}
 					{seconds > 0 ? `${seconds}s` : ''}
+					{milliseconds > 0 ? `${milliseconds}ms` : ''}
 				</span>
 			</div>
 		</>
