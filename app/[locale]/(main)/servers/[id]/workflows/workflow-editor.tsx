@@ -739,7 +739,7 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 				node.data.state.outputs = {};
 
 				if (connectedNode && connectedNode.label) {
-					node.data.state.outputs[connectedNode.label as string] = connectedNode.source;
+					node.data.state.outputs[connectedNode.label as string] = connectedNode.target;
 				}
 
 				return node.data;
