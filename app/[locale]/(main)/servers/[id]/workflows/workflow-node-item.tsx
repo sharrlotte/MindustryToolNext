@@ -48,7 +48,7 @@ function NodeItemInternal(props: NodeItemProps) {
 
 	const unit = consumer.unit;
 
-	if (unit && (unit === 'SECOND' || unit === 'MILLISECONDS')) {
+	if (unit && (unit === 'SECOND' || unit === 'MILLISECOND')) {
 		return <DurationNodeComponent {...props} duration={unit} />;
 	}
 
@@ -79,7 +79,7 @@ function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemP
 	if (duration === 'SECOND') {
 		seconds = value % 60;
 		milliseconds = value;
-	} else if (duration === 'MILLISECONDS') {
+	} else if (duration === 'MILLISECOND') {
 		milliseconds = 0;
 		seconds = value;
 	}

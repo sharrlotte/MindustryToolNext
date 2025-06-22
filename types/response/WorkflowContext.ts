@@ -3,7 +3,7 @@ import { z } from 'zod/v4';
 export const WorkflowNodeStateFieldSchema = z.object({
 	consumer: z.any().optional().nullable(),
 	producer: z.any().optional().nullable(),
-    variableName: z.string().optional().nullable(),
+	variableName: z.string().optional().nullable(),
 });
 
 export const WorkflowNodeStateSchema = z.object({
@@ -21,7 +21,7 @@ export type WorkflowNodeData = z.infer<typeof WorkflowNodeDataSchema>;
 export type WorkflowNodeStateField = z.infer<typeof WorkflowNodeStateFieldSchema>;
 export type WorkflowNodeState = z.infer<typeof WorkflowNodeStateSchema>;
 
-const WorkflowFieldUnits = ['SECOND'] as const;
+const WorkflowFieldUnits = ['SECOND', 'MILLISECOND', 'MINUTE', 'HOUR', 'DAY', 'WEEK', 'MONTH', 'YEAR'];
 
 export const WorkflowFieldConsume = z.object({
 	type: z.string(),
