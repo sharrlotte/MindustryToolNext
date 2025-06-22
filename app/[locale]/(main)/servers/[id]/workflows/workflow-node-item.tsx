@@ -141,7 +141,7 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 				<Input
 					className="bg-transparent min-w-60 focus:outline-none" //
 					type="text"
-					value={value ?? value ?? ''}
+					value={value ?? ''}
 					onChange={(e) =>
 						update((state) => {
 							if (state.fields[name] === undefined) {

@@ -12,6 +12,10 @@ import { cn } from '@/lib/utils';
 
 import dynamic from 'next/dynamic';
 
+const SearchPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/search-panel'), {
+	ssr: false,
+});
+
 const NodeListPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/node-list-panel'), {
 	ssr: false,
 });
@@ -39,7 +43,7 @@ const tabs: TabType[] = [
 	{
 		id: 'search',
 		icon: <SearchIcon />,
-		item: <div></div>,
+		item: <SearchPanel />,
 	},
 	{
 		id: 'folder',
