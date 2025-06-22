@@ -55,7 +55,7 @@ export default function useSse<T = string>(
 	useEffect(() => {
 		connect();
 		setState('connecting');
-	}, [connect, url]);
+	}, [connect]);
 
 	useInterval(() => {
 		if (state === 'disconnected' || eventSource === undefined) {
