@@ -1,4 +1,5 @@
 import { RelativeTime } from '@/components/common/relative-time';
+import ScrollContainer from '@/components/common/scroll-container';
 
 import { WorkflowEvent } from '@/types/response/WorkflowEvent';
 
@@ -14,16 +15,19 @@ export default function EventPanel() {
 	});
 
 	return (
-		<div>
+		<ScrollContainer className="space-y-1">
 			<div>{state}</div>
-			{data?.map((event) => (
-				<div key={event.id}>
-					<div>{event.nodeId}</div>
-					<div>{event.type}</div>
-					<pre>{JSON.stringify(event.data, null, 2)}</pre>
-					<RelativeTime date={new Date(event.createdAt)} />
-				</div>
-			))}
-		</div>
+			{data
+				?.filter((event) => event.data)
+				.toReversed()
+				.map((event) => (
+					<div key={event.id}>
+						<div>{event.nodeId}</div>
+						<div>{event.type}</div>
+						<pre>{JSON.stringify(event.data, null, 2)}</pre>
+						<RelativeTime date={new Date(event.createdAt)} />
+					</div>
+				))}
+		</ScrollContainer>
 	);
 }
