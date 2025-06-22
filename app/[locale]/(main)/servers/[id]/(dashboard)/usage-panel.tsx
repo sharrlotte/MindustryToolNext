@@ -30,9 +30,9 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalR
 
 	const { cpu, serverRam, jvmRam } = useMemo(
 		() => ({
-			cpu: (Math.ceil(data[0]?.value.cpuUsage ?? cpuUsage) * 100) / 100,
-			serverRam: (data[0]?.value.ramUsage ?? ramUsage) * 1024 * 1024,
-			jvmRam: (data[0]?.value.jvmRamUsage ?? jvmRamUsage) * 1024 * 1024,
+			cpu: (Math.ceil(data[0]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100,
+			serverRam: (data[0]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024,
+			jvmRam: (data[0]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024,
 		}),
 		[cpuUsage, jvmRamUsage, ramUsage, data],
 	);
@@ -50,7 +50,7 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalR
 				<Tran className="font-bold" text="metric.ram-usage" />
 				<span className="text-muted-foreground">
 					{byteToSize(jvmRamUsage * 1024 * 1024)} / {byteToSize(totalRam * 1024 * 1024)} (
-					{Math.ceil((jvmRamUsage ?? 1 / totalRam ?? 1) * 10) / 100}%)
+					{Math.ceil(((jvmRamUsage ?? 1) / (totalRam ?? 1)) * 10) / 100}%)
 				</span>
 			</div>
 			<RamUsageChart serverRamUsage={serverRam} nativeRamUsage={nativeRam} totalRam={totalRam * 1024 * 1024} />
