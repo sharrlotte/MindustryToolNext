@@ -66,7 +66,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 		}
 
 		switch (event.key) {
-			case 'ArrowUp': {
+			case 'ArrowDown': {
 				if (messageHistory.length === 0) {
 					return;
 				}
@@ -83,7 +83,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 				break;
 			}
 
-			case 'ArrowDown': {
+			case 'ArrowUp': {
 				if (messageHistory.length === 0) {
 					return;
 				}
