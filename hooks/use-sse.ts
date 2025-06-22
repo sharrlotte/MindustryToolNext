@@ -27,13 +27,41 @@ export default function useSse<T = string>(
 
 	useInterval(() => {
 		if (state === 'disconnected' || eventSource === undefined) {
-			setEventSource(
-				(prev) =>
-					prev ??
-					new EventSource(url, {
+			setEventSource((prev) => {
+				if (!prev) {
+					prev = new EventSource(url, {
 						withCredentials: true,
-					}),
-			);
+					});
+
+					prev.onopen = () => {
+						setState('connected');
+					};
+
+					if (prev.readyState === prev.OPEN) {
+						setState('connected');
+					}
+
+					prev.onmessage = (event) => {
+						setMessages((prevMessages) => {
+							const newValue = JSON.parse(event.data) as T;
+
+							if (options?.limit) {
+								return [...prevMessages, newValue].slice(-options.limit);
+							}
+
+							return [...prevMessages, newValue];
+						});
+					};
+
+					prev.onerror = (err) => {
+						setState('disconnected');
+						setError(err);
+						setEventSource(undefined);
+					};
+				}
+
+				return prev;
+			});
 			setState('connecting');
 		}
 	}, 5000);
@@ -42,34 +70,6 @@ export default function useSse<T = string>(
 		if (eventSource === undefined) {
 			return;
 		}
-
-		eventSource.onopen = () => {
-			setState('connected');
-		};
-
-		if (eventSource.readyState === eventSource.OPEN) {
-			setState('connected');
-		}
-
-		eventSource.onmessage = (event) => {
-			setMessages((prevMessages) => {
-				const newValue = JSON.parse(event.data) as T;
-
-				if (options?.limit) {
-					return [...prevMessages, newValue].slice(-options.limit);
-				}
-
-				return [...prevMessages, newValue];
-			});
-		};
-
-		eventSource.onerror = (err) => {
-			eventSource.close();
-
-			setState('disconnected');
-			setError(err);
-			setEventSource(undefined);
-		};
 
 		return () => {
 			setState('disconnected');

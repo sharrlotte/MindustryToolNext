@@ -1,4 +1,3 @@
-import LoadingSpinner from '@/components/common/loading-spinner';
 import { RelativeTime } from '@/components/common/relative-time';
 
 import { WorkflowEvent } from '@/types/response/WorkflowEvent';
@@ -16,7 +15,7 @@ export default function EventPanel() {
 
 	return (
 		<div>
-			{state !== 'connected' && <LoadingSpinner />}
+			<div>{state}</div>
 			{data?.map((event) => (
 				<div key={event.id}>
 					<div>{event.nodeId}</div>
