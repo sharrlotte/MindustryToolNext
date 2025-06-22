@@ -1,5 +1,6 @@
 import { ArrowLeft, ArrowRight, PlayIcon } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
+import React from 'react';
 import { useDrag } from 'react-dnd';
 
 import ErrorMessage from '@/components/common/error-message';
@@ -58,20 +59,22 @@ function WorkflowGroups({ filter }: { filter: string }) {
 		);
 	}
 
-	return nodeGroups.map((group) => <WorkflowGroup key={group.key} group={group} />);
+	return nodeGroups.map((group, index) => (
+		<React.Fragment key={group.key}>
+			<WorkflowGroup group={group} />
+			{index !== nodeGroups.length - 1 && <Divider />}
+		</React.Fragment>
+	));
 }
 
 function WorkflowGroup({ group: { key, value } }: { group: { key: string; value: WorkflowNodeType[] } }) {
 	return (
-		<>
-			<div className="space-y-1">
-				<h3 className="text-base capitalize">{key}</h3>
-				{value.map((node) => (
-					<WorkflowItem key={node.name} item={node} />
-				))}
-			</div>
-			<Divider />
-		</>
+		<div className="space-y-1">
+			<h3 className="text-base capitalize">{key}</h3>
+			{value.map((node) => (
+				<WorkflowItem key={node.name} item={node} />
+			))}
+		</div>
 	);
 }
 
