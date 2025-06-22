@@ -60,7 +60,7 @@ function NodeItemInternal(props: NodeItemProps) {
 		return <BooleanNodeComponent {...props} />;
 	}
 
-	if (consumer.type === 'java.lang.String') {
+	if (['java.lang.String', 'java.lang.Double', 'java.lang.Float', 'java.lang.Integer'].includes(consumer.type)) {
 		return <InputNodeComponent {...props} />;
 	}
 
@@ -77,11 +77,11 @@ function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemP
 	let milliseconds = 0;
 
 	if (duration === 'SECOND') {
-		seconds = value % 60;
-		milliseconds = value;
-	} else if (duration === 'MILLISECOND') {
 		milliseconds = 0;
 		seconds = value;
+	} else if (duration === 'MILLISECOND') {
+		seconds = value % 60;
+		milliseconds = value;
 	}
 
 	const minutes = Math.floor((Number(value ?? 0) % 3600) / 60);
