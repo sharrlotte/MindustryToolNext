@@ -343,7 +343,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			};
 
 			node.fields.forEach((field) => {
-				if (field.consumer?.defaultValue) {
+				if (field.consumer?.defaultValue !== undefined && field.consumer.defaultValue !== null) {
 					newNode.data.state.fields[field.name] = {
 						consumer: field.consumer.defaultValue,
 					};
