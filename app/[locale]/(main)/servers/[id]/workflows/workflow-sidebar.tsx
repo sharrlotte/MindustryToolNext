@@ -1,16 +1,27 @@
 'use client';
 
-import { FileIcon, FolderIcon, LayoutGrid } from 'lucide-react';
+import { ArrowDownUpIcon, FileIcon, FolderIcon, LayoutGrid } from 'lucide-react';
 import { PlusIcon, SearchIcon } from 'lucide-react';
 import { ReactNode, Suspense } from 'react';
-
-import NodeListPanel from '@/app/[locale]/(main)/servers/[id]/workflows/node-list-panel';
 
 import { CatchError } from '@/components/common/catch-error';
 
 import useQueryState from '@/hooks/use-query-state';
 
 import { cn } from '@/lib/utils';
+
+import dynamic from 'next/dynamic';
+
+const SearchPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/search-panel'), {
+	ssr: false,
+});
+
+const NodeListPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/node-list-panel'), {
+	ssr: false,
+});
+const EventPanel = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/event-panel'), {
+	ssr: false,
+});
 
 type TabType = {
 	id: string;
@@ -32,12 +43,17 @@ const tabs: TabType[] = [
 	{
 		id: 'search',
 		icon: <SearchIcon />,
-		item: <div></div>,
+		item: <SearchPanel />,
 	},
 	{
 		id: 'folder',
 		icon: <FolderIcon />,
 		item: <div></div>,
+	},
+	{
+		id: 'event',
+		icon: <ArrowDownUpIcon />,
+		item: <EventPanel />,
 	},
 	{
 		id: 'marketplace',
