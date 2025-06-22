@@ -605,7 +605,19 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					<Suspense>
 						{children}
 						<HelperLines horizontal={helperLineHorizontal} vertical={helperLineVertical} />
-						<Hydrated>{showMiniMap && <MiniMap />}</Hydrated>
+						<Hydrated>
+							{showMiniMap && (
+								<MiniMap
+									nodeColor={(node) => {
+										if (nodeTypes && node.type === 'workflow') {
+											return nodeTypes[(node as Node).data.name as string]?.color ?? '#6ede87';
+										}
+
+										return '#6ede87';
+									}}
+								/>
+							)}
+						</Hydrated>
 						<div className="absolute z-50 bottom-0 top-0 right-1 p-1 space-x-1 flex text-sm text-muted-foreground">
 							<span>x: {Math.round(viewport.x)}</span>
 							<span>y: {Math.round(viewport.y)}</span>
