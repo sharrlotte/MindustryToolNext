@@ -7,29 +7,38 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ChatInput from '@/components/messages/chat-input';
 
+import { ServerCommandDto } from '@/types/response/ServerCommand';
+
+import { getServerCommands, getServerPlayers } from '@/query/server';
+
 import useClientApi from '@/hooks/use-client';
 import useServerStatus from '@/hooks/use-server-status';
+
 import { levenshtein } from '@/lib/utils';
-import { getServerCommands, getServerPlayers } from '@/query/server';
-import { ServerCommandDto } from '@/types/response/ServerCommand';
 
 import { useQuery } from '@tanstack/react-query';
 
-export default function ConsoleInput({ id, room }: { room: string; id: string }) {
+export default function ConsoleInput(props: { room: string; id: string }) {
+	const status = useServerStatus(props.id);
+
+	if (status !== 'AVAILABLE') {
+		return null;
+	}
+
+	return <ConsoleInputInternal {...props} />;
+}
+function ConsoleInputInternal({ id, room }: { room: string; id: string }) {
 	const axios = useClientApi();
-	const status = useServerStatus(id);
 
 	const { data, isError, error } = useQuery({
 		queryKey: ['server', id, 'command'],
 		queryFn: () => getServerCommands(axios, id),
-		enabled: status === 'AVAILABLE',
 		placeholderData: [],
 	});
 
 	const { data: players } = useQuery({
 		queryKey: ['server', id, 'player'],
 		queryFn: () => getServerPlayers(axios, id),
-		enabled: status === 'AVAILABLE',
 		placeholderData: [],
 	});
 
