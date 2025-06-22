@@ -6,7 +6,6 @@ import { CatchError } from '@/components/common/catch-error';
 
 import { WorkflowNodeData, WorkflowNodeType } from '@/types/response/WorkflowContext';
 
-import useWorkflowNodeState from '@/hooks/use-workflow-node-state';
 import useWorkflowNodeType from '@/hooks/use-workflow-node-type';
 
 import { Handle, Node, NodeProps, Position } from '@xyflow/react';
@@ -77,7 +76,6 @@ export function OutputHandle({
 	index,
 }: { parentId: string; offset: number; index: number } & WorkflowNodeType['outputs'][number]) {
 	const { setEdges } = useWorkflowEditor();
-	const { update } = useWorkflowNodeState(parentId);
 
 	const id = `${parentId}-source-handle-${index}`;
 
@@ -85,20 +83,9 @@ export function OutputHandle({
 		handleType: 'source',
 		handleId: id,
 		onConnect(connections: Connection[]) {
-			if (name !== 'Next') {
-				setEdges((prevEdges) =>
-					prevEdges.map((edge) => (edge.id === (connections[0] as unknown as any).edgeId ? { ...edge, label: name } : edge)),
-				);
-			}
-
-			update((state) => {
-				state.outputs[name] = connections[0].target;
-			});
-		},
-		onDisconnect() {
-			update((state) => {
-				delete state.outputs[name];
-			});
+			setEdges((prevEdges) =>
+				prevEdges.map((edge) => (edge.id === (connections[0] as unknown as any).edgeId ? { ...edge, label: name } : edge)),
+			);
 		},
 	});
 
