@@ -71,7 +71,7 @@ function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemP
 	const { state, update } = useWorkflowNodeState(parentId);
 	const { required, defaultValue } = consumer;
 
-	const value = Number(state.fields[name]?.consumer) ?? 0;
+	const value = Number(state.fields[name]?.consumer ?? '0') ?? 0;
 
 	let seconds = 0;
 	let milliseconds = 0;
