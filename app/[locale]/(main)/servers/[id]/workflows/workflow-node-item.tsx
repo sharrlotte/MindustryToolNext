@@ -61,11 +61,7 @@ function NodeItemInternal(props: NodeItemProps) {
 		return <BooleanNodeComponent {...props} />;
 	}
 
-	if (['java.lang.String', 'java.lang.Double', 'java.lang.Float', 'java.lang.Integer'].includes(consumer.type)) {
-		return <InputNodeComponent {...props} />;
-	}
-
-	return <ErrorMessage error={{ message: 'Invalid fields type: ' + consumer.type + ' on fields: ' + props.name }} />;
+	return <InputNodeComponent {...props} />;
 }
 
 function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemProps & { duration: string }) {
