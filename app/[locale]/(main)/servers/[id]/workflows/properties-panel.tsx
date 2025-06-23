@@ -40,7 +40,7 @@ export default function PropertiesPanel({ node }: { node: WorkflowNode }) {
 		<ScrollContainer className="flex flex-col w-fit gap-2 bg-card px-2 p-2 border-l min-w-[min(50%,300px)] max-w-1/2 h-full">
 			<div className="flex gap-1 items-center justify-between">
 				<span className="text-xl">
-					{name} ({id.slice(0, 5)})
+					{name} ({id.slice(0, 7)})
 				</span>
 				<Button size="icon" variant="icon" onClick={() => setSelectedWorkflow(null)}>
 					<XIcon />
@@ -138,7 +138,7 @@ function NextNode({ nextNode }: { nextNode: WorkflowNode }) {
 		<div className="flex items-center gap-1" onClick={moveToNextNode}>
 			<ArrowRight className="size-4" />
 			<span style={{ color }}>
-				{nextNode.data.name}({nextNode.id.slice(0, 5)})
+				{nextNode.data.name}({nextNode.id.slice(0, 7)})
 			</span>
 		</div>
 	);
