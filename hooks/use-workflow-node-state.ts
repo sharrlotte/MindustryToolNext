@@ -7,10 +7,9 @@ import { WorkflowNodeState } from '@/types/response/WorkflowContext';
 export default function useWorkflowNodeState(id: string) {
 	const { nodes, setNodes } = useWorkflowEditor();
 
-	const state = useMemo(
+	const state: WorkflowNodeState = useMemo(
 		() =>
 			nodes.find((node) => node.id === id)?.data.state ?? {
-				outputs: {},
 				fields: {},
 			},
 		[nodes, id],

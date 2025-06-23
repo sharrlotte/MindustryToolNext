@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/sonner';
 
-import { WorkflowNodeDataSchema } from '@/types/response/WorkflowContext';
+import { LoadWorkflow, WorkflowNodeDataSchema } from '@/types/response/WorkflowContext';
 
 import {
 	WorkflowSave,
@@ -153,6 +153,10 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 
 			const state = node.data.state;
 			const type = nodeTypes[node.data.name];
+
+            if (!type){
+                return;
+            }
 
 			for (const field of type.fields) {
 				if (
@@ -335,7 +339,6 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					id,
 					name: type,
 					state: {
-						outputs: {},
 						fields: {},
 					},
 				},
@@ -748,15 +751,15 @@ function UploadWorkflowDialog({ version }: { version: number }) {
 				// Find connected node
 				const connectedNodes = edges.filter((edge) => edge.source === node.id);
 
-				node.data.state.outputs = {};
+				const loadNodeData: LoadWorkflow['nodes'][number] = { ...node.data, state: { ...node.data.state, outputs: {} } };
 
 				for (const connectedNode of connectedNodes) {
 					if (connectedNode && connectedNode.label) {
-						node.data.state.outputs[connectedNode.label as string] = connectedNode.target;
+						loadNodeData.state.outputs[connectedNode.label as string] = connectedNode.target;
 					}
 				}
 
-				return node.data;
+				return loadNodeData;
 			});
 
 		return {

@@ -10,7 +10,6 @@ import Divider from '@/components/ui/divider';
 
 import { WorkflowNodeType } from '@/types/response/WorkflowContext';
 
-import useWorkflowNodeState from '@/hooks/use-workflow-node-state';
 import useWorkflowNodeType from '@/hooks/use-workflow-node-type';
 
 import { useReactFlow } from '@xyflow/react';
@@ -40,7 +39,9 @@ export default function PropertiesPanel({ node }: { node: WorkflowNode }) {
 	return (
 		<ScrollContainer className="flex flex-col w-fit gap-2 bg-card px-2 p-2 border-l min-w-[min(50%,300px)] max-w-1/2 h-full">
 			<div className="flex gap-1 items-center justify-between">
-				<span className="text-xl">{name}</span>
+				<span className="text-xl">
+					{name} ({id.slice(0, 5)})
+				</span>
 				<Button size="icon" variant="icon" onClick={() => setSelectedWorkflow(null)}>
 					<XIcon />
 				</Button>
@@ -70,14 +71,17 @@ function Fields({ fields, parentId }: { parentId: string; fields: WorkflowNodeTy
 }
 
 function Outputs({ outputs, parentId }: { parentId: string; outputs: WorkflowNodeType['outputs'] }) {
+	const { edges } = useWorkflowEditor();
+	const connectedEdges = useMemo(() => edges.filter((edge) => edge.source === parentId), [edges, parentId]);
+
 	return (
 		<>
 			<Divider />
 			<div className="grid gap-1">
 				<span>Outputs</span>
-				<div className="flex gap-2 text-muted-foreground text-sm">
+				<div className="flex gap-2 flex-wrap text-muted-foreground text-sm">
 					{outputs.map((output, index) => (
-						<Output key={index} output={output} parentId={parentId} />
+						<Output key={index} output={output} nextId={connectedEdges.find((edge) => edge.label === output.name)?.target} />
 					))}
 				</div>
 			</div>
@@ -85,24 +89,24 @@ function Outputs({ outputs, parentId }: { parentId: string; outputs: WorkflowNod
 	);
 }
 
-function Output({ output: { name }, parentId }: { parentId: string; output: WorkflowNodeType['outputs'][number] }) {
+function Output({ nextId, output: { name } }: { nextId?: string; output: WorkflowNodeType['outputs'][number] }) {
 	const { nodes } = useWorkflowEditor();
-	const { state } = useWorkflowNodeState(parentId);
-	const nextId = state.outputs[name];
-
 	const nextNode = useMemo(() => nodes.find((node) => node.id === nextId), [nextId, nodes]);
 
 	return (
-		<div className="flex items-center px-1.5 gap-0.5 py-0.5 rounded-full border text-xs text-muted-foreground">
-			<span>{name}</span>
-			{nextId ? (
+		<div className="flex items-center text-nowrap px-1.5 gap-0.5 py-0.5 rounded-full border text-xs text-muted-foreground">
+			<span className="font-semibold text-foreground">{name}</span>
+			{nextNode ? (
 				nextNode ? (
 					<NextNode nextNode={nextNode} />
 				) : (
 					<span className="text-destructive-foreground">(Node not found)</span>
 				)
 			) : (
-				<span>(Not connected)</span>
+				<span className="flex items-center">
+					<ArrowRight className="size-4" />
+					<span>(Not connected)</span>
+				</span>
 			)}
 		</div>
 	);
