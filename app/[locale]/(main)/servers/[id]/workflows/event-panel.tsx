@@ -1,5 +1,6 @@
+import { motion } from 'framer-motion';
+
 import { RelativeTime } from '@/components/common/relative-time';
-import ScrollContainer from '@/components/common/scroll-container';
 
 import { WorkflowEvent } from '@/types/response/WorkflowEvent';
 
@@ -15,19 +16,16 @@ export default function EventPanel() {
 	});
 
 	return (
-		<ScrollContainer className="space-y-1">
+		<div className="space-y-1">
 			<div>{state}</div>
-			{data
-				?.filter((event) => event.data)
-				.toReversed()
-				.map((event) => (
-					<div key={event.id}>
-						<div>{event.nodeId}</div>
-						<div>{event.type}</div>
-						<pre>{JSON.stringify(event.data, null, 2)}</pre>
-						<RelativeTime date={new Date(event.createdAt)} />
-					</div>
-				))}
-		</ScrollContainer>
+			{data?.map((event) => (
+				<motion.div className="p-2 bg-secondary rounded-md" key={event.id} layout>
+					<div>{event.nodeId}</div>
+					<div>{event.type}</div>
+					<pre className="bg-transparent">{JSON.stringify(event.data, null, 2)}</pre>
+					<RelativeTime date={new Date(event.createdAt)} />
+				</motion.div>
+			))}
+		</div>
 	);
 }
