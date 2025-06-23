@@ -25,7 +25,7 @@ export default function NodeItem(props: Props) {
 
 	return (
 		<div
-			className={cn('flex flex-col gap-1 z-50 nowheel min-h-14', {
+			className={cn('flex flex-col gap-1 z-50 nowheel', {
 				'bg-card rounded-sm px-2 py-1 border': props.variant === 'inline',
 			})}
 		>
@@ -80,14 +80,14 @@ function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemP
 	const days = Math.floor((converted / 86400000) % 365);
 
 	return (
-		<>
+		<div className="min-h-14">
 			<div className="text-muted-foreground text-sm flex items-center">
 				<span>{name}</span>
 				{required && <span className="text-destructive-foreground">*</span>}
 			</div>
-			<div className="relative flex items-center">
+			<div className="relative flex items-center rounded-md border pr-2">
 				<Input
-					className="bg-transparent min-w-60 w-full focus:outline-none" //
+					className="bg-transparent min-w-60 w-full focus:outline-none ring-0 border-none" //
 					type="text"
 					value={value ?? defaultValue ?? ''}
 					onChange={(e) =>
@@ -99,7 +99,7 @@ function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemP
 						})
 					}
 				/>
-				<span className="text-muted-foreground text-sm ml-0.5">
+				<span className="text-muted-foreground text-sm ml-0.5 text-nowrap">
 					{days > 0 ? `${days}d ` : ''}
 					{hours > 0 ? `${hours}h ` : ''}
 					{minutes > 0 ? `${minutes}m ` : ''}
@@ -107,7 +107,7 @@ function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemP
 					{milliseconds > 0 ? `${milliseconds}ms` : ''}
 				</span>
 			</div>
-		</>
+		</div>
 	);
 }
 
@@ -125,7 +125,7 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 	const showSuggestion = focus && type.includes('variable') && matchedVariable.length > 0;
 
 	return (
-		<>
+		<div className="min-h-14">
 			<div className="text-muted-foreground text-sm flex items-center">
 				<span>{name}</span>
 				{required && <span className="text-destructive-foreground">*</span>}
@@ -142,7 +142,7 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 							state.fields[name].consumer = e.currentTarget.value;
 						})
 					}
-                    placeholder={type}
+					placeholder={type}
 					onFocus={() => setFocus(true)}
 					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>
@@ -166,7 +166,7 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }
 
@@ -233,7 +233,7 @@ function OptionNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 	}, [first.value, name, options.length, parentId, required, update, v]);
 
 	return (
-		<>
+		<div className="min-h-14">
 			<div className="text-muted-foreground text-sm flex items-center">
 				<span>{name}</span>
 				{required && <span className="text-destructive-foreground">*</span>}
@@ -262,6 +262,6 @@ function OptionNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 					</span>
 				)}
 			/>
-		</>
+		</div>
 	);
 }
