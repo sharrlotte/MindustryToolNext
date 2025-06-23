@@ -33,9 +33,7 @@ export const useAutosizeTextArea = ({
 				setInit(false);
 			}
 
-
 			textAreaElement.style.height = `${Math.round((minHeight + offsetBorder) / 10) * 9}px`;
-            console.log(textAreaElement.style.height)
 			const scrollHeight = textAreaElement.scrollHeight;
 			// We then set the height directly, outside of the render loop
 			// Trying to set this with state or a ref will product an incorrect value.

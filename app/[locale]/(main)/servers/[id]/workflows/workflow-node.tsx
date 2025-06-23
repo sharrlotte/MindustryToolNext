@@ -9,6 +9,8 @@ import { WorkflowNodeData, WorkflowNodeType } from '@/types/response/WorkflowCon
 
 import useWorkflowNodeType from '@/hooks/use-workflow-node-type';
 
+import { cn } from '@/lib/utils';
+
 import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { Connection, useNodeConnections } from '@xyflow/react';
 
@@ -32,7 +34,11 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 	const hasConsumerFields = fields.filter((field) => field.consumer);
 
 	return (
-		<div className="min-w-[220px] rounded-md overflow-hidden bg-card">
+		<div
+			className={cn('min-w-[220px] rounded-md overflow-hidden bg-card', {
+				'border-destructive-foreground': group === 'UNKNOWN',
+			})}
+		>
 			<CatchError>
 				{Array(inputs)
 					.fill(1)

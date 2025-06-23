@@ -5,6 +5,7 @@ import { PlusIcon, SearchIcon } from 'lucide-react';
 import { ReactNode, Suspense } from 'react';
 
 import { CatchError } from '@/components/common/catch-error';
+import ScrollContainer from '@/components/common/scroll-container';
 
 import useQueryState from '@/hooks/use-query-state';
 
@@ -94,11 +95,11 @@ export default function WorkflowSideBar() {
 			{tabs
 				.filter(({ id }) => id === currentTab)
 				.map(({ id, item }) => (
-					<div key={id} className="p-2 border bg-card rounded-md h-full overflow-hidden min-w-72 w-72">
+					<ScrollContainer key={id} className="p-2 border bg-card rounded-md h-full min-w-72 w-72">
 						<CatchError>
 							<Suspense>{item}</Suspense>
 						</CatchError>
-					</div>
+					</ScrollContainer>
 				))}
 		</div>
 	);
