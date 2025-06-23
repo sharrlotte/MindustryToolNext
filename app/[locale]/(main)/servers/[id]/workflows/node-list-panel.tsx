@@ -71,9 +71,11 @@ function WorkflowGroup({ group: { key, value } }: { group: { key: string; value:
 	return (
 		<div className="space-y-1">
 			<h3 className="text-base capitalize">{key}</h3>
-			{value.map((node) => (
-				<WorkflowItem key={node.name} item={node} />
-			))}
+			{value
+				.sort((a, b) => a.name.localeCompare(b.name))
+				.map((node) => (
+					<WorkflowItem key={node.name} item={node} />
+				))}
 		</div>
 	);
 }
