@@ -142,6 +142,7 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 							state.fields[name].consumer = e.currentTarget.value;
 						})
 					}
+                    placeholder={type}
 					onFocus={() => setFocus(true)}
 					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>

@@ -26,6 +26,8 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 
 	const { name, color, outputs, fields, group, inputs } = type;
 
+	const hasConsumerFields = fields.filter((field) => field.consumer);
+
 	return (
 		<div className="min-w-[220px] rounded-md overflow-hidden bg-card">
 			<CatchError>
@@ -46,7 +48,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 					<span>{name}</span>
 					<span className="border-white bg-white/30 backdrop-brightness-90 backdrop-blur-sm rounded-full px-1.5">{group}</span>
 				</div>
-				{fields.length > 0 && (
+				{hasConsumerFields.length > 0 && (
 					<section
 						className="p-1 grid gap-1 w-full border border-t-0 border-border overflow-hidden bg-background"
 						style={{
@@ -56,7 +58,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 						onClick={(event) => event.stopPropagation()}
 					>
 						<Suspense>
-							{fields.map((fields) => (
+							{hasConsumerFields.map((fields) => (
 								<NodeItem variant="inline" key={fields.name} parentId={id} data={fields} />
 							))}
 						</Suspense>
