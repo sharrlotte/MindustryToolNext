@@ -3,6 +3,7 @@ import { Suspense, memo } from 'react';
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 
 import { CatchError } from '@/components/common/catch-error';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { WorkflowNodeData, WorkflowNodeType } from '@/types/response/WorkflowContext';
 
@@ -13,7 +14,9 @@ import { Connection, useNodeConnections } from '@xyflow/react';
 
 import dynamic from 'next/dynamic';
 
-const NodeItem = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/workflow-node-item'));
+const NodeItem = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workflows/workflow-node-item'), {
+	loading: () => <Skeleton className="h-14 w-full" />,
+});
 
 export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y'>, 'workflow'>;
 

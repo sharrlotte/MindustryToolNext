@@ -25,7 +25,7 @@ export default function NodeItem(props: Props) {
 
 	return (
 		<div
-			className={cn('flex flex-col gap-1 z-50 nowheel', {
+			className={cn('flex flex-col gap-1 z-50 nowheel min-h-14', {
 				'bg-card rounded-sm px-2 py-1 border': props.variant === 'inline',
 			})}
 		>
