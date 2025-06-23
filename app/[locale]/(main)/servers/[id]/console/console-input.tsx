@@ -18,28 +18,23 @@ import { levenshtein } from '@/lib/utils';
 
 import { useQuery } from '@tanstack/react-query';
 
-export default function ConsoleInput(props: { room: string; id: string }) {
-	const status = useServerStatus(props.id);
+export default function ConsoleInput({ id, room }: { room: string; id: string }) {
+	const status = useServerStatus(id);
 
-	if (status !== 'AVAILABLE') {
-		return null;
-	}
-
-	return <ConsoleInputInternal {...props} />;
-}
-function ConsoleInputInternal({ id, room }: { room: string; id: string }) {
 	const axios = useClientApi();
 
 	const { data, isError, error } = useQuery({
 		queryKey: ['server', id, 'command'],
-		queryFn: () => getServerCommands(axios, id),
+		queryFn: () => (status === 'AVAILABLE' ? getServerCommands(axios, id) : []),
 		placeholderData: [],
+		enabled: status === 'AVAILABLE',
 	});
 
 	const { data: players } = useQuery({
 		queryKey: ['server', id, 'player'],
-		queryFn: () => getServerPlayers(axios, id),
+		queryFn: () => (status === 'AVAILABLE' ? getServerPlayers(axios, id) : []),
 		placeholderData: [],
+		enabled: status === 'AVAILABLE',
 	});
 
 	return (

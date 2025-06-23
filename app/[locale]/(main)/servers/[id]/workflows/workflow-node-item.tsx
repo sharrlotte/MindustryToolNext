@@ -5,6 +5,7 @@ import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/
 import { CatchError } from '@/components/common/catch-error';
 import ComboBox from '@/components/common/combo-box';
 import ErrorMessage from '@/components/common/error-message';
+import { AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 
@@ -60,11 +61,7 @@ function NodeItemInternal(props: NodeItemProps) {
 		return <BooleanNodeComponent {...props} />;
 	}
 
-	if (['java.lang.String', 'java.lang.Double', 'java.lang.Float', 'java.lang.Integer'].includes(consumer.type)) {
-		return <InputNodeComponent {...props} />;
-	}
-
-	return <ErrorMessage error={{ message: 'Invalid fields type: ' + consumer.type + ' on fields: ' + props.name }} />;
+	return <InputNodeComponent {...props} />;
 }
 
 function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemProps & { duration: string }) {
@@ -134,9 +131,8 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 				{required && <span className="text-destructive-foreground">*</span>}
 			</div>
 			<div className="relative">
-				<Input
+				<AutosizeTextarea
 					className="bg-transparent min-w-60 focus:outline-none" //
-					type="text"
 					value={value ?? ''}
 					onChange={(e) =>
 						update((state) => {
@@ -146,6 +142,7 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 							state.fields[name].consumer = e.currentTarget.value;
 						})
 					}
+                    placeholder={type}
 					onFocus={() => setFocus(true)}
 					onBlur={() => setTimeout(() => setFocus(false), 100)}
 				/>

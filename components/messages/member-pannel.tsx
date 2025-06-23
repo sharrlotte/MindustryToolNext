@@ -10,10 +10,12 @@ import Tran from '@/components/common/tran';
 import { MemberCard } from '@/components/messages/member-card';
 import { Button } from '@/components/ui/button';
 
-import { cn } from '@/lib/utils';
-import { getMembers } from '@/query/message';
 import { User } from '@/types/response/User';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
+
+import { getMembers } from '@/query/message';
+
+import { cn } from '@/lib/utils';
 
 type MemberPanelState = 'open' | 'closed';
 
@@ -49,6 +51,7 @@ export function MemberPanel({ className, room }: MemberPanelProps) {
 				className="p-4 grid gap-4 w-full"
 				queryKey={['room', room, 'members']}
 				paramSchema={PaginationQuerySchema} //
+                end
 				queryFn={(axios: AxiosInstance, params: { page: number; size: number }) =>
 					getMembers(axios, room, params).then((result) => result.filter((v, i, a) => a.findIndex((v2) => v.id === v2.id) === i))
 				}
