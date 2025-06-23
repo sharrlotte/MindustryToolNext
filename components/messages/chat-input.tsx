@@ -10,9 +10,10 @@ import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresiz
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
+import useMessage from '@/hooks/use-message';
+
 import { maxMessageLength } from '@/constant/constant';
 import { useSocket } from '@/context/socket.context';
-import useMessage from '@/hooks/use-message';
 import { cn } from '@/lib/utils';
 
 import dynamic from 'next/dynamic';
@@ -50,7 +51,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 	const handleFormSubmit = () => {
 		sendMessage(message);
 		setMessageCursor(0);
-		setMessageHistory((prev) => [...prev, message].slice(0, 20));
+		setMessageHistory((prev) => [message, ...prev].slice(0, 50));
 		setMessage('');
 	};
 
@@ -122,7 +123,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 			<div className="border relative border-border flex gap-1 rounded-md w-full bg-card">
 				{autocomplete && autocomplete({ message, setMessage, ref: ref.current })}
 				<AutosizeTextarea
-					className="h-full w-full bg-card px-2 outline-none border-none min-h-12 resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+					className="w-full bg-card px-2 outline-none border-none resize-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
 					value={message}
 					tabIndex={0}
 					placeholder={placeholder}
