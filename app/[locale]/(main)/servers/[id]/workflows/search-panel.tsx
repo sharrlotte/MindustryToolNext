@@ -45,6 +45,10 @@ export default function SearchPanel() {
 
 			const nodeData = nodeTypes[node.data.name];
 
+			if (!nodeData) {
+				return result;
+			}
+
 			const matches: Match['matches'] = [];
 
 			if (nodeData.name.toLowerCase().includes(debouncedFilter)) {
@@ -100,6 +104,11 @@ export default function SearchPanel() {
 					}
 
 					const nodeData = nodeTypes[node.data.name];
+
+					if (!nodeData) {
+						return null;
+					}
+
 					return (
 						<div className="cursor-pointer p-2 rounded-md border bg-secondary/70" key={node.id} onClick={() => handleClick(node)}>
 							<h3 className="space-x-1 p-0">

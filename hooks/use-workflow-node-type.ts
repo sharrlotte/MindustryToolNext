@@ -15,5 +15,12 @@ export default function useWorkflowNodeType(type: string): WorkflowNodeType | un
 		return value;
 	}
 
-	throw new Error('Node type not found: ' + type);
+	return {
+		name: type,
+		group: 'UNKNOWN',
+		color: '#6ede87',
+		fields: [],
+		outputs: [],
+		inputs: 0,
+	};
 }

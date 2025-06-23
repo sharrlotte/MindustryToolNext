@@ -10,7 +10,6 @@ import Divider from '@/components/ui/divider';
 
 import { WorkflowNodeType } from '@/types/response/WorkflowContext';
 
-import useWorkflowNodeState from '@/hooks/use-workflow-node-state';
 import useWorkflowNodeType from '@/hooks/use-workflow-node-type';
 
 import { useReactFlow } from '@xyflow/react';
@@ -70,6 +69,9 @@ function Fields({ fields, parentId }: { parentId: string; fields: WorkflowNodeTy
 }
 
 function Outputs({ outputs, parentId }: { parentId: string; outputs: WorkflowNodeType['outputs'] }) {
+	const { edges } = useWorkflowEditor();
+	const connectedEdges = useMemo(() => edges.filter((edge) => edge.source === parentId), [edges, parentId]);
+
 	return (
 		<>
 			<Divider />
@@ -77,7 +79,7 @@ function Outputs({ outputs, parentId }: { parentId: string; outputs: WorkflowNod
 				<span>Outputs</span>
 				<div className="flex gap-2 text-muted-foreground text-sm">
 					{outputs.map((output, index) => (
-						<Output key={index} output={output} parentId={parentId} />
+						<Output key={index} output={output} nextId={connectedEdges.find((edge) => edge.label === output.name)?.target} />
 					))}
 				</div>
 			</div>
@@ -85,17 +87,14 @@ function Outputs({ outputs, parentId }: { parentId: string; outputs: WorkflowNod
 	);
 }
 
-function Output({ output: { name }, parentId }: { parentId: string; output: WorkflowNodeType['outputs'][number] }) {
+function Output({ nextId, output: { name } }: { nextId?: string; output: WorkflowNodeType['outputs'][number] }) {
 	const { nodes } = useWorkflowEditor();
-	const { state } = useWorkflowNodeState(parentId);
-	const nextId = state.outputs[name];
-
 	const nextNode = useMemo(() => nodes.find((node) => node.id === nextId), [nextId, nodes]);
 
 	return (
 		<div className="flex items-center px-1.5 gap-0.5 py-0.5 rounded-full border text-xs text-muted-foreground">
 			<span>{name}</span>
-			{nextId ? (
+			{nextNode ? (
 				nextNode ? (
 					<NextNode nextNode={nextNode} />
 				) : (

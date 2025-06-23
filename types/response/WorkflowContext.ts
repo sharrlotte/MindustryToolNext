@@ -7,7 +7,6 @@ export const WorkflowNodeStateFieldSchema = z.object({
 });
 
 export const WorkflowNodeStateSchema = z.object({
-	outputs: z.record(z.string(), z.string()),
 	fields: z.record(z.string(), WorkflowNodeStateFieldSchema),
 });
 
@@ -80,3 +79,19 @@ export const GetWorkflowNodeTypeSchema = z.record(z.string(), WorkflowNodeTypeSc
 
 export type WorkflowContext = z.infer<typeof WorkflowContextSchema>;
 export type WorkflowNodeType = z.infer<typeof WorkflowNodeTypeSchema>;
+
+export const LoadWorkflowSchema = z.object({
+	createdAt: z.number(),
+	nodes: z.array(
+		z.object({
+			id: z.string(),
+			name: z.string(),
+			state: z.object({
+				fields: z.record(z.string(), WorkflowNodeStateFieldSchema),
+				outputs: z.record(z.string(), z.string()),
+			}),
+		}),
+	),
+});
+
+export type LoadWorkflow = z.infer<typeof LoadWorkflowSchema>;

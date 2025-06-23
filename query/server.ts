@@ -23,7 +23,7 @@ import { ServerPlan } from '@/types/response/ServerPlan';
 import { ServerPlugin } from '@/types/response/ServerPlugin';
 import { ServerSetting } from '@/types/response/ServerSetting';
 import { ServerStats } from '@/types/response/ServerStats';
-import { GetWorkflowNodeTypeSchema, WorkflowNodeType } from '@/types/response/WorkflowContext';
+import { GetWorkflowNodeTypeSchema, LoadWorkflow, LoadWorkflowSchema, WorkflowNodeType } from '@/types/response/WorkflowContext';
 import { PaginationQuery } from '@/types/schema/search-query';
 
 import { MetricUnit } from '@/lib/metric.utils';
@@ -31,7 +31,6 @@ import { toForm } from '@/lib/utils';
 
 import { Edge, ReactFlowInstance } from '@xyflow/react';
 
-import { WorkflowContext } from './../types/response/WorkflowContext';
 import { z } from 'zod/v4';
 
 export async function deleteServerFile(axios: AxiosInstance, id: string, path: string): Promise<void> {
@@ -349,8 +348,10 @@ export async function getServerWorkflowVersion(axios: AxiosInstance, serverId: s
 	return result.data;
 }
 
-export async function loadServerWorkflow(axios: AxiosInstance, serverId: string, payload: WorkflowContext): Promise<void> {
-	await axios.post(`/servers/${serverId}/workflow/load`, payload, {
+export async function loadServerWorkflow(axios: AxiosInstance, serverId: string, payload: LoadWorkflow): Promise<void> {
+	const data = LoadWorkflowSchema.parse(payload);
+
+	await axios.post(`/servers/${serverId}/workflow/load`, data, {
 		timeout: 10000,
 	});
 }
