@@ -59,12 +59,14 @@ function WorkflowGroups({ filter }: { filter: string }) {
 		);
 	}
 
-	return nodeGroups.map((group, index) => (
-		<React.Fragment key={group.key}>
-			<WorkflowGroup group={group} />
-			{index !== nodeGroups.length - 1 && <Divider />}
-		</React.Fragment>
-	));
+	return nodeGroups
+		.sort((a, b) => a.key.localeCompare(b.key))
+		.map((group, index) => (
+			<React.Fragment key={group.key}>
+				<WorkflowGroup group={group} />
+				{index !== nodeGroups.length - 1 && <Divider />}
+			</React.Fragment>
+		));
 }
 
 function WorkflowGroup({ group: { key, value } }: { group: { key: string; value: WorkflowNodeType[] } }) {
