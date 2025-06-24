@@ -20,6 +20,7 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogTitle, DialogTr
 import { toast } from '@/components/ui/sonner';
 
 import { LoadWorkflow, WorkflowNodeDataSchema } from '@/types/response/WorkflowContext';
+import { WorkflowEvent } from '@/types/response/WorkflowEvent';
 
 import {
 	WorkflowSave,
@@ -31,8 +32,10 @@ import {
 
 import useClientApi from '@/hooks/use-client';
 import usePathId from '@/hooks/use-path-id';
+import useSse from '@/hooks/use-sse';
 import useWorkflowNodeTypes from '@/hooks/use-workflow-nodes';
 
+import env from '@/constant/env';
 import { uuid } from '@/lib/utils';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -70,9 +73,10 @@ type WorkflowEditorContextType = {
 	canUndo: boolean;
 	canRedo: boolean;
 	name: string;
+	events: WorkflowEvent[];
 
 	variables: Record<string, string>;
-	errors: Record<string, Record<string, string>>;
+	errors: Record<string, Partial<Record<ErrorField, string>>>;
 	nodes: Node[];
 	edges: Edge[];
 	debouncedNodes: Node[];
@@ -115,6 +119,9 @@ const proOptions: ProOptions = { hideAttribution: true };
 
 const WORKFLOW_PERSISTENT_KEY = `workflows`;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+type ErrorField = 'GLOBAL' | (string & {});
+
 export function WorkflowEditorProvider({ children }: { children: React.ReactNode }) {
 	const id = usePathId();
 	const [loadState, setLoadState] = useState<'loaded' | 'loading' | 'not-loaded'>('not-loaded');
@@ -141,8 +148,12 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 	const [debouncedNodes] = useDebounceValue(nodes, 1000);
 	const [debouncedEdges] = useDebounceValue(edges, 1000);
 
+	const { data: events } = useSse<WorkflowEvent>(`${env.url.api}/servers/${id}/workflow/events`, {
+		limit: 100,
+	});
+
 	const errors = useMemo(() => {
-		const errors: Record<string, Record<string, string>> = {};
+		const errors: Record<string, Partial<Record<ErrorField, string>>> = {};
 
 		if (!nodeTypes) {
 			return errors;
@@ -154,9 +165,13 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 			const state = node.data.state;
 			const type = nodeTypes[node.data.name];
 
-            if (!type){
-                return;
-            }
+			if (!type) {
+				return;
+			}
+
+			if (!errors[node.id]) {
+				errors[node.id] = {};
+			}
 
 			for (const field of type.fields) {
 				if (
@@ -164,16 +179,18 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 					field.consumer.required &&
 					(state.fields[field.name] === null || state.fields[field.name] === undefined)
 				) {
-					if (!errors[node.id]) {
-						errors[node.id] = {};
-					}
 					errors[node.id][field.name] = `Field ${field.name} on node ${node.data.name} is required but not set.`;
 				}
 			}
+
+			errors[node.id]['GLOBAL'] = events
+				.filter((event) => event.nodeId === node.id && event.name === 'ERROR' && Date.now() - event.createdAt < 10000)
+				.map((event) => event.value?.message)
+				.join(', ');
 		});
 
 		return errors;
-	}, [debouncedNodes, nodeTypes]);
+	}, [debouncedNodes, nodeTypes, events]);
 
 	const generateSave = useCallback(() => {
 		if (!rfInstance) {
@@ -564,6 +581,7 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 				edges,
 				nodes,
 				errors,
+				events,
 				debouncedNodes,
 				debouncedEdges,
 				showMiniMap,

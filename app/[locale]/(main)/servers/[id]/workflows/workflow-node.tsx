@@ -24,6 +24,7 @@ export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y'>, 'workflow'>;
 
 function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 	const type = useWorkflowNodeType(data.name);
+	const { errors } = useWorkflowEditor();
 
 	if (!type) {
 		return null;
@@ -32,6 +33,8 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 	const { name, color, outputs, fields, group, inputs } = type;
 
 	const hasConsumerFields = fields.filter((field) => field.consumer);
+
+	const globalError = errors[id]['GLOBAL'];
 
 	return (
 		<div
@@ -56,6 +59,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 				>
 					<span>{name}</span>
 					<span className="border-white bg-white/30 backdrop-brightness-90 backdrop-blur-sm rounded-full px-1.5">{group}</span>
+					{globalError && <span className="text-destructive-foreground text-xs">{globalError}</span>}
 				</div>
 				{hasConsumerFields.length > 0 && (
 					<section
