@@ -34,7 +34,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 
 	const hasConsumerFields = fields.filter((field) => field.consumer);
 
-	const globalError = errors[id]['GLOBAL'];
+	const globalError = errors[id]?.['GLOBAL'];
 
 	return (
 		<div
