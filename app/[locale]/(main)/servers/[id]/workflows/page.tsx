@@ -20,7 +20,7 @@ export default function Page() {
 	const id = usePathId();
 	const status = useServerStatus(id);
 
-	if (status === 'AVAILABLE') {
+	if (status === 'UNAVAILABLE') {
 		return (
 			<div className="flex h-full w-full justify-center items-center">
 				<span>Host server to use</span>
