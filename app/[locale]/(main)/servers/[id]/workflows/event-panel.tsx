@@ -53,7 +53,7 @@ function EventCard({ event }: { event: WorkflowEvent }) {
 				<span>{event.name}</span>
 				<span>({event.nodeId.slice(0, 7)})</span>
 			</div>
-			{event.data && <pre className="bg-transparent border-0">{JSON.stringify(event.data, null, 2)}</pre>}
+			{event.value && <pre className="bg-transparent border-0">{JSON.stringify(event.value, null, 2)}</pre>}
 			<RelativeTime date={new Date(event.createdAt)} />
 		</motion.div>
 	);
