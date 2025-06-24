@@ -33,7 +33,7 @@ export default function ReportErrorForm() {
 			const data = {
 				url: window.location.href,
 				message,
-				errors: errors.join('\n'),
+				errors: errors.join('\n').slice(0, 10000),
 			};
 
 			errors.length = 0;

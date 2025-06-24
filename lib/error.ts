@@ -14,7 +14,6 @@ export function reportError(error: any) {
 				},
 				body: JSON.stringify({ message: getLoggedErrorMessage(error) }),
 			});
-			errors.push(error);
 		} catch (error) {
 			console.error('Fail to report error', error);
 		}
@@ -39,6 +38,8 @@ export type ApiError = {
 };
 
 export function getErrorMessage(error: TError) {
+	errors.unshift(JSON.stringify(error));
+
 	if (!error) {
 		return 'Something is wrong';
 	}

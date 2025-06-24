@@ -2,6 +2,6 @@ export type WorkflowEvent = {
 	id: string;
 	nodeId: string;
 	name: string;
-	data: any;
+	value: any;
 	createdAt: number;
 };

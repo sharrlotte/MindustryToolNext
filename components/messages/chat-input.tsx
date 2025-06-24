@@ -51,7 +51,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 	const handleFormSubmit = () => {
 		sendMessage(message);
 		setMessageCursor(0);
-		setMessageHistory((prev) => [message, ...prev].slice(0, 50));
+		setMessageHistory((prev) => [message, ...prev.filter((m) => m !== message)].slice(0, 50));
 		setMessage('');
 	};
 
