@@ -4,11 +4,9 @@ import { RelativeTime } from '@/components/common/relative-time';
 
 import { WorkflowEvent } from '@/types/response/WorkflowEvent';
 
-import usePathId from '@/hooks/use-path-id';
-import useSse from '@/hooks/use-sse';
 
-import env from '@/constant/env';
 import { cn } from '@/lib/utils';
+import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 
 const colors = [
 	'text-red-500',
@@ -31,14 +29,11 @@ const colors = [
 ];
 
 export default function EventPanel() {
-	const id = usePathId();
-	const { data } = useSse<WorkflowEvent>(`${env.url.api}/servers/${id}/workflow/events`, {
-		limit: 100,
-	});
+	const { events } = useWorkflowEditor();
 
 	return (
 		<div className="space-y-1 text-muted-foreground">
-			<AnimatePresence>{data?.toReversed().map((event) => <EventCard event={event} key={event.id} />)}</AnimatePresence>
+			<AnimatePresence>{events?.toReversed().map((event) => <EventCard event={event} key={event.id} />)}</AnimatePresence>
 		</div>
 	);
 }
