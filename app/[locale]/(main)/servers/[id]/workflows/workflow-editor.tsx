@@ -657,7 +657,6 @@ export function WorkflowEditorProvider({ children }: { children: React.ReactNode
 function UploadContextButton() {
 	const id = usePathId();
 	const axios = useClientApi();
-	const { errors } = useWorkflowEditor();
 
 	const { data } = useQuery({
 		queryKey: ['server', id, 'workflow', 'version'],
@@ -697,7 +696,7 @@ function UploadContextButton() {
 					</Dialog>
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant="secondary" disabled={Object.keys(errors).length > 0}>
+							<Button variant="secondary">
 								<UploadIcon className="size-4" />
 								<span>Upload</span>
 							</Button>
