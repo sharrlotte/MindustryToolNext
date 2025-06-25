@@ -53,6 +53,8 @@ export type AutosizeTextAreaRef = {
 	setSelectionRange: HTMLTextAreaElement['setSelectionRange'];
 	value: string;
 	focus: () => void;
+	scrollTop: number;
+	scrollLeft: number;
 };
 
 type AutosizeTextAreaProps = {
@@ -81,6 +83,8 @@ export const AutosizeTextarea = React.forwardRef<AutosizeTextAreaRef, AutosizeTe
 			focus: () => textAreaRef?.current?.focus(),
 			maxHeight,
 			minHeight,
+			scrollTop: textAreaRef.current?.scrollTop ?? 0,
+			scrollLeft: textAreaRef.current?.scrollLeft ?? 0,
 			value: textAreaRef.current?.value as string,
 			selectionStart: textAreaRef?.current?.selectionStart,
 			selectionEnd: textAreaRef?.current?.selectionEnd,

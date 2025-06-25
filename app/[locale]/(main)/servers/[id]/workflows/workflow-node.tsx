@@ -1,4 +1,4 @@
-import { Suspense, memo } from 'react';
+import { Suspense, memo, useMemo } from 'react';
 
 import { useWorkflowEditor } from '@/app/[locale]/(main)/servers/[id]/workflows/workflow-editor';
 
@@ -22,23 +22,33 @@ const NodeItem = dynamic(() => import('@/app/[locale]/(main)/servers/[id]/workfl
 
 export type WorkflowNode = Node<Omit<WorkflowNodeData, 'x' | 'y'>, 'workflow'>;
 
-function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
-	const type = useWorkflowNodeType(data.name);
-	const { errors } = useWorkflowEditor();
+function WorkflowNode({ id, data: { name } }: NodeProps<WorkflowNode>) {
+	const type = useWorkflowNodeType(name);
 
 	if (!type) {
 		return null;
 	}
 
-	const { name, color, outputs, fields, group, inputs } = type;
+	return <WorkflowNodeComponent id={id} type={type} />;
+}
 
-	const hasConsumerFields = fields.filter((field) => field.consumer);
+function WorkflowNodeComponent({
+	id,
+	type,
+}: React.ComponentProps<'div'> & {
+	id: string;
+	type: WorkflowNodeType;
+}) {
+	const { errors } = useWorkflowEditor();
+
+	const { name, color, outputs, fields, group, inputs } = type;
+	const hasConsumerFields = useMemo(() => fields.filter((field) => field.consumer), [fields]);
 
 	const globalError = errors[id]?.['GLOBAL'];
 
 	return (
 		<div
-			className={cn('min-w-[220px] rounded-md overflow-hidden bg-card', {
+			className={cn('min-w-[220px] rounded-md overflow-hidden bg-card cursor-move', {
 				'border-destructive-foreground': group === 'UNKNOWN',
 			})}
 		>
@@ -63,7 +73,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 				</div>
 				{hasConsumerFields.length > 0 && (
 					<section
-						className="p-1 grid gap-1 w-full border border-t-0 border-border overflow-hidden bg-background"
+						className="nodrag cursor-default p-1 grid gap-1 w-full border border-t-0 border-border overflow-hidden bg-background"
 						style={{
 							borderBottomLeftRadius: 'calc(var(--radius) - 2px)',
 							borderBottomRightRadius: 'calc(var(--radius) - 2px)',
@@ -82,7 +92,7 @@ function WorkflowNodeComponent({ id, data }: NodeProps<WorkflowNode>) {
 	);
 }
 
-export default memo(WorkflowNodeComponent);
+export default memo(WorkflowNode);
 
 export function OutputHandle({
 	parentId,

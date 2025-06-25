@@ -1,17 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-
-
+import React, { useEffect } from 'react';
 
 import ReportErrorDialog from '@/components/common/report-error.dialog';
 import Tran from '@/components/common/tran';
 
-
-
 import { getErrorMessage, reportError } from '@/lib/error';
 import { cn } from '@/lib/utils';
-
 
 type Props = {
 	className?: string;
@@ -21,6 +16,7 @@ export default function ErrorMessage({ className, error }: Props) {
 	const message = getErrorMessage(error);
 
 	useEffect(() => {
+		console.error(error);
 		reportError(error);
 	}, [error]);
 
