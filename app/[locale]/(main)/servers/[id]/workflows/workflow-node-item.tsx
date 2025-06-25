@@ -63,7 +63,7 @@ function NodeItemInternal(props: NodeItemProps) {
 		return <BooleanNodeComponent {...props} />;
 	}
 
-	return <InputNodeComponent {...props} />;
+	return <InputNodeComponent {...props} accept={consumer.type === 'java.lang.String' ? 'STRING' : 'EXPRESSION'} />;
 }
 
 function DurationNodeComponent({ duration, name, consumer, parentId }: NodeItemProps & { duration: string }) {
@@ -208,19 +208,10 @@ function OptionNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 		</div>
 	);
 }
-function getCaretCharacterOffsetWithin(element: HTMLElement): number {
-	const selection = window.getSelection();
-	if (!selection || selection.rangeCount === 0) return 0;
 
-	const range = selection.getRangeAt(0);
-	const preCaretRange = range.cloneRange();
+type InputNodeAccept = 'STRING' | 'EXPRESSION';
 
-	preCaretRange.selectNodeContents(element);
-	preCaretRange.setEnd(range.endContainer, range.endOffset);
-
-	return preCaretRange.toString().length;
-}
-function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
+function InputNodeComponent({ name, consumer, parentId, accept }: NodeItemProps & { accept: InputNodeAccept }) {
 	const { variables } = useWorkflowEditor();
 	const { state, update } = useWorkflowNodeState(parentId);
 	const { type, required } = consumer;
@@ -233,7 +224,7 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 
 	const showSuggestion = focus && type.includes('variable') && matchedVariable.length > 0;
 	const divRef = useRef<HTMLDivElement>(null);
-	const tokens = useMemo(() => tokenize(value), [value]);
+	const tokens = useMemo(() => checkSyntax(tokenize(value), accept), [value, accept]);
 	const html = useMemo(() => DOMPurify.sanitize(renderHighlighted(tokens)), [tokens]);
 	const errors = useMemo(() => tokens.filter((token) => token.type === 'ERROR').map((token) => token.error), [tokens]);
 
@@ -262,6 +253,7 @@ function InputNodeComponent({ name, consumer, parentId }: NodeItemProps) {
 							state.fields[name].consumer = e.currentTarget.textContent ?? '';
 						});
 					}}
+					aria-placeholder={type}
 					spellCheck={false}
 					onFocus={() => setFocus(true)}
 					onBlur={() => setTimeout(() => setFocus(false), 100)}
@@ -323,7 +315,11 @@ function tokenize(input: string): Token[] {
 
 		const index = match.index;
 
-		tokens.push({ type: 'STRING', value: input.substring(lastIndex, index) });
+		const rest = input.substring(lastIndex, index);
+
+		if (rest.length > 0) {
+			tokens.push({ type: 'STRING', value: rest });
+		}
 
 		lastIndex = index + match[0].length;
 
@@ -347,40 +343,69 @@ function tokenize(input: string): Token[] {
 	return tokens;
 }
 
-function checkSyntax(tokens: Token[]): Token[] {
+function checkSyntax(tokens: Token[], accept: InputNodeAccept): Token[] {
 	const result: Token[] = [];
 
+	if (accept === 'STRING') {
+		return tokens;
+	}
+
 	let current = 0;
+	let step = 0;
+	let position = 0;
 
 	const peek = () => tokens[current];
-	const advance = () => tokens[current++];
+	const peekNext = (index: number = 1) => tokens[current + index];
+	const advance = () => {
+		position += tokens[current].value.length;
+		let token = tokens[current++];
+
+		while (token.type === 'STRING' && token.value.trim().length === 0) {
+			token = tokens[current++];
+		}
+
+		return token;
+	};
 
 	const match = (type: TokenType, value?: string) => {
 		const token = peek();
 		return token.type === type && (value ? token.value === value : true);
 	};
 
-	const consume = (type: TokenType, value?: string): Token => {
+	const consume = (types: TokenType[], value?: string): Token => {
 		const token = advance();
-		if (token.type !== type || (value && token.value !== value)) {
-			return { ...token, type: 'ERROR', error: `Expected ${value || type}, got ${token.value}` };
+
+		if (!types.includes(token.type as TokenType)) {
+			return { ...token, type: 'ERROR', error: `Expected ${types.join(' or ')}, got ${token.value}` };
 		}
+
+		if (value && token.value !== value) {
+			return { ...token, type: 'ERROR', error: `Expected ${value}, got ${token.value}` };
+		}
+
 		return token;
 	};
 
-	while (current < tokens.length - 1) {
+	while (current < tokens.length - 1 && step < 10000) {
+		step++;
 		const token = peek();
 
-		if (token.type === 'KEYWORD' && token.value === 'let') {
-			result.push(consume('KEYWORD', 'let'));
-			result.push(consume('IDENTIFIER'));
-			result.push(consume('OPERATOR', '='));
+		if (token.type === 'NUMBER' && peekNext().type === 'OPERATOR' && peekNext(2).type === 'NUMBER') {
+			result.push(consume(['NUMBER']));
+			result.push(consume(['OPERATOR']));
+			result.push(consume(['NUMBER']));
+		} else if (token.type === 'NUMBER') {
+			result.push(consume(['NUMBER']));
+		} else if (token.type === 'KEYWORD' && token.value === 'let') {
+			result.push(consume(['KEYWORD']));
+			result.push(consume(['IDENTIFIER']));
+			result.push(consume(['OPERATOR']));
 			result.push(...parseExpression());
 		} else if (token.type === 'KEYWORD' && token.value === 'print') {
-			result.push(consume('KEYWORD', 'print'));
+			result.push(consume(['KEYWORD'], 'print'));
 			result.push(...parseExpression());
 		} else {
-			result.push({ ...token, type: 'ERROR', error: `Unexpected token: ${token.value}` });
+			result.push({ ...token, type: 'ERROR', error: `Unexpected token: ${token.type} ${token.value} at ${position}` });
 			current++;
 		}
 	}
@@ -389,10 +414,10 @@ function checkSyntax(tokens: Token[]): Token[] {
 
 	function parseExpression(): Token[] {
 		const expr: Token[] = [];
-		expr.push(consume('NUMBER'));
+		expr.push(consume(['NUMBER']));
 		while (match('OPERATOR')) {
-			expr.push(consume('OPERATOR'));
-			expr.push(consume('NUMBER'));
+			expr.push(consume(['OPERATOR']));
+			expr.push(consume(['NUMBER']));
 		}
 		return expr;
 	}
@@ -402,7 +427,7 @@ const colors: Record<Token['type'], string> = {
 	KEYWORD: 'text-blue-400 font-semibold',
 	IDENTIFIER: 'text-cyan-300',
 	CLASS: 'text-emerald-500',
-	NUMBER: 'text-green-400',
+	NUMBER: 'text-blue-400',
 	OPERATOR: 'text-gray-200',
 	SYMBOL: 'text-yellow-400',
 	STRING: '',
