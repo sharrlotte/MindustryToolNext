@@ -79,7 +79,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			console.log('Initial tags: ' + tags);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tags]);
+	}, [tags.length]);
 
 	const handleSearch = useCallback(() => {
 		const params = new URLSearchParams();
@@ -116,7 +116,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			handleSearch();
 		}
 	}, [handleSearch, isChanged, showFilterDialog]);
-    
+
 	const handleTagGroupChange = useCallback(
 		(name: string, values: FilterTag[]) => {
 			setChanged(true);
