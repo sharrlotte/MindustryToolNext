@@ -34,7 +34,7 @@ function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps
 				'flex cursor-pointer font-semibold items-center capitalize min-w-12 gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-1 text-center text-xs text-brand-foreground',
 				className,
 			)}
-            layout='size'
+            layout
 			style={{ color: color, backgroundColor: color + '30', borderColor: color, borderWidth: 1 }}
 			onClick={() => handleOnDelete(tag)}
 			{...props}
