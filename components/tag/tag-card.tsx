@@ -1,7 +1,6 @@
+import { motion } from 'framer-motion';
 import { XIcon } from 'lucide-react';
-import React, { HTMLAttributes, useCallback } from 'react';
-
-
+import React, { useCallback } from 'react';
 
 import TagIcon from '@/components/tag/tag-icon';
 import { TagName } from '@/components/tag/tag-name';
@@ -10,8 +9,7 @@ import { DetailTagDto, Tag, Tags } from '@/types/response/Tag';
 
 import { cn } from '@/lib/utils';
 
-
-type TagCardProps = HTMLAttributes<HTMLSpanElement> & {
+type TagCardProps = React.ComponentProps<typeof motion.span> & {
 	tag: DetailTagDto;
 	onDelete?: (tag: Tag) => void;
 };
@@ -31,11 +29,12 @@ function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps
 	);
 
 	return (
-		<span
+		<motion.span
 			className={cn(
 				'flex cursor-pointer font-semibold items-center capitalize min-w-12 gap-0.5 flex-nowrap whitespace-nowrap rounded-full px-2 py-1 text-center text-xs text-brand-foreground',
 				className,
 			)}
+            layout='size'
 			style={{ color: color, backgroundColor: color + '30', borderColor: color, borderWidth: 1 }}
 			onClick={() => handleOnDelete(tag)}
 			{...props}
@@ -43,6 +42,6 @@ function TagCard({ tag: tagDetail, className, onDelete, ...props }: TagCardProps
 			<TagIcon>{icon}</TagIcon>
 			<TagName>{`${name}_${value}`}</TagName>
 			{hasDelete && <XIcon className="size-4" />}
-		</span>
+		</motion.span>
 	);
 }
