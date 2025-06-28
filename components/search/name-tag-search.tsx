@@ -77,45 +77,46 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			setName(nameString ?? '');
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [tags]);
+
+	const handleSearch = useCallback(() => {
+		const params = new URLSearchParams();
+
+		if (useTag) {
+			TagGroups.toStringArray(filterBy).forEach((value) => params.append(QueryParams.tags, value));
+		}
+
+		if (page !== 0) {
+			params.set(QueryParams.page, page.toString());
+		}
+
+		if (useSort && sortBy !== defaultSortTag) {
+			params.set(QueryParams.sort, sortBy);
+		}
+
+		if (debouncedName) {
+			params.set(QueryParams.name, debouncedName);
+		} else {
+			params.delete(QueryParams.name);
+		}
+
+		if (authorId) {
+			params.set(QueryParams.authorId, authorId);
+		}
+
+		if (tags.length != 0 && isChanged) {
+			setChanged(false);
+		}
+
+		window.history.replaceState(null, '', `?${params.toString()}`);
+	}, [authorId, debouncedName, filterBy, isChanged, page, sortBy, tags.length, useSort, useTag]);
 
 	useEffect(() => {
-		const handleSearch = () => {
-			const params = new URLSearchParams();
-
-			if (useTag) {
-				TagGroups.toStringArray(filterBy).forEach((value) => params.append(QueryParams.tags, value));
-			}
-
-			if (page !== 0) {
-				params.set(QueryParams.page, page.toString());
-			}
-
-			if (useSort && sortBy !== defaultSortTag) {
-				params.set(QueryParams.sort, sortBy);
-			}
-
-			if (debouncedName) {
-				params.set(QueryParams.name, debouncedName);
-			} else {
-				params.delete(QueryParams.name);
-			}
-
-			if (authorId) {
-				params.set(QueryParams.authorId, authorId);
-			}
-
-			if (tags.length != 0 && isChanged) {
-				setChanged(false);
-			}
-
-			window.history.replaceState(null, '', `?${params.toString()}`);
-		};
-
 		if (!showFilterDialog && isChanged) {
 			handleSearch();
 		}
-	}, [debouncedName, showFilterDialog, filterBy, sortBy, useTag, page, useSort, tags.length, isChanged, authorId]);
+	}, [handleSearch, isChanged, showFilterDialog]);
+
 
 	useEffect(() => {
 		setChanged(true);
