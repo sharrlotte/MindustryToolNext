@@ -75,11 +75,9 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			setSortBy(sortString ?? defaultSortTag);
 			setFilterBy(tagGroup);
 			setName(nameString ?? '');
-
-			console.log('Initial tags: ' + tags);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tags]);
+	}, [tags.length]);
 
 	const handleSearch = useCallback(() => {
 		const params = new URLSearchParams();
@@ -106,8 +104,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
 		setChanged(false);
 
-        console.log('Changed: ' + params.toString());
-
 		window.history.replaceState(null, '', `?${params.toString()}`);
 	}, [authorId, debouncedName, filterBy, page, sortBy, useSort, useTag]);
 
@@ -116,7 +112,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			handleSearch();
 		}
 	}, [handleSearch, isChanged, showFilterDialog]);
-    
+
 	const handleTagGroupChange = useCallback(
 		(name: string, values: FilterTag[]) => {
 			setChanged(true);
