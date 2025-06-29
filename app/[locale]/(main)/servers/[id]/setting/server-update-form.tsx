@@ -10,12 +10,21 @@ import InputWithAutoComplete from '@/components/common/input-with-autocomplete';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
-import { Form, FormControl, FormDescription, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormGlobalErrorMessage,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 
-import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/UpdateServerRequest';
+import { UpdateServerRequest, ServerModes, UpdateServerSchema } from '@/types/request/UpdateServerRequest';
 import { ServerSetting } from '@/types/response/ServerSetting';
 
 import { updateServer } from '@/query/server';
@@ -26,7 +35,7 @@ import useQueriesData from '@/hooks/use-queries-data';
 import { revalidate } from '@/action/server-action';
 import { cn } from '@/lib/utils';
 
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import Image from 'next/image';
@@ -36,8 +45,8 @@ type Props = {
 };
 
 export default function ServerUpdateForm({ server }: Props) {
-	const form = useForm<PutServerRequest>({
-		resolver: zodResolver(PutServerSchema),
+	const form = useForm<UpdateServerRequest>({
+		resolver: standardSchemaResolver(UpdateServerSchema),
 		defaultValues: server,
 	});
 	const { invalidateByKey } = useQueriesData();
@@ -47,7 +56,7 @@ export default function ServerUpdateForm({ server }: Props) {
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server'],
-		mutationFn: (data: PutServerRequest) => updateServer(axios, id, data),
+		mutationFn: (data: UpdateServerRequest) => updateServer(axios, id, data),
 		onSuccess: () => {
 			toast.success(<Tran text="update.success" />);
 			revalidate({ path: '/servers' });

@@ -2,7 +2,7 @@ import { UserRole } from '@/constant/constant';
 
 export type Role = {
 	id: number;
-	name: UserRole;
+	name: string;
 	position: number;
 	description: string;
 	color: string;

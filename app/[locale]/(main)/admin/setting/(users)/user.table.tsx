@@ -21,6 +21,7 @@ import { getRoles } from '@/query/role';
 import { getUserCount, getUsers } from '@/query/user';
 import { Role } from '@/types/response/Role';
 import { PaginationQuerySchema, SearchUserQuerySchema } from '@/types/schema/search-query';
+import { UserRole } from '@/constant/constant';
 
 const defaultState = {
 	name: '',
@@ -46,7 +47,7 @@ export function UserTable() {
 
 	const { data: userCount } = useClientQuery({
 		queryKey: ['users', 'total', omit(params, 'page', 'size'), debouncedName, isBanned],
-		queryFn: (axios) => getUserCount(axios, { name, is_banned: isBanned, role: role?.name }),
+		queryFn: (axios) => getUserCount(axios, { name, is_banned: isBanned, role: role?.name as UserRole }),
 		placeholderData: 0,
 	});
 
@@ -82,7 +83,7 @@ export function UserTable() {
 				<GridLayout>
 					<GridPaginationList
 						className="flex flex-col gap-2" //
-						params={{ ...params, role: role?.name, name: debouncedName, is_banned: !!isBanned }}
+						params={{ ...params, role: role?.name as UserRole, name: debouncedName, is_banned: !!isBanned }}
 						paramSchema={SearchUserQuerySchema}
 						queryKey={['users', 'management']}
 						queryFn={getUsers}

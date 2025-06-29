@@ -14,11 +14,12 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } 
 import { toast } from '@/components/ui/sonner';
 import UserCard from '@/components/user/user-card';
 
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
 import { createServerAdmin, getServerAdmin } from '@/query/server';
 import { getUsers } from '@/query/user';
-import { User } from '@/types/response/User';
+import { User } from '@/query/user';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 

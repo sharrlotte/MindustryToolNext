@@ -12,15 +12,18 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import UserCard from '@/components/user/user-card';
 
-import { useSession } from '@/context/session.context';
+import { ItemPaginationQuery, PaginationQuery, PaginationQuerySchema } from '@/types/schema/search-query';
+
+import { getMyRank, getRank, getUsersCount } from '@/query/user';
+import { User } from '@/query/user';
+
 import useClientApi from '@/hooks/use-client';
 import useSearchQuery from '@/hooks/use-search-query';
+
+import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import { isError } from '@/lib/error';
 import { cn } from '@/lib/utils';
-import { getMyRank, getRank, getUsersCount } from '@/query/user';
-import { User } from '@/types/response/User';
-import { ItemPaginationQuery, PaginationQuery, PaginationQuerySchema } from '@/types/schema/search-query';
 
 import { useQuery } from '@tanstack/react-query';
 

@@ -4,11 +4,13 @@ import { useCallback } from 'react';
 import InternalLink from '@/components/common/internal-link';
 import { toast } from '@/components/ui/sonner';
 
-import { useSession } from '@/context/session.context';
-import useClientApi from '@/hooks/use-client';
-import { isError } from '@/lib/error';
 import { getUser } from '@/query/user';
-import { User } from '@/types/response/User';
+import { User } from '@/query/user';
+
+import useClientApi from '@/hooks/use-client';
+
+import { useSession } from '@/context/session.context';
+import { isError } from '@/lib/error';
 
 const cache: Record<string, User> = {};
 

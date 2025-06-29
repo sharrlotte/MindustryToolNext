@@ -9,16 +9,19 @@ import Divider from '@/components/ui/divider';
 import { toast } from '@/components/ui/sonner';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
-import { useMe, useSession } from '@/context/session.context';
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import { isError } from '@/lib/error';
-import { groupBy } from '@/lib/utils';
+import { Authority, Role } from '@/types/response/Role';
+
 import { getAuthorities } from '@/query/authorities';
 import { changeRoles, getRoles } from '@/query/role';
 import { changeAuthorities } from '@/query/user';
-import { Authority, Role } from '@/types/response/Role';
-import { User } from '@/types/response/User';
+import { User } from '@/query/user';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+
+import { useMe, useSession } from '@/context/session.context';
+import { isError } from '@/lib/error';
+import { groupBy } from '@/lib/utils';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 

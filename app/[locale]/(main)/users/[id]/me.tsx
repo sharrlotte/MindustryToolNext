@@ -16,8 +16,7 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { getMeMaps, getMePosts, getMeSchematics } from '@/query/user';
-import { User } from '@/types/response/User';
+import { getMeMaps, getMePosts, getMeSchematics, User } from '@/query/user';
 import { StatusSearchSchema } from '@/types/schema/search-query';
 
 type TabProps = {
