@@ -126,6 +126,7 @@ export async function createGroupInfo(axios: AxiosInstance, groupId: number, cat
 
 	return result.data;
 }
+
 export const UpdateTagGroupInfoSchema = z.object({
 	position: z.number().int(),
 });

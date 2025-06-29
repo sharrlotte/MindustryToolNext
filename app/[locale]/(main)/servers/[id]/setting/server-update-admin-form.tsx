@@ -90,7 +90,13 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 										<Tran text="server.port" />
 									</FormLabel>
 									<FormControl>
-										<Input placeholder="6568" {...field} disabled={!canAccess} />
+										<Input
+											placeholder="6568"
+											type="number"
+											{...field}
+											onChange={(event) => field.onChange(event.currentTarget.valueAsNumber)}
+											disabled={!canAccess}
+										/>
 									</FormControl>
 									<FormDescription>
 										<Tran text="server.port-description" />
