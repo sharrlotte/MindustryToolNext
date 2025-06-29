@@ -32,34 +32,34 @@ function RelativeTimeInternal({ className, date }: RelativeTimeProps) {
 	useInterval(() => setCurrentTime(Date.now()), tick);
 
 	if (delta < 60) {
-		return <Tran className={className} text="second-ago" args={{ second: delta < 0 ? 0 : delta }} />;
+		return <Tran className={className} text="second-ago" defaultValue='{{second}} seconds ago' args={{ second: delta < 0 ? 0 : delta }} />;
 	}
 
 	if (delta < 3600) {
 		const minute = Math.floor(delta / 60);
-		return <Tran className={className} text="minute-ago" args={{ minute }} />;
+		return <Tran className={className} text="minute-ago" defaultValue='{{minute}} minutes ago' args={{ minute }} />;
 	}
 
 	if (delta < 86400) {
 		const hour = Math.floor(delta / 3600);
-		return <Tran className={className} text="hour-ago" args={{ hour }} />;
+		return <Tran className={className} text="hour-ago" defaultValue='{{hour}} hours ago' args={{ hour }} />;
 	}
 
 	if (delta < 604800) {
 		const day = Math.floor(delta / 86400);
-		return <Tran className={className} text="day-ago" args={{ day }} />;
-	}
+		return <Tran className={className} text="day-ago" defaultValue='{{day}} days ago' args={{ day }} />;
+	} 
 
 	if (delta < 2592000) {
 		const week = Math.floor(delta / 604800);
-		return <Tran className={className} text="week-ago" args={{ week }} />;
+		return <Tran className={className} text="week-ago" defaultValue='{{week}} weeks ago' args={{ week }} />;
 	}
 
 	if (delta < 31536000) {
 		const month = Math.floor(delta / 2592000);
-		return <Tran className={className} text="month-ago" args={{ month }} />;
+		return <Tran className={className} text="month-ago" defaultValue='{{month}} months ago' args={{ month }} />;
 	}
 
 	const year = Math.floor(delta / 31536000);
-	return <Tran className={className} text="year-ago" args={{ year }} />;
+	return <Tran className={className} text="year-ago" defaultValue='{{year}} years ago' args={{ year }} />;
 }

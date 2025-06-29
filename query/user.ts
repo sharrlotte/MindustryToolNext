@@ -117,8 +117,8 @@ export const UserStatSchema = z.object({
 export const UserSchema = z.object({
 	id: z.string().nonempty(),
 	name: z.string().min(1).max(1024),
-	imageUrl: z.string().min(1).max(1024),
-	thumbnail: z.string().min(1).max(1024),
+	imageUrl: z.string().min(1).max(1024).nullable(),
+	thumbnail: z.string().min(1).max(1024).nullable(),
 	stats: UserStatSchema.optional().nullable(),
 	roles: z.array(UserRoleSchema),
 	authorities: z.array(UserAuthoritySchema),
