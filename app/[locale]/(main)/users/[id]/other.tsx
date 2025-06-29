@@ -17,9 +17,9 @@ import NameTagSearch from '@/components/search/name-tag-search';
 import PreviewSkeleton from '@/components/skeleton/preview.skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { getUserMaps, getUserPosts, getUserSchematics } from '@/query/user';
-import { User } from '@/types/response/User';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
+
+import { User, getUserMaps, getUserPosts, getUserSchematics } from '@/query/user';
 
 type TabProps = {
 	user: User;

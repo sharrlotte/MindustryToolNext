@@ -1,5 +1,6 @@
+import { User } from '@/query/user';
+
 import { Batcher } from '@/lib/batcher';
-import { User } from '@/types/response/User';
 
 import { useQuery } from '@tanstack/react-query';
 

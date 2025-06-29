@@ -15,7 +15,7 @@ import env from '@/constant/env';
 import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
 import { cn } from '@/lib/utils';
-import { User } from '@/types/response/User';
+import { User } from '@/query/user';
 
 type Props = {
 	user: User;

@@ -1,6 +1,7 @@
-import axiosInstance from '@/query/config/config';
 import { Like } from '@/types/response/Like';
-import { User } from '@/types/response/User';
+
+import axiosInstance from '@/query/config/config';
+import { User } from '@/query/user';
 
 export class Batcher<T, R> {
 	private static batchers: Batcher<any, any>[] = [];

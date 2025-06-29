@@ -5,17 +5,27 @@ import React from 'react';
 import { Hidden } from '@/components/common/hidden';
 import InternalLink from '@/components/common/internal-link';
 import Tran from '@/components/common/tran';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { EllipsisButton } from '@/components/ui/ellipsis-button';
 import { toast } from '@/components/ui/sonner';
 
-import { useSession } from '@/context/session.context';
+import { banUser, unbanUser } from '@/query/user';
+import { User } from '@/query/user';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+
+import { useSession } from '@/context/session.context';
 import ProtectedElement from '@/layout/protected-element';
-import { banUser, unbanUser } from '@/query/user';
-import { User } from '@/types/response/User';
 
 import { useMutation } from '@tanstack/react-query';
 

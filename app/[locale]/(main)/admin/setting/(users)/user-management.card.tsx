@@ -6,7 +6,7 @@ import UserManagementActionButton from '@/app/[locale]/(main)/admin/setting/(use
 import CopyButton from '@/components/button/copy.button';
 import UserAvatar from '@/components/user/user-avatar';
 
-import { User } from '@/types/response/User';
+import { User } from '@/query/user';
 
 type Props = {
 	user: User;
