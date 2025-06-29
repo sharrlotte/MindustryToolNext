@@ -114,7 +114,7 @@ export default function UpdateRoleDialog({ role }: Props) {
 											<Tran text="position" />
 										</FormLabel>
 										<FormControl>
-											<Input type="number" {...field} />
+											<Input type="number" {...field} onChange={(event) => field.onChange(event.currentTarget.valueAsNumber)} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>

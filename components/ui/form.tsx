@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-	Controller,
-	ControllerProps,
-	FieldPath,
-	FieldValues,
-	FormProvider,
-	useFormContext,
-} from 'react-hook-form';
+import { Controller, ControllerProps, FieldPath, FieldValues, FormProvider, useFormContext } from 'react-hook-form';
 
 import Tran from '@/components/common/tran';
 import { Label } from '@/components/ui/label';
@@ -146,7 +139,7 @@ const FormGlobalErrorMessage = () => {
 		.map((error) => error?.message)
 		.filter((message) => message);
 
-	if (messages.length)
+	if (messages.length > 0)
 		return (
 			<div className="flex gap-1 items-center text-sm text-destructive-foreground">
 				<Tran text="error" /> <span>{JSON.stringify(messages)}</span>
