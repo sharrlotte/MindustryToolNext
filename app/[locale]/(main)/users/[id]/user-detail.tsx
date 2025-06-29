@@ -41,7 +41,7 @@ export default function UserDetail({ user }: Props) {
 	const [hasThumbnail, setHasThumbnail] = React.useState(thumbnail !== undefined);
 
 	return (
-		<div className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center overflow-hidden group" style={style}>
+		<div className="relative flex flex-col gap-2 rounded-md bg-card bg-cover bg-center overflow-hidden group min-h-52" style={style}>
 			{thumbnail && (
 				<Dialog>
 					<DialogTrigger>

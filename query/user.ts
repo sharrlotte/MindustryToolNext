@@ -61,7 +61,7 @@ export async function getMeSchematics(axios: AxiosInstance, params: StatusPagina
 export async function getMe(axios: AxiosInstance): Promise<User> {
 	const result = await axios.get(`/users/@me`);
 
-    const user = UserSchema.parse(result.data);
+	const user = UserSchema.parse(result.data);
 
 	return user;
 }
@@ -110,8 +110,8 @@ export const UserAuthoritySchema = z.object({
 });
 
 export const UserStatSchema = z.object({
-	EXP: z.number().int().min(1).max(1024).nullable().optional(),
-	DOWNLOAD_COUNT: z.number().int().min(1).max(1024).nullable().optional(),
+	EXP: z.number().int().nullable().optional(),
+	DOWNLOAD_COUNT: z.number().int().nullable().optional(),
 });
 
 export const UserSchema = z.object({
