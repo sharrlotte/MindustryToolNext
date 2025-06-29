@@ -91,10 +91,7 @@ export default async function Page({ params }: Props) {
 							{avatar && <Image className="size-16 object-cover rounded-md" src={avatar} width={64} height={64} alt={name} />}
 							<div className="flex flex-col gap-1">
 								<ColorText className="text-3xl font-extrabold" text={name} />
-								<span className="flex gap-1 items-center">
-									<Tran text="server.owner" />
-									<IdUserCard id={userId} />
-								</span>
+								<IdUserCard id={userId} />
 							</div>
 						</header>
 						<main className="flex flex-wrap sm:gap-x-40 gap-x-20 gap-y-8 text-sm font-medium capitalize">
