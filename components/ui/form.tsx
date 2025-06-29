@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { Controller, ControllerProps, FieldPath, FieldValues, FormProvider, useFormContext } from 'react-hook-form';
+import {
+	Controller,
+	ControllerProps,
+	FieldPath,
+	FieldValues,
+	FormProvider,
+	useFormContext,
+} from 'react-hook-form';
 
 import Tran from '@/components/common/tran';
 import { Label } from '@/components/ui/label';
@@ -119,7 +126,12 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<
 		}
 
 		return (
-			<p ref={ref} id={formMessageId} className={cn('text-[0.8rem] font-medium text-destructive-foreground', className)} {...props}>
+			<p
+				ref={ref}
+				id={formMessageId}
+				className={cn('text-[0.8rem] font-medium text-destructive-foreground', className)}
+				{...props}
+			>
 				{body}
 			</p>
 		);

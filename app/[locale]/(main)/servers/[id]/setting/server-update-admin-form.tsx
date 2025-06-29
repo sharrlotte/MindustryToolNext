@@ -6,19 +6,31 @@ import { useForm } from 'react-hook-form';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormGlobalErrorMessage,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Switch } from '@/components/ui/switch';
 
-import { revalidate } from '@/action/server-action';
-import { useSession } from '@/context/session.context';
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import { cn, hasAccess } from '@/lib/utils';
-import { updateServerPort } from '@/query/server';
 import { PutServerPortRequest, PutServerPortSchema } from '@/types/request/UpdateServerRequest';
 import { ServerSetting } from '@/types/response/ServerSetting';
+
+import { updateServerPort } from '@/query/server';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+
+import { revalidate } from '@/action/server-action';
+import { useSession } from '@/context/session.context';
+import { cn, hasAccess } from '@/lib/utils';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -67,7 +79,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 			<Divider />
 			<Form {...form}>
 				<form className="flex flex-1 flex-col justify-between gap-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
-					<FormMessage />
+					<FormGlobalErrorMessage />
 					<div className="space-y-6">
 						<FormField
 							control={form.control}
