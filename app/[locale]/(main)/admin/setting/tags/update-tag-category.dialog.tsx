@@ -9,15 +9,17 @@ import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Switch } from '@/components/ui/switch';
 
+import { TagCategoryDto } from '@/types/response/TagGroup';
+
+import { UpdateTagCategoryRequest, UpdateTagCategorySchema, updateTagCategory } from '@/query/tag';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { UpdateTagCategoryRequest, UpdateTagCategorySchema, updateTagCategory } from '@/query/tag';
-import { TagCategoryDto } from '@/types/response/TagGroup';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -79,6 +81,7 @@ export default function UpdateTagCategoryDialog({ category }: Props) {
 							form.handleSubmit((data) => mutate(data))(event);
 						}}
 					>
+						<FormGlobalErrorMessage />
 						<FormField
 							control={form.control}
 							name="name"
@@ -139,7 +142,6 @@ export default function UpdateTagCategoryDialog({ category }: Props) {
 								</FormItem>
 							)}
 						/>
-
 						<div className="ml-auto grid w-fit grid-cols-2 justify-end gap-2">
 							<Button variant="secondary" title="reset" onClick={() => form.reset()}>
 								<Tran text="reset" />

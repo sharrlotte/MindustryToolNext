@@ -5,8 +5,6 @@ import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import DeleteButton from '@/components/button/delete.button';
 import ErrorMessage from '@/components/common/error-message';
 import LoadingSpinner from '@/components/common/loading-spinner';
@@ -14,20 +12,21 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
+import { ServerEnv } from '@/types/response/ServerEnv';
+
+import { CreateServerEnvSchema, createServerEnv, deleteServerEnv, getServerEnv } from '@/query/server';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { CreateServerEnvSchema, createServerEnv, deleteServerEnv, getServerEnv } from '@/query/server';
-import { ServerEnv } from '@/types/response/ServerEnv';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { z } from 'zod/v4';
-
 
 type Props = {
 	id: string;
@@ -113,6 +112,7 @@ function ServerEnvCard({ id, env }: ServerEnvCardProps) {
 		>
 			<Form {...form}>
 				<form className="flex gap-2 sm:items-center flex-col sm:flex-row items-start w-full">
+					<FormGlobalErrorMessage />
 					<FormField
 						control={form.control}
 						name="name"
@@ -196,6 +196,7 @@ function AddEnvCard({ id }: AddEnvCardProps) {
 				className="flex gap-2 sm:items-center flex-col sm:flex-row items-start w-full"
 				onSubmit={form.handleSubmit((value) => mutate(value))}
 			>
+				<FormGlobalErrorMessage />
 				<FormField
 					control={form.control}
 					name="name"

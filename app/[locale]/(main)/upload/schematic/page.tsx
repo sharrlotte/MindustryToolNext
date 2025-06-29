@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
 import ErrorMessage from '@/components/common/error-message';
@@ -21,22 +19,20 @@ import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 
-
-
-import { IMAGE_PREFIX } from '@/constant/constant';
-import { useSession } from '@/context/session.context';
-import useClientApi from '@/hooks/use-client';
-import { isError } from '@/lib/error';
-import { CreateSchematicRequest, CreateSchematicSchema, createSchematic, getSchematicPreview } from '@/query/schematic';
 import SchematicPreviewRequest from '@/types/request/SchematicPreviewRequest';
 import { SchematicPreviewResponse } from '@/types/response/SchematicPreviewResponse';
 import { TagGroup } from '@/types/response/TagGroup';
 
+import { CreateSchematicRequest, CreateSchematicSchema, createSchematic, getSchematicPreview } from '@/query/schematic';
 
+import useClientApi from '@/hooks/use-client';
+
+import { IMAGE_PREFIX } from '@/constant/constant';
+import { useSession } from '@/context/session.context';
+import { isError } from '@/lib/error';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-
 
 /* eslint-disable @next/next/no-img-element */
 

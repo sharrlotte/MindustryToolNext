@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import { DetailDescription, DetailTitle } from '@/components/common/detail';
 import { EditClose, EditComponent, EditOff, EditOn, EditTrigger } from '@/components/common/edit-component';
 import ErrorMessage from '@/components/common/error-message';
@@ -14,20 +12,23 @@ import Tran from '@/components/common/tran';
 import UploadField from '@/components/common/upload-field';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import UserCard from '@/components/user/user-card';
 
-import { IMAGE_PREFIX } from '@/constant/constant';
-import { useSession } from '@/context/session.context';
-import useClientApi from '@/hooks/use-client';
-import { isError } from '@/lib/error';
-import { CreateMapRequest, CreateMapSchema, createMap, getMapPreview } from '@/query/map';
 import MapPreviewRequest from '@/types/request/MapPreviewRequest';
 import { MapPreviewResponse } from '@/types/response/MapPreviewResponse';
+
+import { CreateMapRequest, CreateMapSchema, createMap, getMapPreview } from '@/query/map';
+
+import useClientApi from '@/hooks/use-client';
+
+import { IMAGE_PREFIX } from '@/constant/constant';
+import { useSession } from '@/context/session.context';
+import { isError } from '@/lib/error';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -144,6 +145,7 @@ function Upload({ file, preview, setFile, setPreview }: UploadProps) {
 						<img className="max-w-[60vw] max-h-[60vh]" src={IMAGE_PREFIX + preview.image.trim()} alt="Map" />
 					</div>
 					{isError(session) ? <ErrorMessage error={session} /> : <UserCard user={session} />}
+					<FormGlobalErrorMessage />
 					<FormField
 						control={form.control}
 						name="name"

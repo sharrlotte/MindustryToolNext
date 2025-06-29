@@ -5,8 +5,6 @@ import { Trash2 } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import ErrorMessage from '@/components/common/error-message';
 import LoadingSpinner from '@/components/common/loading-spinner';
 import ScrollContainer from '@/components/common/scroll-container';
@@ -14,19 +12,28 @@ import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import Divider from '@/components/ui/divider';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormGlobalErrorMessage,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/components/ui/sonner';
 
-import { UploadState } from '@/constant/constant';
 import useClientApi from '@/hooks/use-client';
+
+import { UploadState } from '@/constant/constant';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { z } from 'zod/v4';
-
 
 const fetchFiles = async (axios: AxiosInstance, state: UploadState) => {
 	const { data } = await axios.get('/upload', { params: { state } });
@@ -162,6 +169,7 @@ function FileUploadForm() {
 				<h3 className="font-semibold mb-2">Via .msav, .msch or .zip</h3>
 			</header>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="mb-4 space-y-2">
+				<FormGlobalErrorMessage />
 				<FormField
 					control={form.control}
 					name="file"
@@ -230,6 +238,7 @@ function GithubUrlUploadForm() {
 				<h3 className="font-semibold mb-2">Via Github Url</h3>
 			</header>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="mb-4 space-y-2">
+				<FormGlobalErrorMessage />
 				<FormField
 					control={form.control}
 					name="url"

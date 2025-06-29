@@ -7,14 +7,16 @@ import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
+import { CreateServerManagerRequest, CreateServerManagerSchema } from '@/types/request/CreateServerRequest';
+
+import { createServerManager } from '@/query/server-manager';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { createServerManager } from '@/query/server-manager';
-import { CreateServerManagerRequest, CreateServerManagerSchema } from '@/types/request/CreateServerRequest';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -73,6 +75,7 @@ export default function CreateServerManagerDialog() {
 							form.handleSubmit((data) => mutate(data))(event);
 						}}
 					>
+						<FormGlobalErrorMessage />
 						<FormField
 							control={form.control}
 							name="name"
