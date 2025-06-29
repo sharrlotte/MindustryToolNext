@@ -1,15 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 
-
-
 import MultipleFilerTags from '@/components/tag/multiple-filter-tags';
 import SingeFilerTags from '@/components/tag/single-filter-tags';
 
-
-
-import { useI18n } from '@/i18n/client';
 import { TagGroup } from '@/types/response/TagGroup';
 
+import { useI18n } from '@/i18n/client';
 
 export type FilterTag = { name: string; icon?: string };
 
@@ -66,8 +62,8 @@ const FilterTagGroup = ({ group, selectedGroup, handleTagGroupChange }: FilterTa
 	);
 
 	const handleSingleValueChange = useCallback(
-		(value: FilterTag) => handleTagGroupChange(group.name, value ? [value] : []),
-		[group, handleTagGroupChange],
+		(value: FilterTag) => handleTagGroupChange(group.name, selectedGroup?.values.some((v) => v.name === value.name) ? [] : [value]),
+		[group.name, handleTagGroupChange, selectedGroup?.values],
 	);
 
 	return group.duplicate ? (
