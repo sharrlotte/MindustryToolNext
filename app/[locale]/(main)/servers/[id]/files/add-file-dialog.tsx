@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+
+import { createServerFile } from '@/query/server';
 
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { createServerFile } from '@/query/server';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -67,6 +66,7 @@ export default function AddFileDialog({ id, path }: Props) {
 			<DialogContent>
 				<Form {...form}>
 					<form className="space-y-4 p-6" onSubmit={form.handleSubmit(handleSubmit)}>
+						<FormGlobalErrorMessage />
 						<FormField
 							control={form.control}
 							name="file"

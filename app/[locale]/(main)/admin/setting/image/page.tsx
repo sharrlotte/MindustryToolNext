@@ -6,8 +6,6 @@ import { FileIcon, FolderIcon, LinkIcon, UploadIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import CopyButton from '@/components/button/copy.button';
 import RemoveButton from '@/components/button/remove.button';
 import { Hidden } from '@/components/common/hidden';
@@ -18,23 +16,25 @@ import FileHierarchy from '@/components/file/file-hierarchy';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { toast } from '@/components/ui/sonner';
 
-import env from '@/constant/env';
-import useClientApi from '@/hooks/use-client';
-import useQueryState from '@/hooks/use-query-state';
-import { deleteImage, getImages, uploadImage } from '@/query/image';
 import { ImageMetadata } from '@/types/response/FileMetadata';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
+
+import { deleteImage, getImages, uploadImage } from '@/query/image';
+
+import useClientApi from '@/hooks/use-client';
+import useQueryState from '@/hooks/use-query-state';
+
+import env from '@/constant/env';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import * as z from 'zod/v4';
-
 
 export default function Page() {
 	const [{ path }, setState] = useQueryState({
@@ -223,6 +223,7 @@ function CreateFolderDialog({ path }: { path: string }) {
 				<DialogDescription>Enter a name for the new folder</DialogDescription>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit((values) => createFolder(values))} className="space-y-4">
+						<FormGlobalErrorMessage />
 						<FormField
 							control={form.control}
 							name="name"

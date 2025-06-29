@@ -9,15 +9,17 @@ import Tran from '@/components/common/tran';
 import DocumentCard from '@/components/document/document-card';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import createDocument, { getDocuments } from '@/query/document';
 import { CreateDocumentRequest, CreateDocumentSchema } from '@/types/request/CreateDocumentRequest';
 import { ItemPaginationQuery } from '@/types/schema/search-query';
+
+import createDocument, { getDocuments } from '@/query/document';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -85,6 +87,7 @@ function AddDocumentButton() {
 				<ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md">
 					<Form {...form}>
 						<form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
+							<FormGlobalErrorMessage />
 							<div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
 								<FormField
 									control={form.control}

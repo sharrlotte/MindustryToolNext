@@ -1,7 +1,6 @@
 'use client';
 
 import { PlusIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -12,20 +11,25 @@ import ComboBox from '@/components/common/combo-box';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-import { revalidate } from '@/action/server-action';
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import { createServer } from '@/query/server';
-import { getMyServerManager } from '@/query/server-manager';
 import { CreateServerRequest, CreateServerSchema } from '@/types/request/CreateServerRequest';
 import { ServerModes } from '@/types/request/UpdateServerRequest';
 
+import { createServer } from '@/query/server';
+import { getMyServerManager } from '@/query/server-manager';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+
+import { revalidate } from '@/action/server-action';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+
+import { useRouter } from 'next/navigation';
 
 export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: boolean }) {
 	const [managerId, setManagerId] = useState<string | undefined>('not-selected-yet');
@@ -145,6 +149,7 @@ export default function CreateServerDialog({ defaultOpen }: { defaultOpen?: bool
 						)}
 					</DialogDescription>
 					<form className="flex flex-1 flex-col justify-between space-y-4" onSubmit={form.handleSubmit((data) => mutate(data))}>
+						<FormGlobalErrorMessage />
 						<FormField
 							control={form.control}
 							name="name"

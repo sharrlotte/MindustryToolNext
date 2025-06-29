@@ -3,32 +3,25 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-
-
 import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
 import TagContainer from '@/components/tag/tag-container';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-
-
-import { PresetType } from '@/constant/constant';
-import useQueriesData from '@/hooks/use-queries-data';
-import { addTagPreset } from '@/lib/tag';
 import { TagGroup } from '@/types/response/TagGroup';
 
+import useQueriesData from '@/hooks/use-queries-data';
 
+import { PresetType } from '@/constant/constant';
+import { addTagPreset } from '@/lib/tag';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-
-
 import { z } from 'zod/v4';
-
 
 type CreatePresetButtonProps = {
 	tags: TagGroup[];
@@ -71,6 +64,7 @@ export default function CreatePresetButton({ tags, type }: CreatePresetButtonPro
 						className="relative flex flex-1 flex-col justify-between gap-4 bg-card p-4"
 						onSubmit={form.handleSubmit((value) => createPreset(value))}
 					>
+						<FormGlobalErrorMessage />
 						<FormField
 							control={form.control}
 							name="name"

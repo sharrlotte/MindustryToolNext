@@ -9,16 +9,27 @@ import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormGlobalErrorMessage,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Switch } from '@/components/ui/switch';
 
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import { createPlugin } from '@/query/plugin';
 import { CreatePluginRequest, CreatePluginRequestData, CreatePluginSchema } from '@/types/request/CreatePluginRequest';
 import { TagGroups } from '@/types/response/TagGroup';
+
+import { createPlugin } from '@/query/plugin';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -90,7 +101,7 @@ function AddPluginForm() {
 			<ScrollContainer className="flex h-full w-full flex-col justify-between gap-2 rounded-md">
 				<Form {...form}>
 					<form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
-						<FormMessage />
+						<FormGlobalErrorMessage />
 						<div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
 							<FormField
 								control={form.control}

@@ -1,6 +1,5 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -11,12 +10,15 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
+import { SendNotificationRequest, SendNotificationSchema, sendNotification } from '@/query/user';
+
 import useClientApi from '@/hooks/use-client';
 import useQueryState from '@/hooks/use-query-state';
-import { SendNotificationRequest, SendNotificationSchema, sendNotification } from '@/query/user';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+import dynamic from 'next/dynamic';
 
 const MarkdownEditor = dynamic(() => import('@/components/markdown/markdown-editor'), { ssr: false });
 
@@ -58,8 +60,8 @@ export default function PageClient() {
 				</div>
 			)}
 			<Form {...form}>
-				<FormGlobalErrorMessage />
 				<form className="flex gap-2 flex-col h-full" onSubmit={form.handleSubmit((data) => mutate(data))}>
+					<FormGlobalErrorMessage />
 					<FormField
 						control={form.control}
 						name="title"

@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import React, { Suspense } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -11,21 +10,26 @@ import InputWithAutoComplete from '@/components/common/input-with-autocomplete';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 
-import { revalidate } from '@/action/server-action';
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import { cn } from '@/lib/utils';
-import { updateServer } from '@/query/server';
 import { PutServerRequest, PutServerSchema, ServerModes } from '@/types/request/UpdateServerRequest';
 import { ServerSetting } from '@/types/response/ServerSetting';
 
+import { updateServer } from '@/query/server';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
+
+import { revalidate } from '@/action/server-action';
+import { cn } from '@/lib/utils';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+
+import Image from 'next/image';
 
 type Props = {
 	server: ServerSetting;
@@ -70,6 +74,7 @@ export default function ServerUpdateForm({ server }: Props) {
 			<Divider />
 			<Form {...form}>
 				<form className="flex space-y-4 flex-col justify-between" onSubmit={form.handleSubmit((value) => mutate(value))}>
+					<FormGlobalErrorMessage />
 					<FormField
 						control={form.control}
 						name="name"

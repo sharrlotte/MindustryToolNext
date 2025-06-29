@@ -10,15 +10,18 @@ import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-import { revalidate } from '@/action/server-action';
+import { Role } from '@/types/response/Role';
+
+import { UpdateRoleRequest, UpdateRoleSchema, updateRole } from '@/query/role';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { UpdateRoleRequest, UpdateRoleSchema, updateRole } from '@/query/role';
-import { Role } from '@/types/response/Role';
+
+import { revalidate } from '@/action/server-action';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -71,6 +74,7 @@ export default function UpdateRoleDialog({ role }: Props) {
 					</Hidden>
 					<Form {...form}>
 						<form className="space-y-4" onSubmit={form.handleSubmit((value) => mutate(value))}>
+							<FormGlobalErrorMessage />
 							<FormField
 								control={form.control}
 								name="name"

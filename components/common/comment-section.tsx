@@ -24,22 +24,25 @@ import {
 import { AutosizeTextAreaRef, AutosizeTextarea } from '@/components/ui/autoresize-textarea';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormMessage } from '@/components/ui/form';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from '@/components/ui/sonner';
 import ColorAsRole from '@/components/user/color-as-role';
 import UserAvatar from '@/components/user/user-avatar';
 
-import { useSession } from '@/context/session.context';
+import { Comment } from '@/types/response/Comment';
+import { CommentPaginationQuerySchema, CommentSort, commentSorts } from '@/types/schema/search-query';
+
+import { CreateCommentRequest, CreateCommentSchema, createComment, getComments } from '@/query/comment';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
 import useUser from '@/hooks/use-user';
+
+import { useSession } from '@/context/session.context';
 import { useI18n } from '@/i18n/client';
 import { isError } from '@/lib/error';
 import { isNumeric } from '@/lib/utils';
-import { CreateCommentRequest, CreateCommentSchema, createComment, getComments } from '@/query/comment';
-import { Comment } from '@/types/response/Comment';
-import { CommentPaginationQuerySchema, CommentSort, commentSorts } from '@/types/schema/search-query';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -216,6 +219,7 @@ function CommentInput({ itemId }: CommentInputProps) {
 		<div className="flex gap-2 w-full border rounded-md p-2 overflow-x-hidden">
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit((data) => mutate(data))} className="w-full grid gap-2">
+					<FormGlobalErrorMessage />
 					<FormField
 						name="content"
 						control={form.control}

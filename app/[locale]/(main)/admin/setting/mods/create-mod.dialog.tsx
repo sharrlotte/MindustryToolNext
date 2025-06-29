@@ -1,7 +1,6 @@
 'use client';
 
 import { ImageIcon } from 'lucide-react';
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -9,17 +8,21 @@ import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 
-import { acceptedImageFormats } from '@/constant/constant';
+import { CreateModRequest, CreateModSchema, createMod } from '@/query/mod';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
-import { CreateModRequest, CreateModSchema, createMod } from '@/query/mod';
+
+import { acceptedImageFormats } from '@/constant/constant';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+
+import Image from 'next/image';
 
 export default function CreateModDialog() {
 	const form = useForm<CreateModRequest>({
@@ -75,6 +78,7 @@ export default function CreateModDialog() {
 							form.handleSubmit((data) => mutate(data))(event);
 						}}
 					>
+						<FormGlobalErrorMessage />
 						<FormField
 							control={form.control}
 							name="name"

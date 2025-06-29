@@ -12,16 +12,18 @@ import Tran from '@/components/common/tran';
 import TagSelector from '@/components/search/tag-selector';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { toast } from '@/components/ui/sonner';
 import IdUserCard from '@/components/user/id-user-card';
 
-import useClientApi from '@/hooks/use-client';
-import useQueriesData from '@/hooks/use-queries-data';
-import verifyPlugin, { deletePlugin } from '@/query/plugin';
 import VerifyPluginRequest, { VerifyPluginRequestData, VerifyPluginSchema } from '@/types/request/VerifyPluginRequest';
 import { Plugin } from '@/types/response/Plugin';
 import { TagGroups } from '@/types/response/TagGroup';
+
+import verifyPlugin, { deletePlugin } from '@/query/plugin';
+
+import useClientApi from '@/hooks/use-client';
+import useQueriesData from '@/hooks/use-queries-data';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -129,6 +131,7 @@ function VerifyPluginDialog({ plugin: { id, tags } }: DialogProps) {
 					<ScrollContainer className="flex h-[50vh] w-full flex-col justify-between gap-2 rounded-md p-6">
 						<Form {...form}>
 							<form className="flex flex-1 flex-col justify-between space-y-2" onSubmit={form.handleSubmit(handleSubmit)}>
+								<FormGlobalErrorMessage />
 								<div className="flex flex-1 flex-col gap-2 space-y-4 rounded-md p-2">
 									<FormField
 										control={form.control}

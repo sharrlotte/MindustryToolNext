@@ -5,15 +5,17 @@ import { Hidden } from '@/components/common/hidden';
 import Tran from '@/components/common/tran';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormField, FormGlobalErrorMessage, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Textarea } from '@/components/ui/textarea';
 
+import { CreateTranslationRequest, CreateTranslationSchema, createTranslation } from '@/query/translation';
+
 import useClientApi from '@/hooks/use-client';
 import useQueriesData from '@/hooks/use-queries-data';
+
 import { clearTranslationCache } from '@/lib/i18n.utils';
-import { CreateTranslationRequest, CreateTranslationSchema, createTranslation } from '@/query/translation';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -83,6 +85,7 @@ export default function AddNewKeyDialog() {
 						className="flex flex-1 flex-col justify-between space-y-4 rounded-md bg-card p-2"
 						onSubmit={form.handleSubmit((value) => mutate(value))}
 					>
+						<FormGlobalErrorMessage />
 						<FormField
 							control={form.control}
 							name="keyGroup"
