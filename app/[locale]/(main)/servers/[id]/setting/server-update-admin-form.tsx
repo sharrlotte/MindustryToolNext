@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/sonner';
 import { Switch } from '@/components/ui/switch';
 
-import { PutServerPortRequest, PutServerPortSchema } from '@/types/request/UpdateServerRequest';
+import { UpdateServerPortRequest, UpdateServerPortSchema } from '@/types/request/UpdateServerRequest';
 import { ServerSetting } from '@/types/response/ServerSetting';
 
 import { updateServerPort } from '@/query/server';
@@ -43,8 +43,8 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 	const { id, port, isOfficial, isAutoTurnOff, isHub } = server;
 	const { session } = useSession();
 
-	const form = useForm<PutServerPortRequest>({
-		resolver: zodResolver(PutServerPortSchema),
+	const form = useForm<UpdateServerPortRequest>({
+		resolver: zodResolver(UpdateServerPortSchema),
 		defaultValues: {
 			port,
 			isOfficial,
@@ -57,7 +57,7 @@ export default function ServerUpdateAdminForm({ server }: Props) {
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['server'],
-		mutationFn: (data: PutServerPortRequest) => updateServerPort(axios, id, data),
+		mutationFn: (data: UpdateServerPortRequest) => updateServerPort(axios, id, data),
 		onSuccess: (_data) => toast.success(<Tran text="update.success" />),
 		onError: (error) => toast.error(<Tran text="update.fail" />, { error }),
 
