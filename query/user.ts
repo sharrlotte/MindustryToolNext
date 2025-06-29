@@ -120,8 +120,8 @@ export const UserSchema = z.object({
 	imageUrl: z.string().min(1).max(1024),
 	thumbnail: z.string().min(1).max(1024),
 	stats: UserStatSchema.optional().nullable(),
-	roles: z.array(UserRoleSchema).nonempty(),
-	authorities: z.array(UserAuthoritySchema).nonempty(),
+	roles: z.array(UserRoleSchema),
+	authorities: z.array(UserAuthoritySchema),
 	isBanned: z.boolean(),
 });
 

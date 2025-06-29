@@ -1,6 +1,5 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ReactNode } from 'react';
 
@@ -11,6 +10,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { useNavBar } from '@/context/navbar.context';
 import { useSession } from '@/context/session.context';
 import { cn, hasAccess } from '@/lib/utils';
+
+import { usePathname } from 'next/navigation';
 
 type NestedPathElementContainerProps = {
 	children: ReactNode;
@@ -42,7 +43,10 @@ export function NestedPathElementContainer({ children, segment }: NestedPathElem
 							},
 						)}
 						showChevron={visible}
-						onClick={() => setVisible(true)}
+						onClick={(event) => {
+							setVisible(true);
+							event.currentTarget.scrollIntoView({ behavior: 'smooth' });
+						}}
 					>
 						{icon}
 						{visible && name}
