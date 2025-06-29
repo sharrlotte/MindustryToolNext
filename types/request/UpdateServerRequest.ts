@@ -22,7 +22,7 @@ export const PutServerSchema = z.object({
 export type PutServerRequest = z.infer<typeof PutServerSchema>;
 
 export const PutServerPortSchema = z.object({
-	port: z.number().min(1).int(),
+	port: z.number().min(1),
 	isOfficial: z.boolean(),
 	isHub: z.boolean(),
 	isAutoTurnOff: z.boolean(),
