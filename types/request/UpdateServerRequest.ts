@@ -1,4 +1,4 @@
-import z from 'zod/v4-mini';
+import * as z from "zod/v4-mini"
 
 export const ServerModes = ['SURVIVAL', 'ATTACK', 'PVP', 'SANDBOX'] as const;
 
