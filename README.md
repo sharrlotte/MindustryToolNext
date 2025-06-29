@@ -1,4 +1,4 @@
-![banner]([banner.png](https://image.mindustry-tool.com//docs/banner.png))
+![banner](https://image.mindustry-tool.com//docs/banner.png)
 
 Mindustry Tool giúp người chơi và quản trị viên dễ dàng chia sẻ, tìm kiếm và quản lý toàn bộ tài nguyên của trò chơi Mindustry – từ các sơ đồ xây dựng phức tạp, bản đồ chơi đa dạng, đến việc vận hành máy chủ một cách hiệu quả và thuận tiện.
 
