@@ -5,8 +5,7 @@ export const MindustryToolIcon = ({ className, width, height }: { className?: st
 		className={className}
 		width={width ?? 32}
 		height={height ?? 32}
-		src="https://image.mindustry-tool.com//docs/icon.png
-"
+		src="https://image.mindustry-tool.com//docs/icon.png"
 		alt="MindustryToolIcon"
 	/>
 );

@@ -61,7 +61,7 @@ export async function getMeSchematics(axios: AxiosInstance, params: StatusPagina
 export async function getMe(axios: AxiosInstance): Promise<User> {
 	const result = await axios.get(`/users/@me`);
 
-    const user = UserSchema.parse(result.data);
+	const user = UserSchema.parse(result.data);
 
 	return user;
 }
@@ -95,30 +95,30 @@ export async function getUserSchematics(
 }
 
 export const UserRoleSchema = z.object({
-	id: z.number().int().min(1).max(1024),
-	name: z.string().min(1).max(1024),
-	position: z.number().int().min(1).max(1024),
-	color: z.string().min(1).max(1024),
-	description: z.string().min(1).max(1024),
+	id: z.int(),
+	name: z.string(),
+	position: z.int(),
+	color: z.string(),
+	description: z.string(),
 });
 
 export const UserAuthoritySchema = z.object({
-	id: z.string().min(1).max(1024),
-	name: z.string().min(1).max(1024),
-	authorityGroup: z.string().min(1).max(1024),
-	description: z.string().min(1).max(1024),
+	id: z.string(),
+	name: z.string(),
+	authorityGroup: z.string(),
+	description: z.string(),
 });
 
 export const UserStatSchema = z.object({
-	EXP: z.number().int().min(1).max(1024).nullable().optional(),
-	DOWNLOAD_COUNT: z.number().int().min(1).max(1024).nullable().optional(),
+	EXP: z.int().nullable().optional(),
+	DOWNLOAD_COUNT: z.int().nullable().optional(),
 });
 
 export const UserSchema = z.object({
 	id: z.string().nonempty(),
-	name: z.string().min(1).max(1024),
-	imageUrl: z.string().min(1).max(1024).nullable(),
-	thumbnail: z.string().min(1).max(1024).nullable(),
+	name: z.string(),
+	imageUrl: z.string().nullable(),
+	thumbnail: z.string().nullable(),
 	stats: UserStatSchema.optional().nullable(),
 	roles: z.array(UserRoleSchema),
 	authorities: z.array(UserAuthoritySchema),
