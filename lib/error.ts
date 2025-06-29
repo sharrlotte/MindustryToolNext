@@ -100,7 +100,7 @@ export function isError<T extends Record<string, any> | number>(req: T | ApiErro
 
 	if (isError) {
 		try {
-			console.error(req);
+			console.error(JSON.stringify(req, null, 2));
 			reportError(req);
 		} catch (e) {
 			console.error(e);

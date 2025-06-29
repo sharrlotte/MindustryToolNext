@@ -15,7 +15,7 @@ export const getCachedUser = unstable_cache(
 	(id: string) => catchError(axiosInstance, (axios) => getUser(axios, { id })),
 	['user'],
 	{
-		revalidate: 60 * 60 * 24,
+		revalidate: 60 * 60,
 	},
 );
 
