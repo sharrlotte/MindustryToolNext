@@ -8,7 +8,7 @@ import { User } from '@/query/user';
 
 type UserCardProps = {
 	avatar?: boolean;
-	user: Omit<User, 'authorities'> | null;
+	user: Pick<User, 'id' | 'name' | 'roles'> | null;
 };
 function UserCard({ user, avatar = true }: UserCardProps) {
 	if (!user) {
