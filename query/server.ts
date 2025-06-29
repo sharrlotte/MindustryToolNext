@@ -5,7 +5,7 @@ import { WorkflowNode } from '@/app/[locale]/(main)/servers/[id]/workflows/workf
 import CreateServerMapRequest from '@/types/request/CreateServerMapRequest';
 import CreateServerPluginRequest from '@/types/request/CreateServerPluginRequest';
 import { CreateServerRequest } from '@/types/request/CreateServerRequest';
-import { PutServerPortRequest, PutServerRequest } from '@/types/request/UpdateServerRequest';
+import { UpdateServerPortRequest, UpdateServerRequest } from '@/types/request/UpdateServerRequest';
 import { KickInfo } from '@/types/response/KickInfo';
 import { Player } from '@/types/response/Player';
 import { PlayerInfo } from '@/types/response/PlayerInfo';
@@ -242,13 +242,13 @@ export async function reloadServers(axios: AxiosInstance): Promise<PostServerRes
 	return result.data;
 }
 
-export async function updateServer(axios: AxiosInstance, serverId: string, data: PutServerRequest): Promise<void> {
+export async function updateServer(axios: AxiosInstance, serverId: string, data: UpdateServerRequest): Promise<void> {
 	return axios.put(`/servers/${serverId}`, data, {
 		data,
 	});
 }
 
-export async function updateServerPort(axios: AxiosInstance, serverId: string, data: PutServerPortRequest): Promise<void> {
+export async function updateServerPort(axios: AxiosInstance, serverId: string, data: UpdateServerPortRequest): Promise<void> {
 	return axios.put(`/servers/${serverId}/port`, data, {
 		data,
 	});
