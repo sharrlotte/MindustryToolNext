@@ -2,7 +2,7 @@
 
 import { FilterIcon, SearchIcon } from 'lucide-react';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
-import { useDebounceValue, useLocalStorage } from 'usehooks-ts';
+import { useDebounceCallback, useLocalStorage } from 'usehooks-ts';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
@@ -52,7 +52,6 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 
 	const [page, setPage] = useState(0);
 	const [name, setName] = useState('');
-	const [debouncedName] = useDebounceValue(name, 300);
 	const [sortBy, setSortBy] = useState<SortTag>(defaultSortTag);
 	const [filterBy, setFilterBy] = useState<TagGroup[]>([]);
 	const [authorId, setAuthorId] = useState<string | null>(null);
@@ -79,6 +78,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tags.length]);
 
+	const setPath = useDebounceCallback((params: URLSearchParams) => window.history.replaceState(null, '', `?${params.toString()}`));
+
 	const handleSearch = useCallback(() => {
 		const params = new URLSearchParams();
 
@@ -94,8 +95,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 			params.set(QueryParams.sort, sortBy);
 		}
 
-		if (debouncedName) {
-			params.set(QueryParams.name, debouncedName);
+		if (name) {
+			params.set(QueryParams.name, name);
 		}
 
 		if (authorId) {
@@ -103,9 +104,8 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		}
 
 		setChanged(false);
-
-		window.history.replaceState(null, '', `?${params.toString()}`);
-	}, [authorId, debouncedName, filterBy, page, sortBy, useSort, useTag]);
+		setPath(params);
+	}, [authorId, name, filterBy, page, setPath, sortBy, useSort, useTag]);
 
 	useEffect(() => {
 		if (!showFilterDialog && isChanged) {
