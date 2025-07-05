@@ -36,7 +36,9 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
 	} catch (error) {
 		if (isAxiosError(error)) {
 			return {
-				error: `${error.config?.method?.toUpperCase()} ${error.request?.url} ${error.message}\n${error.response?.data.message}`,
+				error: new Error(
+					`${error.config?.method?.toUpperCase()} ${error.request?.url} ${error.message}\n${error.response?.data.message}`,
+				),
 			};
 		}
 		return {

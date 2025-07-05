@@ -1,11 +1,9 @@
-'use client';
-
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import ReportErrorDialog from '@/components/common/report-error.dialog';
 import Tran from '@/components/common/tran';
 
-import { getErrorMessage, reportError } from '@/lib/error';
+import { getErrorMessage } from '@/lib/error';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -15,14 +13,10 @@ type Props = {
 export default function ErrorMessage({ className, error }: Props) {
 	const message = getErrorMessage(error);
 
-	useEffect(() => {
-		console.error(error);
-		reportError(error);
-	}, [error]);
-
 	if (message) {
 		return (
 			<span className={cn('text-destructive-foreground font-semibold p-2 text-sm space-x-1', className)}>
+				<span className="font-semibold">{typeof window === 'undefined' ? 'SERVER' : 'CLIENT'}: </span>
 				<span>{message}</span>
 				<ReportErrorDialog />
 			</span>
