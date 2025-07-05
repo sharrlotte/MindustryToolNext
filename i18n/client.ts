@@ -25,7 +25,7 @@ const getTranslationCached = cache(async (url: string) => {
 				revalidate: 3600,
 				tags: ['translations'],
 			},
-			signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 1000),
+			signal: AbortSignal.timeout(2000),
 		}).then(async (res) => {
 			if (!res.ok) {
 				const bodyText = await res.text();
