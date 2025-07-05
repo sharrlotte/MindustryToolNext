@@ -7,7 +7,7 @@ import { Session } from '@/types/response/Session';
 import { colours } from '@/constant/constant';
 import type { AuthorityEnum, UserRole } from '@/constant/constant';
 import env from '@/constant/env';
-import { ApiError, isError } from '@/lib/error';
+import { isError } from '@/lib/error';
 
 export function findBestRole(roles: Role[] | undefined) {
 	if (!roles) return undefined;
@@ -182,7 +182,7 @@ export type Filter =
 	| { authorId: string | null | undefined }
 	| undefined;
 
-export function hasAccess(session: Session | ApiError | undefined | null, filter: Filter): boolean {
+export function hasAccess(session: Session | Error | undefined | null, filter: Filter): boolean {
 	if (filter === undefined) {
 		return true;
 	}

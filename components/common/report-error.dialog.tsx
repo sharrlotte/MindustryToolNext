@@ -1,8 +1,11 @@
-import dynamic from 'next/dynamic';
+'use client';
+
 import { Suspense } from 'react';
 
 import Tran from '@/components/common/tran';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+
+import dynamic from 'next/dynamic';
 
 const ReportErrorForm = dynamic(() => import('@/components/common/report-error.form'));
 

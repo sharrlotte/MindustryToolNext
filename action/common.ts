@@ -9,7 +9,7 @@ import { QuerySchema } from '@/types/schema/search-query';
 import axiosInstance from '@/query/config/config';
 
 import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/constant/constant';
-import { ApiError } from '@/lib/error';
+import { NotFoundError } from '@/lib/error';
 
 import { unstable_cache, unstable_noStore } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -29,25 +29,25 @@ type ServerApi<T> =
 	  }
 	| QueryFn<T>;
 
-export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>): Promise<T | ApiError> {
+export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>): Promise<T | Error> {
 	try {
 		const data = 'queryFn' in queryFn ? await queryFn.queryFn(axios) : await queryFn(axios);
 		return data;
-	} catch (error) {
+	} catch (error: any) {
 		if (isAxiosError(error)) {
-			return {
-				error: new Error(
-					`${error.config?.method?.toUpperCase()} ${error.request?.url} ${error.message}\n${error.response?.data.message}`,
-				),
-			};
+			if (error.code !== undefined && error.status === 404) {
+				return new NotFoundError(error.response?.data?.message);
+			}
+
+			return new Error(
+				`${error.config?.method?.toUpperCase()} ${error.request?.url} ${error.message}\n${error.response?.data.message}`,
+			);
 		}
-		return {
-			error: JSON.stringify(error),
-		};
+		return error;
 	}
 }
 
-export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError> {
+export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | Error> {
 	unstable_noStore(); // To opt out of static renderer
 
 	const axios = await getServerApi();
@@ -59,7 +59,7 @@ export async function serverApi<T>(queryFn: ServerApi<T>): Promise<T | ApiError>
 	});
 }
 
-const getCachedSession: (cookie: string) => Promise<Session | null | ApiError> = cache(
+const getCachedSession: (cookie: string) => Promise<Session | null | Error> = cache(
 	unstable_cache(
 		async (cookie: string) => {
 			axiosInstance.defaults.headers['Cookie'] = decodeURIComponent(cookie);

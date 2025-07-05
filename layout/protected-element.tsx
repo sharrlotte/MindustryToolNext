@@ -2,13 +2,14 @@ import { ReactNode } from 'react';
 
 import ErrorMessage from '@/components/common/error-message';
 
-import { ApiError, isError } from '@/lib/error';
-import { Filter, hasAccess } from '@/lib/utils';
 import { Session } from '@/types/response/Session';
+
+import { isError } from '@/lib/error';
+import { Filter, hasAccess } from '@/lib/utils';
 
 type Props = {
 	filter?: Filter;
-	session: Session | null | ApiError;
+	session: Session | null | Error;
 	alt?: ReactNode;
 	children: ReactNode;
 };
