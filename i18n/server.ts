@@ -22,7 +22,7 @@ const getTranslationCached = cache(
 						revalidate: 3600,
 						tags: ['translations'],
 					},
-					signal: AbortSignal.timeout(3000),
+					signal: AbortSignal.timeout(1000),
 				}).then(async (res) => {
 					if (!res.ok) {
 						throw new Error('Failed to fetch data');
