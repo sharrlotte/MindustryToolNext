@@ -33,13 +33,15 @@ const getTranslationCached = cache(
 							bodyJson = { message: bodyText };
 						}
 
-						throw {
-							error: true,
-							status: res.status,
-							statusText: res.statusText,
-							url,
-							body: bodyJson,
-						};
+						throw new Error(
+							JSON.stringify({
+								error: true,
+								status: res.status,
+								statusText: res.statusText,
+								url,
+								body: bodyJson,
+							}),
+						);
 					}
 
 					return await res.json();
