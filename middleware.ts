@@ -1,10 +1,8 @@
 import acceptLanguage from 'accept-language';
-import { NextRequest, NextResponse, userAgent } from 'next/server';
-
-
 
 import { cookieName, defaultLocale, locales } from '@/i18n/config';
 
+import { NextRequest, NextResponse, userAgent } from 'next/server';
 
 acceptLanguage.languages(locales as any);
 
@@ -23,7 +21,7 @@ export function middleware(req: NextRequest) {
 	if (!language) language = defaultLocale;
 
 	// Ignore auto local for google bot
-	if (locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && isBot) {
+	if (isBot) {
 		return NextResponse.next();
 	}
 
