@@ -31,7 +31,7 @@ const getTranslationCached = cache(
 					return await res.json();
 				});
 			} catch (error) {
-				console.error('Fail to fetch: ' + url);
+				console.error('Fail to fetch: ' + url + " " + error);
 				return Promise.reject(error);
 			}
 		},
