@@ -38,12 +38,12 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
 			return {
 				error: {
 					message: `${error.config?.method?.toUpperCase()} ${error.config?.url} ${error.message}\n${error.response?.data.message}`,
-					cause: JSON.stringify(error),
+					cause: JSON.stringify(error, Object.getOwnPropertyNames(error)),
 				},
 			};
 		}
 		return {
-			error: JSON.stringify(error),
+			error: JSON.stringify(error, Object.getOwnPropertyNames(error)),
 		};
 	}
 }
