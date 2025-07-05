@@ -36,14 +36,11 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
 	} catch (error) {
 		if (isAxiosError(error)) {
 			return {
-				error: {
-					message: `${error.config?.method?.toUpperCase()} ${error.request?.url} ${error.message}\n${error.response?.data.message}`,
-					cause: error.toJSON(),
-				},
+				error: `${error.config?.method?.toUpperCase()} ${error.request?.url} ${error.message}\n${error.response?.data.message}`,
 			};
 		}
 		return {
-			error: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+			error: JSON.stringify(error),
 		};
 	}
 }

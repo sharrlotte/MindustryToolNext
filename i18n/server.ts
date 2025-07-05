@@ -45,9 +45,7 @@ const getTranslationCached = cache(
 					return await res.json();
 				});
 			} catch (error) {
-				console.error(
-					'Fail to fetch server translation: ' + url + ' ' + JSON.stringify(error, Object.getOwnPropertyNames(error)),
-				);
+				console.error('Fail to fetch server translation: ' + url + ' ' + JSON.stringify(error));
 				return Promise.reject(error);
 			}
 		},
