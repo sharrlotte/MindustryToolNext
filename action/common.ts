@@ -3,11 +3,13 @@ import { cache } from 'react';
 
 import 'server-only';
 
-import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/constant/constant';
-import { ApiError } from '@/lib/error';
-import axiosInstance from '@/query/config/config';
 import { Session } from '@/types/response/Session';
 import { QuerySchema } from '@/types/schema/search-query';
+
+import axiosInstance from '@/query/config/config';
+
+import { DEFAULT_PAGINATION_SIZE, PAGINATION_SIZE_PERSISTENT_KEY } from '@/constant/constant';
+import { ApiError } from '@/lib/error';
 
 import { unstable_cache, unstable_noStore } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -34,16 +36,14 @@ export async function catchError<T>(axios: AxiosInstance, queryFn: ServerApi<T>)
 	} catch (error) {
 		if (isAxiosError(error)) {
 			return {
-				error: new Error(
-					`${error.config?.method?.toUpperCase()} ${error.config?.url} ${error.message}\n${error.response?.data.message}`,
-					{
-						cause: error,
-					},
-				),
+				error: {
+					message: `${error.config?.method?.toUpperCase()} ${error.config?.url} ${error.message}\n${error.response?.data.message}`,
+					cause: JSON.stringify(error, Object.getOwnPropertyNames(error)),
+				},
 			};
 		}
 		return {
-			error,
+			error: JSON.stringify(error, Object.getOwnPropertyNames(error)),
 		};
 	}
 }

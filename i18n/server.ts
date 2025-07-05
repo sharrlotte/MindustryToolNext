@@ -11,24 +11,30 @@ import { initReactI18next } from 'react-i18next/initReactI18next';
 
 const getTranslationCached = cache(
 	unstable_cache(
-		(url: string) =>
-			fetch(url, {
-				headers: {
-					Server: 'true',
-				},
-				cache: 'force-cache',
-				next: {
-					revalidate: 3600,
-					tags: ['translations'],
-				},
-				signal: AbortSignal.timeout(5000),
-			}).then(async (res) => {
-				if (!res.ok) {
-					throw new Error('Failed to fetch data');
-				}
+		async (url: string) => {
+			try {
+				return await fetch(url, {
+					headers: {
+						Server: 'true',
+					},
+					cache: 'force-cache',
+					next: {
+						revalidate: 3600,
+						tags: ['translations'],
+					},
+					signal: AbortSignal.timeout(5000),
+				}).then(async (res) => {
+					if (!res.ok) {
+						throw new Error('Failed to fetch data');
+					}
 
-				return await res.json();
-			}),
+					return await res.json();
+				});
+			} catch (error) {
+				console.error('Fail to fetch: ' + url);
+				return Promise.reject(error);
+			}
+		},
 		['translations', 'server'],
 		{
 			revalidate: 60 * 10,
@@ -55,24 +61,28 @@ export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 			request(options, url, payload, callback) {
 				try {
 					if (url.includes('create-missing')) {
-						fetch(url, {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							cache: 'force-cache',
-							next: {
-								revalidate: 3600,
-								tags: ['translations'],
-							},
-							body: JSON.stringify(payload),
-						})
-							.then(async (response) => {
-								if (!response.ok) throw new Error('Network response was not ok');
-								const result = await response.json();
-								callback(undefined, { status: response.status, data: result });
+						try {
+							fetch(url, {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+								},
+								cache: 'force-cache',
+								next: {
+									revalidate: 3600,
+									tags: ['translations'],
+								},
+								body: JSON.stringify(payload),
 							})
-							.catch((error) => callback(error, undefined));
+								.then(async (response) => {
+									if (!response.ok) throw new Error('Network response was not ok');
+									const result = await response.json();
+									callback(undefined, { status: response.status, data: result });
+								})
+								.catch((error) => callback(error, undefined));
+						} catch (error) {
+							callback(error, undefined);
+						}
 					} else {
 						getTranslationCached(url)
 							.then((result) => callback(undefined, { status: 200, data: result }))
