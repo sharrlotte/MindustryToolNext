@@ -25,7 +25,21 @@ const getTranslationCached = cache(
 					signal: AbortSignal.timeout(1000),
 				}).then(async (res) => {
 					if (!res.ok) {
-						throw new Error('Failed to fetch data');
+						const bodyText = await res.text();
+						let bodyJson;
+						try {
+							bodyJson = JSON.parse(bodyText);
+						} catch {
+							bodyJson = { message: bodyText };
+						}
+
+						throw {
+							error: true,
+							status: res.status,
+							statusText: res.statusText,
+							url,
+							body: bodyJson,
+						};
 					}
 
 					return await res.json();
