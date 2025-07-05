@@ -34,7 +34,7 @@ export function MessageCircleIconPath() {
 		}
 
 		const globalMessageHandler = (message: SocketResult<'MESSAGE'>) => {
-			if ('error' in message) {
+			if (message instanceof Error) {
 				return;
 			}
 

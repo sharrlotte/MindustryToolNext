@@ -6,7 +6,7 @@ import { Notification } from '@/types/response/Notification';
 
 export type SocketState = 'connecting' | 'connected' | 'disconnecting' | 'disconnected';
 export type SocketRoom = 'SERVER' | 'LOG' | string;
-export type SocketError = { error: { message: string } };
+export type SocketError = Error;
 export type EventHandler = (data: any | SocketError, event: MessageEvent) => void;
 
 type BaseSocketEvent = { id: string };

@@ -11,5 +11,5 @@ export default function Error({ error }: { error: TError }) {
 		reportError(error);
 	}, [error]);
 
-	return <div className="h-full w-full text-destructive-foreground">{message}</div>;
+	return <div className="h-full w-full text-destructive-foreground">Unhandled: {message}</div>;
 }

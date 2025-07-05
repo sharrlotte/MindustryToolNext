@@ -2,9 +2,11 @@
 
 import React, { ReactNode, useEffect, useState } from 'react';
 
-import { ApiError, isError } from '@/lib/error';
-import axiosInstance from '@/query/config/config';
 import { Session } from '@/types/response/Session';
+
+import axiosInstance from '@/query/config/config';
+
+import { isError } from '@/lib/error';
 
 type SessionState =
 	| {
@@ -16,7 +18,7 @@ type SessionState =
 			state: 'authenticated';
 	  }
 	| {
-			session: ApiError;
+			session: Error;
 			state: 'unauthenticated';
 	  };
 

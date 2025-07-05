@@ -33,21 +33,21 @@ const getTranslationCached = cache(
 							bodyJson = { message: bodyText };
 						}
 
-						throw {
-							error: true,
-							status: res.status,
-							statusText: res.statusText,
-							url,
-							body: bodyJson,
-						};
+						throw new Error(
+							JSON.stringify({
+								error: true,
+								status: res.status,
+								statusText: res.statusText,
+								url,
+								body: bodyJson,
+							}),
+						);
 					}
 
 					return await res.json();
 				});
 			} catch (error) {
-				console.error(
-					'Fail to fetch server translation: ' + url + ' ' + JSON.stringify(error, Object.getOwnPropertyNames(error)),
-				);
+				console.error('Fail to fetch server translation: ' + url + ' ' + JSON.stringify(error));
 				return Promise.reject(error);
 			}
 		},

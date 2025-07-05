@@ -141,7 +141,7 @@ export default function MessageList({
 			renderCause.current = 'event';
 
 			queryClient.setQueriesData<InfiniteData<Message[], unknown> | undefined>({ queryKey, exact: false }, (query) => {
-				if (message && 'error' in message) {
+				if (message instanceof Error) {
 					return;
 				}
 

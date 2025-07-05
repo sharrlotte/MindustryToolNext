@@ -22,7 +22,7 @@ export function onRequestError(
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					message: JSON.stringify({ error: JSON.stringify(error, Object.getOwnPropertyNames(error)), request, context }),
+					message: JSON.stringify({ error: JSON.stringify(error), request, context }),
 				}),
 			});
 		} catch (error) {

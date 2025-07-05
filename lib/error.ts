@@ -20,6 +20,13 @@ export function reportError(error: any) {
 	}
 }
 
+export class NotFoundError extends Error {
+	constructor(message?: string) {
+		super(message);
+		this.name = 'NotFoundError';
+	}
+}
+
 export type TError =
 	| Error
 	| { error: { message: string; name?: string } | Error }
@@ -33,9 +40,6 @@ export type TError =
 				};
 			};
 	  };
-export type ApiError = {
-	error: any;
-};
 
 export function getErrorMessage(error: TError) {
 	errors.unshift(JSON.stringify(error));
@@ -95,8 +99,8 @@ export function getLoggedErrorMessage(error: TError) {
 	}
 }
 
-export function isError<T extends Record<string, any> | number>(req: T | ApiError | null): req is ApiError {
-	const isError = (!!req && typeof req === 'object' && 'error' in req) || req instanceof Error;
+export function isError<T extends Record<string, any> | number>(req: T | Error | null): req is Error {
+	const isError = req instanceof Error;
 
 	if (isError) {
 		try {

@@ -36,18 +36,20 @@ const getTranslationCached = cache(async (url: string) => {
 					bodyJson = { message: bodyText };
 				}
 
-				throw {
-					status: res.status,
-					statusText: res.statusText,
-					url,
-					body: bodyJson,
-				};
+				throw new Error(
+					JSON.stringify({
+						status: res.status,
+						statusText: res.statusText,
+						url,
+						body: bodyJson,
+					}),
+				);
 			}
 
 			return await res.json();
 		});
 	} catch (error) {
-		console.error('Failed to fetch client translation: ' + url + ' ' + JSON.stringify(error, Object.getOwnPropertyNames(error)));
+		console.error('Failed to fetch client translation: ' + url + ' ' + JSON.stringify(error));
 		return Promise.reject(error);
 	}
 });

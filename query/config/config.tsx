@@ -55,9 +55,6 @@ axiosInstance.interceptors.response.use(
 				toast.error(error);
 			}
 		}
-		if (error?.response?.data?.message) {
-			return Promise.reject(error.response.data.message);
-		}
 		return Promise.reject(error);
 	},
 );
