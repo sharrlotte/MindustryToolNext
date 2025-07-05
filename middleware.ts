@@ -1,10 +1,8 @@
 import acceptLanguage from 'accept-language';
-import { NextRequest, NextResponse, userAgent } from 'next/server';
-
-
 
 import { cookieName, defaultLocale, locales } from '@/i18n/config';
 
+import { NextRequest, NextResponse, userAgent } from 'next/server';
 
 acceptLanguage.languages(locales as any);
 
@@ -16,6 +14,7 @@ export const config = {
 
 export function middleware(req: NextRequest) {
 	const { isBot } = userAgent(req);
+    const pathname = req.nextUrl.pathname.startsWith("/") ? req.nextUrl.pathname : "/" + req.nextUrl.pathname;
 
 	let language;
 	if (req.cookies.has(cookieName)) language = acceptLanguage.get(req.cookies.get(cookieName)?.value);
@@ -23,16 +22,16 @@ export function middleware(req: NextRequest) {
 	if (!language) language = defaultLocale;
 
 	// Ignore auto local for google bot
-	if (locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && isBot) {
+	if (isBot) {
 		return NextResponse.next();
 	}
 
-	if (!locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && !req.nextUrl.pathname.startsWith('/_next')) {
+	if (!locales.some((loc) => pathname.startsWith(`/${loc}`)) && !pathname.startsWith('/_next')) {
 		if (isBot) {
 			return NextResponse.next();
 		}
 
-		req.nextUrl.pathname = `/${language}${req.nextUrl.pathname}`;
+		req.nextUrl.pathname = `/${language}${pathname}`;
 
 		return NextResponse.redirect(req.nextUrl);
 	}

@@ -18,9 +18,8 @@ async function schematicSitemap(): Promise<MetadataRoute.Sitemap> {
 
 	return data.map(({ id }) => ({
 		url: `${env.url.base}/en/schematics/${id}`,
-		changeFrequency: 'daily',
+		changeFrequency: 'weekly',
 		lastModified: new Date(),
-		priority: 1,
 		images: [getImageById('schematics', id)],
 		alternates: {
 			languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}/schematics/${id}`])),
@@ -33,10 +32,9 @@ async function mapSitemap(): Promise<MetadataRoute.Sitemap> {
 
 	return data.map(({ id }) => ({
 		url: `${env.url.base}/en/maps/${id}`,
-		changeFrequency: 'daily',
+		changeFrequency: 'weekly',
 		lastModified: new Date(),
 		images: [getImageById('maps', id)],
-		priority: 1,
 		alternates: {
 			languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}/maps/${id}`])),
 		},
@@ -49,11 +47,10 @@ async function postSitemap(): Promise<MetadataRoute.Sitemap> {
 
 	return data.map(({ id }) => ({
 		url: `${env.url.base}/en/posts/${id}`,
-		changeFrequency: 'daily',
+		changeFrequency: 'weekly',
 		lastModified: new Date(),
 		images: [getImageById('posts', id)],
 		alternates: {
-			priority: 1,
 			languages: Object.fromEntries(env.locales.map((lang) => [lang, `${env.url.base}/${lang}/posts/${id}`])),
 		},
 	}));
@@ -73,7 +70,7 @@ function docsSitemap(): MetadataRoute.Sitemap {
 
 	return params.map(({ locale, path }) => ({
 		url: `${env.url.base}/${locale}/docs/${path.join('/')}`,
-		changeFrequency: 'daily',
+		changeFrequency: 'weekly',
 		lastModified: new Date(),
 	}));
 }
