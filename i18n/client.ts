@@ -14,25 +14,30 @@ import { Locale, cookieName, defaultLocale, defaultNamespace, i18nCachePrefix, l
 
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-const getTranslationCached = cache((url: string) =>
-	fetch(url, {
-		headers: {
-			Server: 'true',
-		},
-		cache: 'force-cache',
-		next: {
-			revalidate: 3600,
-			tags: ['translations'],
-		},
-		signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 1000),
-	}).then(async (res) => {
-		if (!res.ok) {
-			throw new Error('Failed to fetch data');
-		}
+const getTranslationCached = cache(async (url: string) => {
+	try {
+		return await fetch(url, {
+			headers: {
+				Server: 'true',
+			},
+			cache: 'force-cache',
+			next: {
+				revalidate: 3600,
+				tags: ['translations'],
+			},
+			signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 1000),
+		}).then(async (res) => {
+			if (!res.ok) {
+				throw new Error('Failed to fetch data');
+			}
 
-		return await res.json();
-	}),
-);
+			return await res.json();
+		});
+	} catch (error) {
+		console.error('Failed to fetch: ' + url + ' ' + error);
+		return Promise.reject(error);
+	}
+});
 
 export function getClientOptions(ns = defaultNamespace) {
 	const options: InitOptions<ChainedBackendOptions> = {
@@ -59,24 +64,28 @@ export function getClientOptions(ns = defaultNamespace) {
 					request(options, url, payload, callback) {
 						try {
 							if (url.includes('create-missing')) {
-								fetch(url, {
-									method: 'POST',
-									cache: 'force-cache',
-									next: {
-										revalidate: 3600,
-										tags: ['translations'],
-									},
-									headers: {
-										'Content-Type': 'application/json',
-									},
-									body: JSON.stringify(payload),
-								})
-									.then(async (response) => {
-										if (!response.ok) throw new Error('Network response was not ok');
-										const result = await response.json();
-										callback(undefined, { status: response.status, data: result });
+								try {
+									fetch(url, {
+										method: 'POST',
+										cache: 'force-cache',
+										next: {
+											revalidate: 3600,
+											tags: ['translations'],
+										},
+										headers: {
+											'Content-Type': 'application/json',
+										},
+										body: JSON.stringify(payload),
 									})
-									.catch((error) => callback(error, undefined));
+										.then(async (response) => {
+											if (!response.ok) throw new Error('Network response was not ok');
+											const result = await response.json();
+											callback(undefined, { status: response.status, data: result });
+										})
+										.catch((error) => callback(error, undefined));
+								} catch (error) {
+									callback(error, undefined);
+								}
 							} else {
 								getTranslationCached(url)
 									.then((result) => callback(undefined, { status: 200, data: result }))

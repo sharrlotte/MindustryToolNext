@@ -89,9 +89,9 @@ export function getLoggedErrorMessage(error: TError) {
 			}
 		}
 
-		return JSON.stringify(error, Object.getOwnPropertyNames(error));
+		return JSON.stringify(error);
 	} catch (e) {
-		return JSON.stringify(error, Object.getOwnPropertyNames(error));
+		return JSON.stringify(e);
 	}
 }
 

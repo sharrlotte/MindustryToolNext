@@ -15,48 +15,52 @@ const decoder = new TextDecoder();
 async function* getChat(url: string, prompt: string, signal: AbortSignal) {
 	const requestUrl = new URL(url);
 
-	const res = await fetch(requestUrl, {
-		method: 'POST',
-		signal,
-		credentials: 'include',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ query: prompt }),
-	});
+	try {
+		const res = await fetch(requestUrl, {
+			method: 'POST',
+			signal,
+			credentials: 'include',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query: prompt }),
+		});
 
-	if (!res.ok) {
-		throw new Error(res.statusText + (await res.text()));
-	}
-
-	const reader = res.body?.getReader();
-
-	if (!reader) throw new Error('No reader');
-
-	while (true) {
-		const { done, value } = await reader.read();
-
-		if (done) return;
-
-		let token = decoder.decode(value, { stream: true });
-
-		token = token.replaceAll('data:', '').replaceAll('\ndata:\ndata:', '\n').replaceAll('\r', '').replaceAll('\n\n\n', '\n');
-
-		if (token.endsWith('\n\n')) {
-			token = token.slice(0, -2);
+		if (!res.ok) {
+			throw new Error(res.statusText + (await res.text()));
 		}
 
-		let counter = 0;
-		for (const t of token) {
-			if (counter++ === 10) {
-				await sleep(1);
-				counter = 0;
+		const reader = res.body?.getReader();
+
+		if (!reader) throw new Error('No reader');
+
+		while (true) {
+			const { done, value } = await reader.read();
+
+			if (done) return;
+
+			let token = decoder.decode(value, { stream: true });
+
+			token = token.replaceAll('data:', '').replaceAll('\ndata:\ndata:', '\n').replaceAll('\r', '').replaceAll('\n\n\n', '\n');
+
+			if (token.endsWith('\n\n')) {
+				token = token.slice(0, -2);
 			}
-			yield t;
-		}
 
-		if (signal?.aborted) {
-			await reader.cancel();
-			return;
+			let counter = 0;
+			for (const t of token) {
+				if (counter++ === 10) {
+					await sleep(1);
+					counter = 0;
+				}
+				yield t;
+			}
+
+			if (signal?.aborted) {
+				await reader.cancel();
+				return;
+			}
 		}
+	} catch (error) {
+		throw new Error('mindustry gpt stream error', { cause: error });
 	}
 }
 
