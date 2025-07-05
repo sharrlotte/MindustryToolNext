@@ -1,12 +1,13 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
+import { Role } from '@/types/response/Role';
+import { Session } from '@/types/response/Session';
+
 import { colours } from '@/constant/constant';
 import type { AuthorityEnum, UserRole } from '@/constant/constant';
 import env from '@/constant/env';
 import { ApiError, isError } from '@/lib/error';
-import { Role } from '@/types/response/Role';
-import { Session } from '@/types/response/Session';
 
 export function findBestRole(roles: Role[] | undefined) {
 	if (!roles) return undefined;
@@ -263,4 +264,207 @@ export function hasProperty(obj: any, key: string): obj is { [key: string]: any 
 
 export function dateToId(date: Date) {
 	return `v${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}.${String(date.getHours()).padStart(2, '0')}.${String(date.getMinutes()).padStart(2, '0')}`;
+}
+
+type ParseResult = {
+	line: string;
+	format: Format;
+}[];
+
+export function parseColorText(text: string | undefined): ParseResult {
+	if (!text) return [];
+
+	const arr = text.match(COLOR_REGEX);
+
+	if (!arr) return breakdownLine(text).map((line) => ({ line, format: {} }));
+
+	const colors: {
+		rawColor: string;
+		color: string;
+		format: Format;
+		index: number;
+	}[] = [];
+
+	let index = -1;
+
+	for (let i = 0; i < arr.length; i++) {
+		index = text.indexOf(arr[i], index + 1);
+		const rawColor = arr[i].toLocaleLowerCase();
+		const { color, format } = resolveColorAndFormat(rawColor);
+
+		if (color) {
+			colors.push({
+				rawColor,
+				color,
+				format,
+				index,
+			});
+		}
+	}
+
+	if (colors.length === 0) return [{ line: text, format: {} }];
+
+	const formatted: {
+		text: string;
+		color: string;
+		format: Format;
+	}[] = [];
+
+	if (colors.length > 0) {
+		const firstText = text.substring(0, colors[0].index);
+		if (firstText) {
+			formatted.push({
+				text: firstText,
+				color: '',
+				format: {},
+			});
+		}
+	}
+
+	for (let i = 0; i < colors.length - 1; i++) {
+		const current = colors[i];
+		const next = colors[i + 1];
+
+		const subtext = text.substring(current.index + current.rawColor.length, next.index);
+
+		if (!subtext) continue;
+
+		formatted.push({
+			text: subtext,
+			color: current.color,
+			format: current.format,
+		});
+	}
+
+	const last = colors[colors.length - 1];
+
+	formatted.push({
+		text: text.substring(last.index + last.rawColor.length),
+		color: last.color,
+		format: last.format,
+	});
+
+	const result = formatted.flatMap((f) => breakdownLine(f.text).map((line) => ({ ...f, line })));
+	return result;
+}
+
+// eslint-disable-next-line no-control-regex
+const COLOR_REGEX = /(\[[#]*[a-fA-F0-9]*\]|\[[#]*[a-zA-Z]*\]|\u001B\[[0-9;]*m)/gim;
+
+const ANSI: Record<string, Format> = {
+	//ANSI color codes
+	'0': {},
+	'1': { bold: true },
+	'2': { dim: true },
+	'3': { italic: true },
+	'4': { underline: true },
+	'9': { strike: true },
+	'22': { bold: true },
+	'23': { dim: true },
+	'24': { italic: true },
+	'25': { underline: true },
+	'29': { strike: true },
+	'30': { foreground: 'black' },
+	'31': { foreground: 'red' },
+	'32': { foreground: 'green' },
+	'33': { foreground: 'yellow' },
+	'34': { foreground: 'blue' },
+	'35': { foreground: 'magenta' },
+	'36': { foreground: 'cyan' },
+	'37': { foreground: 'white' },
+	'40': { background: 'black' },
+	'41': { background: 'red' },
+	'42': { background: 'green' },
+	'43': { background: 'yellow' },
+	'44': { background: 'blue' },
+	'45': { background: 'magenta' },
+	'46': { background: 'cyan' },
+	'47': { background: 'white' },
+	'90': { foreground: '#555555' },
+	'91': { foreground: '#FF5555' },
+	'92': { foreground: '#55FF55' },
+	'93': { foreground: '#FFFF55' },
+	'94': { foreground: '#5555FF' },
+	'95': { foreground: '#FF55FF' },
+	'96': { foreground: '#55FFFF' },
+	'97': { foreground: '#FFFFFF' },
+};
+
+type Format = {
+	background?: string;
+	foreground?: string;
+	bold?: boolean;
+	italic?: boolean;
+	underline?: boolean;
+	strike?: boolean;
+	dim?: boolean; // light color
+};
+
+function resolveFormat(keys: string[]) {
+	let format = {};
+
+	for (const key of keys) {
+		const v = ANSI[key];
+
+		if (v && Object.keys(v).length !== 0) {
+			format = {
+				...format,
+				...v,
+			};
+		} else {
+			format = {};
+		}
+	}
+
+	return format;
+}
+
+type ColorAndFormat = {
+	color: string;
+	format: Format;
+};
+
+function resolveColorAndFormat(color: string): ColorAndFormat {
+	if (color.startsWith('[') && color.endsWith(']')) {
+		color = color.substring(1, color.length - 1);
+		color = color.startsWith('#') ? color.padEnd(7, '0') : colours[color.toLowerCase().trim()];
+
+		return {
+			format: {
+				foreground: color,
+			},
+			color,
+		};
+	} else {
+		color = color.substring(color.indexOf('['));
+
+		const keys = color.replaceAll('m', ' ').replace('\u001B[', '').split(' ').filter(Boolean);
+
+		return {
+			color,
+			format: resolveFormat(keys),
+		};
+	}
+}
+
+function breakdownLine(text: string): string[] {
+	if (text === '[]') {
+		return [];
+	}
+
+	const lines = text.split(/\n/g);
+	const result = [];
+
+	if (lines.length === 1) {
+		return [text];
+	}
+
+	result.push(lines[0]);
+
+	for (let i = 1; i < lines.length; i++) {
+		result.push('\n');
+		result.push(lines[i]);
+	}
+
+	return result;
 }

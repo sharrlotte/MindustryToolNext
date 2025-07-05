@@ -1,6 +1,5 @@
 'use client';
 
-import ColorText from '@/components/common/color-text';
 import { DetailDescription } from '@/components/common/detail';
 
 export default function Page() {
