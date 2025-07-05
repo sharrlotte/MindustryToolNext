@@ -22,7 +22,7 @@ const getTranslationCached = cache(
 						revalidate: 3600,
 						tags: ['translations'],
 					},
-					signal: AbortSignal.timeout(1000),
+					signal: AbortSignal.timeout(2000),
 				}).then(async (res) => {
 					if (!res.ok) {
 						const bodyText = await res.text();
