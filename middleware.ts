@@ -14,6 +14,7 @@ export const config = {
 
 export function middleware(req: NextRequest) {
 	const { isBot } = userAgent(req);
+    const pathname = req.nextUrl.pathname.startsWith("/") ? req.nextUrl.pathname : "/" + req.nextUrl.pathname;
 
 	let language;
 	if (req.cookies.has(cookieName)) language = acceptLanguage.get(req.cookies.get(cookieName)?.value);
@@ -25,12 +26,12 @@ export function middleware(req: NextRequest) {
 		return NextResponse.next();
 	}
 
-	if (!locales.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) && !req.nextUrl.pathname.startsWith('/_next')) {
+	if (!locales.some((loc) => pathname.startsWith(`/${loc}`)) && !pathname.startsWith('/_next')) {
 		if (isBot) {
 			return NextResponse.next();
 		}
 
-		req.nextUrl.pathname = `/${language}${req.nextUrl.pathname}`;
+		req.nextUrl.pathname = `/${language}${pathname}`;
 
 		return NextResponse.redirect(req.nextUrl);
 	}
