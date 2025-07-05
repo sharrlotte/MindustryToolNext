@@ -28,7 +28,20 @@ const getTranslationCached = cache(async (url: string) => {
 			signal: AbortSignal.timeout(process.env.NODE_ENV === 'production' ? 3000 : 1000),
 		}).then(async (res) => {
 			if (!res.ok) {
-				throw new Error('Failed to fetch data');
+				const bodyText = await res.text();
+				let bodyJson;
+				try {
+					bodyJson = JSON.parse(bodyText);
+				} catch {
+					bodyJson = { message: bodyText };
+				}
+
+				throw {
+					status: res.status,
+					statusText: res.statusText,
+					url,
+					body: bodyJson,
+				};
 			}
 
 			return await res.json();
