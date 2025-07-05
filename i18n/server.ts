@@ -22,7 +22,7 @@ const getTranslationCached = cache(
 						revalidate: 3600,
 						tags: ['translations'],
 					},
-					signal: AbortSignal.timeout(5000),
+					signal: AbortSignal.timeout(1000),
 				}).then(async (res) => {
 					if (!res.ok) {
 						throw new Error('Failed to fetch data');
@@ -31,7 +31,7 @@ const getTranslationCached = cache(
 					return await res.json();
 				});
 			} catch (error) {
-				console.error('Fail to fetch: ' + url + " " + error);
+				console.error('Fail to fetch server translation: ' + url + " " + error);
 				return Promise.reject(error);
 			}
 		},
