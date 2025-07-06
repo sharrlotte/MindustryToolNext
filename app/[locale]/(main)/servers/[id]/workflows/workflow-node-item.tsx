@@ -338,8 +338,6 @@ function tokenize(input: string): Token[] {
 
 	tokens.push({ type: 'EOF', value: '' });
 
-	console.log({ tokens });
-
 	return tokens;
 }
 

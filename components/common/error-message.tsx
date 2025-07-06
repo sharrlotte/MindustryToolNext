@@ -15,8 +15,6 @@ type Props = {
 export default function ErrorMessage({ className, error }: Props) {
 	const message = getErrorMessage(error);
 
-	console.log({ error, is: error instanceof NotFoundError });
-
 	if (error instanceof NotFoundError) {
 		return (
 			<div className={cn('p-2 h-full grid place-items-center row-span-full col-span-full', className)}>

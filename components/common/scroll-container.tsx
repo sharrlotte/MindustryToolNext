@@ -33,7 +33,7 @@ export default function ScrollContainer({ className, id, children, ...rest }: Pr
 	}, [scrollKey]);
 
 	const handleScroll = useDebounceCallback(
-		(event: React.UIEvent<HTMLDivElement>) => localStorage.setItem(scrollKey, event.currentTarget.scrollTop.toString()),
+		(event: React.UIEvent<HTMLDivElement>) => localStorage.setItem(scrollKey, event.currentTarget?.scrollTop?.toString() ?? '0'),
 		500,
 	);
 
