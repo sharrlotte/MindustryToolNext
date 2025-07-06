@@ -17,42 +17,40 @@ import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigat
 
 const getTranslationCached = cache(async (url: string) => {
 	try {
-		return await withRetry(
-			() =>
-				fetch(url, {
-					headers: {
-						Server: 'true',
-					},
-					cache: 'force-cache',
-					next: {
-						revalidate: 3600,
-						tags: ['translations'],
-					},
-					signal: AbortSignal.timeout(2000),
-				}).then(async (res) => {
-					if (!res.ok) {
-						const bodyText = await res.text();
-						let bodyJson;
-						try {
-							bodyJson = JSON.parse(bodyText);
-						} catch {
-							bodyJson = { message: bodyText };
-						}
+		return await withRetry(async () => {
+			const res = await fetch(url, {
+				headers: {
+					Server: 'true',
+				},
+				cache: 'force-cache',
+				next: {
+					revalidate: 3600,
+					tags: ['translations'],
+				},
+				signal: AbortSignal.timeout(2000),
+			});
 
-						throw new Error(
-							JSON.stringify({
-								status: res.status,
-								statusText: res.statusText,
-								url,
-								body: bodyJson,
-							}),
-						);
-					}
+			if (!res.ok) {
+				const bodyText = await res.text();
+				let bodyJson;
+				try {
+					bodyJson = JSON.parse(bodyText);
+				} catch {
+					bodyJson = { message: bodyText };
+				}
 
-					return await res.json();
-				}),
-			3,
-		);
+				throw new Error(
+					JSON.stringify({
+						status: res.status,
+						statusText: res.statusText,
+						url,
+						body: bodyJson,
+					}),
+				);
+			}
+
+			return await res.json();
+		}, 3);
 	} catch (error) {
 		console.error('Failed to fetch client translation: ' + url + ' ' + error);
 		return Promise.reject(error);
