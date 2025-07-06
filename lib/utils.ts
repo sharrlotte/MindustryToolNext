@@ -477,10 +477,11 @@ export async function withRetry<T>(fn: () => Promise<T>, retries: number): Promi
 			return await fn();
 		} catch (e) {
 			attempts++;
-			console.warn(e);
 			errors.push(e);
 		}
 	}
 
-	throw new Error('Max retries reached', { cause: errors });
+	console.warn(errors);
+
+	throw new Error(`Max retries reached: ${attempts}/${retries}`, { cause: errors });
 }
