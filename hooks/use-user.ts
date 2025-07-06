@@ -8,6 +8,5 @@ export default function useUser(id: string) {
 	return useQuery<User>({
 		queryKey: ['users', id],
 		queryFn: () => Batcher.user.get(id),
-		retry: false,
 	});
 }
