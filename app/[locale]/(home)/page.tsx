@@ -40,7 +40,7 @@ import { getMapCount } from '@/query/map';
 import { getMaps } from '@/query/map';
 import { getSchematicCount } from '@/query/schematic';
 import { getSchematics } from '@/query/schematic';
-import { getServers } from '@/query/server';
+import { getServerCount, getServers } from '@/query/server';
 import { ItemPaginationQueryType } from '@/types/schema/search-query';
 
 import { YouTubeEmbed } from '@next/third-parties/google';
@@ -393,17 +393,18 @@ async function Statistic({ locale }: { locale: Locale }) {
 
 const getCachedSchematicCount = cache(unstable_cache((axios) => getSchematicCount(axios, {})));
 const getCachedMapCount = cache(unstable_cache((axios) => getMapCount(axios, {})));
+const getCachedServerCount = cache(unstable_cache((axios) => getServerCount(axios)));
 
 async function StatisticSection({ locale }: { locale: Locale }) {
 	const axios = await getServerApi();
-	const [schematics, maps] = await Promise.all([getCachedSchematicCount(axios), getCachedMapCount(axios)]);
+	const [schematics, maps, servers] = await Promise.all([getCachedSchematicCount(axios), getCachedMapCount(axios), getCachedServerCount(axios)]);
 
 	return (
 		<FlyIn className="grid grid-cols-1 gap-8 md:grid-cols-3">
 			{[
 				{ icon: ClipboardList, text: 'home.schematics-count', count: schematics, color: 'text-brand', link: '#new-schematics' },
 				{ icon: MapIcon, text: 'home.maps-count', count: maps, color: 'text-cyan-400', link: '#new-maps' },
-				{ icon: ServerIcon, text: 'home.free-servers-count', count: 3, color: 'text-purple-400', link: '#server' },
+				{ icon: ServerIcon, text: 'home.free-servers-count', count: servers, color: 'text-purple-400', link: '#server' },
 			].map((item, index) => (
 				<FlyIn key={index} className="h-full">
 					<InternalLink
