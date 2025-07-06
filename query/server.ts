@@ -41,6 +41,12 @@ export async function deleteServerFile(axios: AxiosInstance, id: string, path: s
 	return result.data;
 }
 
+export async function getServerCount(axios: AxiosInstance): Promise<number> {
+	const result = await axios.get(`/servers/count`);
+
+	return result.data;
+}
+
 export async function getServerPlayers(axios: AxiosInstance, id: string): Promise<Player[]> {
 	const result = await axios.get(`/servers/${id}/players`);
 
