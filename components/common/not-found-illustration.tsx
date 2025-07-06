@@ -27,7 +27,7 @@ export function NotFoundIllustration() {
 					fill="currentColor"
 					className="text-emerald-300 dark:text-emerald-700 animate-pulse"
 				/>
-				<circle cx="350" cy="80" r="8" fill="currentColor" className="text-pink-300 dark:text-pink-700 animate-bounce" />
+				<circle cx="350" cy="100" r="8" fill="currentColor" className="text-pink-300 dark:text-pink-700 animate-bounce" />
 				<polygon points="320,250 340,280 300,280" fill="currentColor" className="text-yellow-300 dark:text-yellow-700" />
 
 				{/* Search icon */}

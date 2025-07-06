@@ -1,9 +1,11 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import React, { ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
+import { useDebounceCallback } from 'usehooks-ts';
 
 import { cn } from '@/lib/utils';
+
+import { usePathname } from 'next/navigation';
 
 type Props = {
 	id?: string;
@@ -30,9 +32,9 @@ export default function ScrollContainer({ className, id, children, ...rest }: Pr
 		}
 	}, [scrollKey]);
 
-	const handleScroll = useCallback(
+	const handleScroll = useDebounceCallback(
 		(event: React.UIEvent<HTMLDivElement>) => localStorage.setItem(scrollKey, event.currentTarget.scrollTop.toString()),
-		[scrollKey],
+		500,
 	);
 
 	return (

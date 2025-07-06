@@ -7,7 +7,7 @@ import env from '@/constant/env';
 
 const axiosInstance = Axios.create({
 	baseURL: env.url.api,
-	timeout: env.requestTimeout,
+	timeout: 2000,
 	paramsSerializer: {
 		indexes: null,
 	},
