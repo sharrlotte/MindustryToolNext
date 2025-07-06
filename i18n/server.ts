@@ -5,22 +5,25 @@ import { cache } from 'react';
 
 import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
+import { withRetry } from '@/lib/utils';
 
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
 const getTranslationCached = cache(async (url: string) => {
 	try {
-		return await fetch(url, {
-			headers: {
-				Server: 'true',
-			},
-			cache: 'force-cache',
-			next: {
-				revalidate: 3600,
-				tags: ['translations'],
-			},
-			signal: AbortSignal.timeout(2000),
-		}).then(async (res) => {
+		return await withRetry(async () => {
+			const res = await fetch(url, {
+				headers: {
+					Server: 'true',
+				},
+				cache: 'force-cache',
+				next: {
+					revalidate: 3600,
+					tags: ['translations'],
+				},
+				signal: AbortSignal.timeout(2000),
+			});
+
 			if (!res.ok) {
 				const bodyText = await res.text();
 				let bodyJson;
@@ -42,7 +45,7 @@ const getTranslationCached = cache(async (url: string) => {
 			}
 
 			return await res.json();
-		});
+		}, 3);
 	} catch (error) {
 		console.error('Fail to fetch server translation: ' + url + ' ' + error);
 		return Promise.reject(error);

@@ -468,3 +468,19 @@ function breakdownLine(text: string): string[] {
 
 	return result;
 }
+
+export async function withRetry<T>(fn: () => Promise<T>, retries: number): Promise<T> {
+	const errors: unknown[] = [];
+	let attempts = 0;
+	while (attempts < retries) {
+		try {
+			return await fn();
+		} catch (e) {
+			attempts++;
+			console.warn(e);
+			errors.push(e);
+		}
+	}
+
+	throw new Error('Max retries reached', { cause: errors });
+}
