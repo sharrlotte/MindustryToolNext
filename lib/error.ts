@@ -99,10 +99,12 @@ export function getLoggedErrorMessage(error: TError) {
 	}
 }
 
+const ignoredErrors = ['NotFoundError', 'NotAuthorizedError', 'NotAuthenticatedError'];
+
 export function isError<T extends Record<string, any> | number>(req: T | Error | null): req is Error {
 	const isError = req instanceof Error;
 
-	if (isError) {
+	if (isError && !ignoredErrors.includes(req.name)) {
 		try {
 			console.error(JSON.stringify(req, null, 2));
 			reportError(req);
