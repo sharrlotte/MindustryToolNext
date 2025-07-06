@@ -6,57 +6,48 @@ import { cache } from 'react';
 import env from '@/constant/env';
 import { Locale, defaultLocale, defaultNamespace, locales } from '@/i18n/config';
 
-import { unstable_cache } from 'next/cache';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
-const getTranslationCached = cache(
-	unstable_cache(
-		async (url: string) => {
-			try {
-				return await fetch(url, {
-					headers: {
-						Server: 'true',
-					},
-					cache: 'force-cache',
-					next: {
-						revalidate: 3600,
-						tags: ['translations'],
-					},
-					signal: AbortSignal.timeout(2000),
-				}).then(async (res) => {
-					if (!res.ok) {
-						const bodyText = await res.text();
-						let bodyJson;
-						try {
-							bodyJson = JSON.parse(bodyText);
-						} catch {
-							bodyJson = { message: bodyText };
-						}
+const getTranslationCached = cache(async (url: string) => {
+	try {
+		return await fetch(url, {
+			headers: {
+				Server: 'true',
+			},
+			cache: 'force-cache',
+			next: {
+				revalidate: 3600,
+				tags: ['translations'],
+			},
+			signal: AbortSignal.timeout(2000),
+		}).then(async (res) => {
+			if (!res.ok) {
+				const bodyText = await res.text();
+				let bodyJson;
+				try {
+					bodyJson = JSON.parse(bodyText);
+				} catch {
+					bodyJson = { message: bodyText };
+				}
 
-						throw new Error(
-							JSON.stringify({
-								error: true,
-								status: res.status,
-								statusText: res.statusText,
-								url,
-								body: bodyJson,
-							}),
-						);
-					}
-
-					return await res.json();
-				});
-			} catch (error) {
-				console.error('Fail to fetch server translation: ' + url + ' ' + error);
-				return Promise.reject(error);
+				throw new Error(
+					JSON.stringify({
+						error: true,
+						status: res.status,
+						statusText: res.statusText,
+						url,
+						body: bodyJson,
+					}),
+				);
 			}
-		},
-		['translations', 'server'],
-		{
-			revalidate: 60 * 10,
-		},
-	),
-);
+
+			return await res.json();
+		});
+	} catch (error) {
+		console.error('Fail to fetch server translation: ' + url + ' ' + error);
+		return Promise.reject(error);
+	}
+});
 
 export function getServerOptions(lng = defaultLocale, ns = defaultNamespace) {
 	const options: InitOptions<HttpBackendOptions> = {
