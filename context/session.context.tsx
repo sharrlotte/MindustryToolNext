@@ -83,12 +83,13 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 					data ? { session: SessionSchema.parse(data), state: 'authenticated' } : { session: null, state: 'unauthenticated' },
 				),
 			)
-			.catch(() =>
+			.catch((error) => {
+				console.error(error);
 				setSession({
 					session: null,
 					state: 'unauthenticated',
-				}),
-			);
+				});
+			});
 	}, [setSession]);
 
 	return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;
