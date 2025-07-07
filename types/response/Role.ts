@@ -1,4 +1,5 @@
 import { UserRole } from '@/constant/constant';
+import z from 'zod/v4';
 
 export type Role = {
 	id: number;
@@ -7,6 +8,14 @@ export type Role = {
 	description: string;
 	color: string;
 };
+
+export const RoleSchema = z.object({
+	id: z.number(),
+	name: z.string(),
+	position: z.number(),
+	description: z.string(),
+	color: z.string(),
+});
 
 export type RoleWithAuthorities = {
 	id: number;

@@ -1,26 +1,32 @@
 'use client';
 
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
-import { Session } from '@/types/response/Session';
+import { SessionSchema } from '@/types/response/Session';
 
 import axiosInstance from '@/query/config/config';
 
 import { isError } from '@/lib/error';
 
-type SessionState =
-	| {
-			session: null;
-			state: 'loading' | 'unauthenticated';
-	  }
-	| {
-			session: Session;
-			state: 'authenticated';
-	  }
-	| {
-			session: Error;
-			state: 'unauthenticated';
-	  };
+import z from 'zod/v4';
+
+export const SessionStateSchema = z.union([
+	z.object({
+		session: z.null(),
+		state: z.literal('loading'),
+	}),
+	z.object({
+		session: SessionSchema,
+		state: z.literal('authenticated'),
+	}),
+	z.object({
+		session: z.null(),
+		state: z.literal('unauthenticated'),
+	}),
+]);
+
+type SessionState = z.infer<typeof SessionStateSchema>;
 
 const defaultContextValue: SessionState = {
 	session: null,
@@ -58,20 +64,32 @@ export function useMe() {
 }
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-	const [session, setSession] = useState<SessionState>(defaultContextValue);
+	const [session, setSession] = useLocalStorage<SessionState>('session', defaultContextValue, {
+		deserializer: (value) => {
+			try {
+				return SessionStateSchema.parse(JSON.parse(value));
+			} catch (e) {
+				return defaultContextValue;
+			}
+		},
+	});
 
 	useEffect(() => {
 		axiosInstance
 			.get('/auth/session')
 			.then((res) => res.data)
-			.then((data) => setSession(data ? { session: data, state: 'authenticated' } : { session: null, state: 'unauthenticated' }))
+			.then((data) =>
+				setSession(
+					data ? { session: SessionSchema.parse(data), state: 'authenticated' } : { session: null, state: 'unauthenticated' },
+				),
+			)
 			.catch(() =>
 				setSession({
 					session: null,
 					state: 'unauthenticated',
 				}),
 			);
-	}, []);
+	}, [setSession]);
 
 	return <SessionContext.Provider value={session}>{children}</SessionContext.Provider>;
 }
