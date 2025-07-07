@@ -106,7 +106,7 @@ export function isError<T extends Record<string, any> | number>(req: T | Error |
 
 	if (isError && !ignoredErrors.includes(req.name)) {
 		try {
-			console.error(JSON.stringify(req, null, 2));
+			console.error(req);
 			reportError(req);
 		} catch (e) {
 			console.error(e);
