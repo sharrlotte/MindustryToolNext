@@ -5,14 +5,12 @@ import z from 'zod/v4';
 export const SessionSchema = z.object({
 	id: z.string(),
 	name: z.string(),
-	email: z.string(),
 	imageUrl: z.string(),
 	roles: z.array(RoleSchema),
 	authorities: z.array(z.string()),
-	lastLogin: z.number(),
-	createdAt: z.number(),
+	createdAt: z.number().optional(),
 	stats: z.any(),
-	isBanned: z.boolean(),
+	isBanned: z.boolean().optional(),
 });
 
 export type Session = z.infer<typeof SessionSchema>;
