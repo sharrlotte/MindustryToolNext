@@ -9,11 +9,12 @@ import Divider from '@/components/ui/divider';
 import { toast } from '@/components/ui/sonner';
 
 import useClientApi from '@/hooks/use-client';
+
+import env from '@/constant/env';
 import { errors } from '@/lib/error';
 
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 import { useMutation } from '@tanstack/react-query';
-import env from '@/constant/env';
 
 const EXPLAIN_MESSAGE = `If you encountered an error, please let us know what happened. To help us fix it, describe:
 
@@ -45,7 +46,10 @@ export default function ReportErrorForm() {
 				},
 			});
 		},
-		onSuccess: () => toast.success('Your report has been sent.'),
+		onSuccess: () => {
+			toast.success('Your report has been sent.');
+			setMessage('');
+		},
 		onError: () => toast.error('Something went wrong.'),
 	});
 

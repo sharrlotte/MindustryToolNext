@@ -7,7 +7,7 @@ import { SessionSchema } from '@/types/response/Session';
 
 import axiosInstance from '@/query/config/config';
 
-import { isError } from '@/lib/error';
+import { errors, isError } from '@/lib/error';
 
 import z from 'zod/v4';
 
@@ -85,6 +85,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 			)
 			.catch((error) => {
 				console.error(error);
+				errors.push(error);
 				setSession({
 					session: null,
 					state: 'unauthenticated',
