@@ -57,6 +57,26 @@ const getTranslationCached = cache(async (url: string) => {
 	}
 });
 
+const createMissingTranslation = async (url: string, body: any) => {
+	const res = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		cache: 'force-cache',
+		next: {
+			revalidate: 3600,
+			tags: ['translations'],
+		},
+		body: JSON.stringify(body),
+		signal: AbortSignal.timeout(5000),
+	});
+
+	if (!res.ok) throw new Error('Client: fail to create missing translation: ' + (await res.text()));
+	const result = await res.json();
+	return { status: res.status, data: result.data };
+};
+
 export function getClientOptions(ns = defaultNamespace) {
 	const options: InitOptions<ChainedBackendOptions> = {
 		// debug: process.env.NODE_ENV === 'development',
@@ -82,28 +102,12 @@ export function getClientOptions(ns = defaultNamespace) {
 					request(options, url, payload, callback) {
 						try {
 							if (url.includes('create-missing')) {
-								try {
-									fetch(url, {
-										method: 'POST',
-										cache: 'force-cache',
-										next: {
-											revalidate: 3600,
-											tags: ['translations'],
-										},
-										headers: {
-											'Content-Type': 'application/json',
-										},
-										body: JSON.stringify(payload),
-									})
-										.then(async (response) => {
-											if (!response.ok) throw new Error('Network response was not ok');
-											const result = await response.json();
-											callback(undefined, { status: response.status, data: result });
-										})
-										.catch((error) => callback(error, undefined));
-								} catch (error) {
-									callback(error, undefined);
-								}
+								withRetry(() => createMissingTranslation(url, payload), 3)
+									.then((data) => callback(null, data))
+									.catch((error) => {
+										console.error('Client: fail to crease missing translation: ' + url + ' ' + error);
+										callback(error, undefined);
+									});
 							} else {
 								getTranslationCached(url)
 									.then((result) => callback(undefined, { status: 200, data: result }))
