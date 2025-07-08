@@ -1,12 +1,9 @@
 import { AxiosInstance } from 'axios';
 
-
-
-import { toForm } from '@/lib/utils';
 import { DetailTagDto } from '@/types/response/Tag';
 import { AllTagGroup, TagCategoryDto, TagDetailDto, TagGroupDto } from '@/types/response/TagGroup';
 
-
+import { toForm } from '@/lib/utils';
 
 import { z } from 'zod/v4';
 
@@ -65,7 +62,7 @@ export const UpdateTagSchema = z.object({
 	name: z.string().min(1).max(100).trim().regex(TAG_NAME_REGEX),
 	description: z.string().min(1).max(100).trim(),
 	categoryId: z.number().int(),
-	modId: z.string().optional().nullable(),
+	modId: z.string().nullish(),
 	icon: z.any().optional(),
 });
 

@@ -1,9 +1,9 @@
 import { z } from 'zod/v4';
 
 export const WorkflowNodeStateFieldSchema = z.object({
-	consumer: z.any().optional().nullable(),
-	producer: z.any().optional().nullable(),
-	variableName: z.string().optional().nullable(),
+	consumer: z.any().nullish(),
+	producer: z.any().nullish(),
+	variableName: z.string().nullish(),
 });
 
 export const WorkflowNodeStateSchema = z.object({
@@ -25,13 +25,13 @@ const WorkflowFieldUnits = ['SECOND', 'MILLISECOND', 'MINUTE', 'HOUR', 'DAY', 'W
 export const WorkflowFieldConsume = z.object({
 	type: z.string(),
 	required: z.boolean(),
-	unit: z.enum(WorkflowFieldUnits).optional().nullable(),
-	defaultValue: z.any().optional().nullable(),
+	unit: z.enum(WorkflowFieldUnits).nullish(),
+	defaultValue: z.any().nullish(),
 	options: z.array(
 		z.object({
 			label: z.string(),
 			value: z.string(),
-			produceType: z.any().optional().nullable(),
+			produceType: z.any().nullish(),
 		}),
 	),
 });
@@ -39,7 +39,7 @@ export const WorkflowFieldConsume = z.object({
 export type WorkflowFieldConsume = z.infer<typeof WorkflowFieldConsume>;
 
 export const WorkflowFieldProduce = z.object({
-	produceType: z.any().optional().nullable(),
+	produceType: z.any().nullish(),
 	variableName: z.string(),
 });
 
@@ -47,21 +47,21 @@ export type WorkflowFieldProduce = z.infer<typeof WorkflowFieldProduce>;
 
 export const WorkflowFieldSchema = z.object({
 	name: z.string(),
-	consumer: WorkflowFieldConsume.optional().nullable(),
-	producer: WorkflowFieldProduce.optional().nullable(),
+	consumer: WorkflowFieldConsume.nullish(),
+	producer: WorkflowFieldProduce.nullish(),
 });
 
 export type WorkflowField = z.infer<typeof WorkflowFieldSchema>;
 
 export const WorkflowOutputSchema = z.object({
 	name: z.string(),
-	description: z.string().optional().nullable(),
+	description: z.string().nullish(),
 });
 
 export type WorkflowOutput = z.infer<typeof WorkflowOutputSchema>;
 
 export const WorkflowNodeTypeSchema = z.object({
-	id: z.string().optional().nullable(),
+	id: z.string().nullish(),
 	name: z.string(),
 	group: z.string(),
 	color: z.string(),

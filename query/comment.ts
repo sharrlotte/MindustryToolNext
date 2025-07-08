@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios';
 
-import { toForm } from '@/lib/utils';
 import { Comment } from '@/types/response/Comment';
 import { PaginationQuery } from '@/types/schema/search-query';
+
+import { toForm } from '@/lib/utils';
 
 import { z } from 'zod/v4';
 
@@ -45,7 +46,7 @@ export async function deleteCommentById(axios: AxiosInstance, id: string): Promi
 export const CreateCommentSchema = z.object({
 	content: z.string().min(1).max(1024),
 	attachments: z
-		.array(z.object({ url: z.string().min(5).max(100), file: z.any().nullable().optional() }))
+		.array(z.object({ url: z.string().min(5).max(100), file: z.any().nullish() }))
 		.min(0)
 		.max(5),
 });

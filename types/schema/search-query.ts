@@ -1,11 +1,10 @@
+import { sortTag } from '@/types/response/SortTag';
+import { verifyStatus } from '@/types/response/Status';
+
 import { userRoles } from '@/constant/constant';
 import { DEFAULT_PAGINATION_SIZE } from '@/constant/constant';
 import { defaultSortTag } from '@/constant/env';
 import { locales } from '@/i18n/config';
-import { sortTag } from '@/types/response/SortTag';
-import { verifyStatus } from '@/types/response/Status';
-
-
 
 import { z } from 'zod/v4';
 
@@ -23,7 +22,7 @@ export const sizeSchema = z
 	.catch(DEFAULT_PAGINATION_SIZE);
 
 export const pageSchema = z.preprocess(Number, z.number().int().min(0)).default(0).catch(0);
-    
+
 export const nameSchema = z.string().optional();
 export const roleSchema = z.enum(userRoles).optional();
 export const isBannedSchema = z.boolean().optional();
@@ -38,8 +37,8 @@ export const tagsSchema = z
 export const languageSchema = z.enum(locales).default('en').catch('en');
 export const targetLanguageSchema = z.enum(locales).default('vi').catch('vi');
 export const languageKeySchema = z.string().optional();
-export const isTranslatedSchema = z.boolean().optional().nullable();
-export const autoSizeSchema = z.boolean().optional().nullable();
+export const isTranslatedSchema = z.boolean().nullish();
+export const autoSizeSchema = z.boolean().nullish();
 
 export type QuerySchema = typeof PaginationQuerySchema;
 
@@ -144,5 +143,5 @@ export type CommentSort = (typeof commentSorts)[number];
 
 export const CommentPaginationQuerySchema = z.object({
 	...PaginationParam,
-	sort: z.enum(commentSorts).default('newest').catch('newest'), 
+	sort: z.enum(commentSorts).default('newest').catch('newest'),
 });
