@@ -110,8 +110,8 @@ export const UserAuthoritySchema = z.object({
 });
 
 export const UserStatSchema = z.object({
-	EXP: z.int().nullable().optional(),
-	DOWNLOAD_COUNT: z.int().nullable().optional(),
+	EXP: z.int().nullish(),
+	DOWNLOAD_COUNT: z.int().nullish(),
 });
 
 export const UserSchema = z.object({
@@ -119,7 +119,7 @@ export const UserSchema = z.object({
 	name: z.string(),
 	imageUrl: z.string().nullable(),
 	thumbnail: z.string().nullable(),
-	stats: UserStatSchema.optional().nullable(),
+	stats: UserStatSchema.nullish(),
 	roles: z.array(UserRoleSchema),
 	authorities: z.array(UserAuthoritySchema),
 	isBanned: z.boolean(),
