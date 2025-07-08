@@ -26,7 +26,7 @@ export default function ScrollContainer({ className, id, children, ...rest }: Pr
 				setTimeout(() => div.scrollTo({ top: parseInt(scrollTop) }), 0);
 			}
 		} catch (error) {
-			console.error(error);
+			console.error('Fail to get scroll top: ' + error);
 		}
 	}, [scrollKey]);
 
