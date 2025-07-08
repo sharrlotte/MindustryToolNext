@@ -1,4 +1,3 @@
-import { Metadata } from 'next/dist/types';
 import React, { Suspense } from 'react';
 
 import SchematicDetailCard from '@/components/schematic/schematic-detail-card';
@@ -12,9 +11,13 @@ import { getErrorMessage, isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
 
+import { Metadata } from 'next/dist/types';
+
 type Props = {
 	params: Promise<{ id: string; locale: Locale }>;
 };
+
+export const revalidate = 600;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { id, locale } = await params;

@@ -84,7 +84,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 				),
 			)
 			.catch((error) => {
-				console.error(error);
+				console.error('Fail to fetch session: ' + error);
 				errors.push(error);
 				setSession({
 					session: null,
