@@ -20,9 +20,10 @@ export const SchematicDetailSchema = z.object({
 	status: StatusSchema,
 	verifierId: z.string().optional(),
 	itemId: z.string(),
-	isVerified: z.boolean(),
-	downloadCount: z.number(),
-	createdAt: z.string(),
+        isVerified: z.boolean(),
+        downloadCount: z.number(),
+        viewCount: z.number(),
+        createdAt: z.string(),
 });
 
 export type SchematicDetail = z.infer<typeof SchematicDetailSchema>;

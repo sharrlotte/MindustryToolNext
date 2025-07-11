@@ -156,6 +156,15 @@ export function byteToSize(bytes: number) {
 	return Math.round((bytes / Math.pow(1024, i)) * 100) / 100 + '' + sizes[i];
 }
 
+export function formatViewCount(value: number) {
+        if (value < 1000) return value.toString();
+
+        const thousands = Math.floor(value / 1000);
+        const hundreds = Math.floor((value % 1000) / 100);
+
+        return hundreds > 0 ? `${thousands}k${hundreds}` : `${thousands}k`;
+}
+
 type ImageFolder = 'schematics' | 'maps' | 'posts';
 
 export function getImageById(folder: ImageFolder, id: string) {

@@ -8,6 +8,7 @@ export type Schematic = {
 	status: Status;
 	itemId: string;
 	isVerified: boolean;
-	downloadCount: number;
-	createdAt: string;
+        downloadCount: number;
+        viewCount: number;
+        createdAt: string;
 };
