@@ -15,11 +15,12 @@ export const MapDetailSchema = z.object({
 	width: z.number(),
 	status: StatusSchema,
 	verifierId: z.string(),
-	itemId: z.string(),
-	isVerified: z.boolean(),
-	downloadCount: z.number(),
-	createdAt: z.string(),
-	meta: z.any(),
+        itemId: z.string(),
+        isVerified: z.boolean(),
+        downloadCount: z.number(),
+        viewCount: z.number(),
+        createdAt: z.string(),
+        meta: z.any(),
 });
 
 export type MapDetail = z.infer<typeof MapDetailSchema>;

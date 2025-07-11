@@ -19,6 +19,7 @@ import {
 } from '@/components/common/detail';
 import ErrorMessage from '@/components/common/error-message';
 import SizeCard from '@/components/common/size-card';
+import ViewCount from '@/components/common/view-count';
 import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import ItemRequirementCard from '@/components/schematic/item-requirement-card';
@@ -53,8 +54,9 @@ export default async function SchematicDetailCard({ id, locale }: SchematicDetai
 	const {
 		name,
 		description,
-		downloadCount,
-		likes,
+                downloadCount,
+                viewCount,
+                likes,
 		dislikes,
 		userId,
 		verifierId,
@@ -114,8 +116,9 @@ export default async function SchematicDetailCard({ id, locale }: SchematicDetai
 								url: `/schematics/${id}/data`,
 							}}
 						/>
-						<DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-						<LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
+                                               <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
+                                               <ViewCount count={viewCount} />
+                                               <LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
 						<EllipsisButton>
 							<ProtectedElement
 								session={session}

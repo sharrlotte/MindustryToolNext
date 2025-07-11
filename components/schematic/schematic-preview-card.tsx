@@ -9,6 +9,7 @@ import DownloadButton from '@/components/button/download.button';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
+import ViewCount from '@/components/common/view-count';
 import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 
@@ -23,7 +24,7 @@ type SchematicPreviewCardProps = {
 };
 
 export default function SchematicPreviewCard({
-	schematic: { id, name, likes, dislikes, downloadCount, itemId },
+        schematic: { id, name, likes, dislikes, downloadCount, itemId, viewCount },
 }: SchematicPreviewCardProps) {
 	const axios = useClientApi();
 	const { locale } = useParams();
@@ -57,8 +58,9 @@ export default function SchematicPreviewCard({
 				<PreviewActions>
 					<LikeAndDislike like={likes} dislike={dislikes} itemId={itemId} />
 					<CopyButton content={copyContent} data={getData} />
-					<DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
-				</PreviewActions>
+                                        <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
+                                        <ViewCount count={viewCount} />
+                                </PreviewActions>
 			</PreviewDescription>
 		</Preview>
 	);

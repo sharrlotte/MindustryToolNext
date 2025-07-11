@@ -9,6 +9,7 @@ import DownloadButton from '@/components/button/download.button';
 import ColorText from '@/components/common/color-text';
 import InternalLink from '@/components/common/internal-link';
 import { Preview, PreviewActions, PreviewDescription, PreviewHeader, PreviewImage } from '@/components/common/preview';
+import ViewCount from '@/components/common/view-count';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 
 import env from '@/constant/env';
@@ -18,7 +19,7 @@ type MapPreviewCardProps = {
 	map: Map;
 };
 
-function MapPreviewCard({ map: { id, name, likes, dislikes, downloadCount, itemId } }: MapPreviewCardProps) {
+function MapPreviewCard({ map: { id, name, likes, dislikes, downloadCount, itemId, viewCount } }: MapPreviewCardProps) {
 	const { locale } = useParams();
 
 	const link = `${env.url.base}/${locale}/maps/${id}`;
@@ -42,8 +43,9 @@ function MapPreviewCard({ map: { id, name, likes, dislikes, downloadCount, itemI
 				</PreviewHeader>
 				<PreviewActions>
 					<LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
-					<DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
-				</PreviewActions>
+                                        <DownloadButton count={downloadCount} href={downloadLink} fileName={downloadName} />
+                                        <ViewCount count={viewCount} />
+                                </PreviewActions>
 			</PreviewDescription>
 		</Preview>
 	);

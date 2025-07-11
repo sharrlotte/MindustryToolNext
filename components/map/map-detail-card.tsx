@@ -21,6 +21,7 @@ import ErrorMessage from '@/components/common/error-message';
 import JsonDisplay from '@/components/common/json-display';
 import ScrollContainer from '@/components/common/scroll-container';
 import SizeCard from '@/components/common/size-card';
+import ViewCount from '@/components/common/view-count';
 import Tran from '@/components/common/tran';
 import LikeAndDislike from '@/components/like/like-and-dislike';
 import { DeleteMapButton } from '@/components/map/delete-map.button';
@@ -57,11 +58,12 @@ export default async function MapDetailCard({ id, locale }: MapDetailCardProps) 
 		userId,
 		isVerified,
 		width,
-		height,
-		downloadCount,
-		createdAt,
-		meta,
-	} = map;
+                height,
+                downloadCount,
+                viewCount,
+                createdAt,
+                meta,
+        } = map;
 
 	const link = `${env.url.base}/${locale}/maps/${id}`;
 	const imageUrl = `${env.url.image}/maps/${id}${env.imageFormat}`;
@@ -110,8 +112,9 @@ export default async function MapDetailCard({ id, locale }: MapDetailCardProps) 
 						</TabsContent>
 					</Tabs>
 					<DetailActions>
-						<DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
-						<LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
+                                                <DownloadButton href={downloadUrl} fileName={downloadName} count={downloadCount} />
+                                                <ViewCount count={viewCount} />
+                                                <LikeAndDislike itemId={itemId} like={likes} dislike={dislikes} />
 						<EllipsisButton>
 							<ClientProtectedElement
 								filter={{
