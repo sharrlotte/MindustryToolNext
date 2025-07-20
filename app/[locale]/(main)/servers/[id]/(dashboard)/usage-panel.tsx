@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
-
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
 import CpuProgress from '@/components/server/cpu-progress';
@@ -28,15 +26,9 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalR
 		limit: 1,
 	});
 
-	const { cpu, serverRam, jvmRam } = useMemo(
-		() => ({
-			cpu: (Math.ceil(data[0]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100,
-			serverRam: (data[0]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024,
-			jvmRam: (data[0]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024,
-		}),
-		[cpuUsage, jvmRamUsage, ramUsage, data],
-	);
-
+	const cpu = (Math.ceil(data[0]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100;
+	const serverRam = (data[0]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024;
+	const jvmRam = (data[0]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024;
 	const nativeRam = jvmRam - serverRam;
 
 	return (
