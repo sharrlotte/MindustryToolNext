@@ -25,9 +25,9 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, plan }
 		limit: 1,
 	});
 
-	const cpu = (Math.ceil(data[0]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100;
-	const serverRam = (data[0]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024;
-	const jvmRam = (data[0]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024;
+	const cpu = (Math.ceil(data[data.length - 1]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100;
+	const serverRam = (data[data.length - 1]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024;
+	const jvmRam = (data[data.length - 1]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024;
 	const totalRam = plan.ram;
 	const nativeRam = jvmRam - serverRam;
 
