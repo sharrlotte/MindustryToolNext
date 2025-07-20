@@ -17,11 +17,10 @@ type UsagePanelProps = {
 	cpuUsage: number;
 	ramUsage: number;
 	jvmRamUsage: number;
-	totalRam: number;
 	plan: ServerPlan;
 };
 
-export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalRam, plan }: UsagePanelProps) {
+export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, plan }: UsagePanelProps) {
 	const { data } = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
 		limit: 1,
 	});
@@ -29,6 +28,7 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalR
 	const cpu = (Math.ceil(data[0]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100;
 	const serverRam = (data[0]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024;
 	const jvmRam = (data[0]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024;
+	const totalRam = plan.ram;
 	const nativeRam = jvmRam - serverRam;
 
 	return (
