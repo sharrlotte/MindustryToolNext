@@ -8,11 +8,7 @@ import useServerMaps from '@/hooks/use-server-maps';
 export default function HasServerMap({ id, children }: { id: string; children: ReactNode }) {
 	const { data, isError, isLoading } = useServerMaps(id);
 
-	if (isLoading) {
-		return <></>;
-	}
-
-	if (isError || !data || data.length === 0) {
+	if ((isError || !data || data.length === 0) && !isLoading) {
 		return (
 			<div className="space-x-2 h-9 rounded-md">
 				<Tran className="text-warning-foreground" text="server.no-map-warning" />
