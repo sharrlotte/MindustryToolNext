@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
-
 import Tran from '@/components/common/tran';
 import RamUsageChart from '@/components/metric/ram-usage-chart';
 import CpuProgress from '@/components/server/cpu-progress';
@@ -19,24 +17,18 @@ type UsagePanelProps = {
 	cpuUsage: number;
 	ramUsage: number;
 	jvmRamUsage: number;
-	totalRam: number;
 	plan: ServerPlan;
 };
 
-export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, totalRam, plan }: UsagePanelProps) {
+export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, plan }: UsagePanelProps) {
 	const { data } = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
 		limit: 1,
 	});
 
-	const { cpu, serverRam, jvmRam } = useMemo(
-		() => ({
-			cpu: (Math.ceil(data[0]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100,
-			serverRam: (data[0]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024,
-			jvmRam: (data[0]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024,
-		}),
-		[cpuUsage, jvmRamUsage, ramUsage, data],
-	);
-
+	const cpu = (Math.ceil(data[data.length - 1]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100;
+	const serverRam = (data[data.length - 1]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024;
+	const jvmRam = (data[data.length - 1]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024;
+	const totalRam = plan.ram;
 	const nativeRam = jvmRam - serverRam;
 
 	return (
