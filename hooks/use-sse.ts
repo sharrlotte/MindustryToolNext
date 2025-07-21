@@ -87,7 +87,5 @@ export default function useSse<T = string>(
 		}
 	}, 5000);
 
-	console.log({ state, error, messages });
-
 	return { data: messages, state, error };
 }
