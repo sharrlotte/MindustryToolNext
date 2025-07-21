@@ -141,7 +141,7 @@ function Render<T>({ isLoading, loader, skeletonElements, error, data, noResult,
 		);
 	}
 
-	if (!data) {
+	if (!data || data.length === 0) {
 		return noResult;
 	}
 
