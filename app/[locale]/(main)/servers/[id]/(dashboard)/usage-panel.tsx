@@ -21,7 +21,7 @@ type UsagePanelProps = {
 };
 
 export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, plan }: UsagePanelProps) {
-	const { data, state } = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
+	const { data } = useSse<ServerLiveStats>(`${env.url.api}/servers/${id}/live-stats`, {
 		limit: 1,
 	});
 
@@ -45,7 +45,6 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, plan }
 					{Math.ceil(((jvmRamUsage ?? 1) / (totalRam ?? 1)) * 10000) / 100}%)
 				</span>
 			</div>
-			<span>{state}</span>
 			<RamUsageChart serverRamUsage={serverRam} nativeRamUsage={nativeRam} totalRam={totalRam * 1024 * 1024} />
 			<div className="flex flex-col text-muted-foreground">
 				<div>{`Native: ${byteToSize(nativeRam)}`}</div>

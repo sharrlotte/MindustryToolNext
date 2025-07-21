@@ -93,7 +93,7 @@ export default function InitServerButton({ id }: Props) {
 							<div className="gap-2 flex text-sm">
 								<ColorText text={last?.data} />
 								<span className="ml-auto text-nowrap">
-									{Math.round(((last?.createdAt ?? 0) - (data[0]?.createdAt ?? 0)) / 100) / 10}s
+									{Math.round(((last?.createdAt ?? 0) - (data[0]?.createdAt ?? 0)) / 10) / 100}s
 								</span>
 							</div>
 						</div>
