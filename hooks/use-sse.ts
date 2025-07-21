@@ -74,6 +74,12 @@ export default function useSse<T = string>(
 		};
 	}, [connect]);
 
+	useEffect(() => {
+		if (state === 'disconnected') {
+			connect();
+		}
+	}, [connect, state]);
+
 	useInterval(() => {
 		if (state === 'disconnected' || eventSource.current === undefined || eventSource.current.readyState === EventSource.CLOSED) {
 			connect();
