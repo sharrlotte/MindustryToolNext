@@ -78,7 +78,7 @@ export default function NameTagSearch({ className, type, useSort = true, useTag 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tags.length]);
 
-	const setPath = useDebounceCallback((params: URLSearchParams) => window.history.replaceState(null, '', `?${params.toString()}`));
+	const setPath = useDebounceCallback((params: URLSearchParams) => window.history.replaceState(null, '', `?${params.toString()}`), 200);
 
 	const handleSearch = useCallback(() => {
 		const params = new URLSearchParams();
