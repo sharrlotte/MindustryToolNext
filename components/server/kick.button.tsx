@@ -16,9 +16,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import useMessage from '@/hooks/use-message';
+
 import { revalidate } from '@/action/server-action';
 import { useSocket } from '@/context/socket.context';
-import useMessage from '@/hooks/use-message';
 
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -74,7 +75,7 @@ export function KickButton({ id, uuid }: BanButtonProps) {
 					<Tran text="cancel" />
 				</AlertDialogCancel>
 				<AlertDialogAction asChild>
-					<Button variant="command-destructive" onClick={handleKick}>
+					<Button variant="command-destructive" onClick={handleKick} disabled={reason.length === 0}>
 						<Tran text="kick" />
 					</Button>
 				</AlertDialogAction>

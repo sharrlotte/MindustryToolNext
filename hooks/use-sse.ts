@@ -45,6 +45,7 @@ export default function useSse<T = string>(
 			newEventSource.onerror = (err) => {
 				setState('disconnected');
 				setError(err);
+				console.error({ CloseSSE: err });
 				newEventSource.close();
 			};
 
@@ -85,6 +86,8 @@ export default function useSse<T = string>(
 			connect();
 		}
 	}, 5000);
+
+	console.log({ state, error, messages });
 
 	return { data: messages, state, error };
 }
