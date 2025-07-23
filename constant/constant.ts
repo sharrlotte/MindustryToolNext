@@ -166,3 +166,8 @@ export const colours: Record<string, string> = {
 	W: 'yellow',
 	E: 'red',
 };
+
+export type Brand<K, T> = K & { __brand: T };
+
+export type Megabyte = Brand<number, 'MB'>;
+export type Byte = Brand<number, 'Byte'>;

@@ -28,7 +28,7 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, plan }
 	const cpu = (Math.ceil(data[0]?.value.cpuUsage ?? cpuUsage ?? 0) * 100) / 100;
 	const serverRam = (data[0]?.value.ramUsage ?? ramUsage ?? 0) * 1024 * 1024;
 	const jvmRam = (data[0]?.value.jvmRamUsage ?? jvmRamUsage ?? 0) * 1024 * 1024;
-	const totalRam = plan.ram;
+	const totalRam = plan.ram * 1024 * 1024;
 	const nativeRam = jvmRam - serverRam;
 
 	return (
@@ -41,11 +41,10 @@ export default function UsagePanel({ id, cpuUsage, jvmRamUsage, ramUsage, plan }
 			<div className="flex gap-2 justify-between w-full">
 				<Tran className="font-bold" text="metric.ram-usage" />
 				<span className="text-muted-foreground">
-					{byteToSize(jvmRam)} / {byteToSize(totalRam * 1024 * 1024)} (
-					{Math.ceil(((jvmRam ?? 1) / (totalRam ?? 1)) * 1024 * 1024 * 10000) / 100}%)
+					{byteToSize(jvmRam)} / {byteToSize(totalRam)} ({Math.ceil(((jvmRam ?? 1) / (totalRam ?? 1)) * 10000) / 100}%)
 				</span>
 			</div>
-			<RamUsageChart serverRamUsage={serverRam} nativeRamUsage={nativeRam} totalRam={totalRam * 1024 * 1024} />
+			<RamUsageChart serverRamUsage={serverRam} nativeRamUsage={nativeRam} totalRam={totalRam} />
 			<div className="flex flex-col text-muted-foreground">
 				<div>{`Native: ${byteToSize(nativeRam)}`}</div>
 				<div>{`Server: ${byteToSize(serverRam)}`}</div>
