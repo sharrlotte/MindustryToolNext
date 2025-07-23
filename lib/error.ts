@@ -106,7 +106,7 @@ export function isError<T extends Record<string, any> | number>(req: T | Error |
 
 	if (isError && !ignoredErrors.includes(req.name)) {
 		try {
-			console.error('Request error: ' + req);
+			console.error('Request error: ' + req + ' ' + new Error().stack);
 			reportError(req);
 		} catch (e) {
 			console.error('Fail to report error: ' + e);
