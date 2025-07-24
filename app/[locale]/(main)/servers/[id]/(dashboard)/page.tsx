@@ -27,6 +27,7 @@ import { formatTitle, hasAccess } from '@/lib/utils';
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import ServerVersion from '@/components/server/server-version';
 
 export const experimental_ppr = true;
 
@@ -78,7 +79,8 @@ export default async function Page({ params }: Props) {
 		return <ErrorMessage error={session} />;
 	}
 
-	const { name, avatar, description, port, mode, gamemode, players, kicks, status, userId, address, mapName, errors } = server;
+	const { name, avatar, description, port, mode, gamemode, players, kicks, status, userId, address, mapName, errors, version } =
+		server;
 
 	const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
 
@@ -123,6 +125,14 @@ export default async function Page({ params }: Props) {
 											<ColorText className="font-semibold" text={mapName} />
 										</Fragment>
 									)}
+								</div>
+							)}
+							{version && (status === 'HOST' || status === 'UP') && (
+								<div className="flex flex-col gap-1">
+									<Fragment>
+										<Tran text="server.version" />
+										<ServerVersion>{version}</ServerVersion>
+									</Fragment>
 								</div>
 							)}
 						</main>
