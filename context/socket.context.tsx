@@ -19,7 +19,7 @@ type UseSocket = Omit<SocketContextType, 'socket'> & {
 };
 
 const defaultContextValue: SocketContextType = {
-	socket: new SocketClient(`${env.url.socket}/socket`),
+	socket: new SocketClient(`${env.url.socket}/api/v3/socket`),
 	state: 'disconnected',
 };
 
