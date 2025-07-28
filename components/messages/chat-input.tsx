@@ -152,7 +152,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 						type="submit"
 						title="send"
 						tabIndex={0}
-						disabled={state !== 'connected' || !message || message.length > maxMessageLength}
+						disabled={state !== 'connected' || message.length === 0 || message.length > maxMessageLength}
 					>
 						<SendIcon />
 					</Button>
