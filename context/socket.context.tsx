@@ -1,6 +1,7 @@
 'use client';
 
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import { useInterval } from 'usehooks-ts';
 
 import { toast } from '@/components/ui/sonner';
 
@@ -67,6 +68,8 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 			setState(socket.getState());
 		});
 	}, [socket, authState]);
+
+	useInterval(() => setState(socket.getState()), 1000);
 
 	return (
 		<SocketContext.Provider
