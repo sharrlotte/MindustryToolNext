@@ -1,8 +1,10 @@
 import { MapIcon, ServerIcon } from 'lucide-react';
 import { ClipboardList, GithubIcon } from 'lucide-react';
 import type { Metadata } from 'next';
-import { unstable_cache } from 'next/cache';
 import React, { Suspense, cache } from 'react';
+
+import './home.module.css';
+
 import 'server-only';
 
 import Counter from '@/app/[locale]/(main)/counter';
@@ -27,6 +29,14 @@ import SchematicPreviewCard from '@/components/schematic/schematic-preview-card'
 import ServerCard from '@/components/server/server-card';
 import Divider from '@/components/ui/divider';
 
+import { ItemPaginationQueryType } from '@/types/schema/search-query';
+
+import { getMapCount } from '@/query/map';
+import { getMaps } from '@/query/map';
+import { getSchematicCount } from '@/query/schematic';
+import { getSchematics } from '@/query/schematic';
+import { getServerCount, getServers } from '@/query/server';
+
 import { getServerApi, getSession } from '@/action/common';
 import { serverApi } from '@/action/common';
 import env from '@/constant/env';
@@ -36,17 +46,11 @@ import { getTranslation } from '@/i18n/server';
 import { isError } from '@/lib/error';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
-import { getMapCount } from '@/query/map';
-import { getMaps } from '@/query/map';
-import { getSchematicCount } from '@/query/schematic';
-import { getSchematics } from '@/query/schematic';
-import { getServerCount, getServers } from '@/query/server';
-import { ItemPaginationQueryType } from '@/types/schema/search-query';
 
 import { YouTubeEmbed } from '@next/third-parties/google';
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
-import './home.module.css';
+import { unstable_cache } from 'next/cache';
 
 export const experimental_ppr = true;
 
@@ -147,8 +151,8 @@ export default async function Page({ params }: Props) {
 			<Hero locale={locale} />
 			<AboutMindustrySection locale={locale} />
 			<AboutMindustryToolSection locale={locale} />
-			<NewSchematics queryParam={{ page: 0, size: 10, autoSize: false }} />
-			<NewMaps queryParam={{ page: 0, size: 10, autoSize: false }} />
+			<NewSchematics queryParam={{ page: 0, size: 10, autoSize: false, sort: 'download_count_desc' }} />
+			<NewMaps queryParam={{ page: 0, size: 10, autoSize: false, sort: 'download_count_desc' }} />
 			<ServerSection locale={locale} />
 			<Suspense>
 				<LoginAction locale={locale} />
@@ -397,7 +401,11 @@ const getCachedServerCount = cache(unstable_cache((axios) => getServerCount(axio
 
 async function StatisticSection({ locale }: { locale: Locale }) {
 	const axios = await getServerApi();
-	const [schematics, maps, servers] = await Promise.all([getCachedSchematicCount(axios), getCachedMapCount(axios), getCachedServerCount(axios)]);
+	const [schematics, maps, servers] = await Promise.all([
+		getCachedSchematicCount(axios),
+		getCachedMapCount(axios),
+		getCachedServerCount(axios),
+	]);
 
 	return (
 		<FlyIn className="grid grid-cols-1 gap-8 md:grid-cols-3">
