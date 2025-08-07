@@ -1,91 +1,65 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useInterval } from 'usehooks-ts';
+import { useEffect, useRef, useState } from 'react';
+import ReconnectingEventSource from 'reconnecting-eventsource'
 
 type SseState = 'connected' | 'disconnected' | 'connecting';
 
 export default function useSse<T = string>(
-	url: string,
-	options?: {
-		limit?: number;
-	},
+    url: string,
+    options?: {
+        limit?: number;
+    },
 ) {
-	const eventSource = useRef<EventSource>();
-	const [messages, setMessages] = useState<T[]>([]);
-	const [state, setState] = useState<SseState>('disconnected');
-	const [error, setError] = useState<Event>();
+    const eventSource = useRef<EventSource>();
+    const [messages, setMessages] = useState<T[]>([]);
+    const [state, setState] = useState<SseState>('disconnected');
+    const [error, setError] = useState<Event>();
 
-	const connect = useCallback(() => {
-		const prev = eventSource.current;
+    useEffect(() => {
+        setState('connecting');
 
-		if (prev === undefined) {
-			setState('connecting');
+        const newEventSource = new ReconnectingEventSource(url, {
+            withCredentials: true,
+        });
 
-			const newEventSource = new EventSource(url, {
-				withCredentials: true,
-			});
+        eventSource.current = newEventSource;
 
-			eventSource.current = newEventSource;
+        newEventSource.onopen = () => {
+            setState('connected');
+        };
 
-			newEventSource.onopen = () => {
-				setState('connected');
-			};
+        newEventSource.onmessage = (event) => {
+            setMessages((prevMessages) => {
+                const newValue = JSON.parse(event.data) as T;
 
-			newEventSource.onmessage = (event) => {
-				setMessages((prevMessages) => {
-					const newValue = JSON.parse(event.data) as T;
+                if (options?.limit) {
+                    return [...prevMessages, newValue].slice(-options.limit);
+                }
 
-					if (options?.limit) {
-						return [...prevMessages, newValue].slice(-options.limit);
-					}
+                return [...prevMessages, newValue];
+            });
+        };
 
-					return [...prevMessages, newValue];
-				});
-			};
+        newEventSource.onerror = (err) => {
+            setState('disconnected');
+            setError(err);
+            console.error({ CloseSSE: err });
+            newEventSource.close();
+        };
 
-			newEventSource.onerror = (err) => {
-				setState('disconnected');
-				setError(err);
-				console.error({ CloseSSE: err });
-				newEventSource.close();
-			};
+        setState(
+            newEventSource.readyState === newEventSource.OPEN
+                ? 'connected'
+                : newEventSource.readyState === newEventSource.CONNECTING
+                    ? 'connecting'
+                    : 'disconnected',
+        );
 
-			if (newEventSource.readyState === newEventSource.OPEN) {
-				setState(
-					newEventSource.readyState === newEventSource.OPEN
-						? 'connected'
-						: newEventSource.readyState === newEventSource.CONNECTING
-							? 'connecting'
-							: 'disconnected',
-				);
-			}
 
-			return newEventSource;
-		}
+        return () => {
+            newEventSource.close();
+        }
+    }, [options?.limit, url]);
 
-		return prev;
-	}, [options?.limit, url]);
 
-	useEffect(() => {
-		const source = connect();
-
-		return () => {
-			setState('disconnected');
-			source.close();
-			eventSource.current = undefined;
-		};
-	}, [connect]);
-
-	useEffect(() => {
-		if (state === 'disconnected') {
-			connect();
-		}
-	}, [connect, state]);
-
-	useInterval(() => {
-		if (state === 'disconnected' || eventSource.current === undefined || eventSource.current.readyState === EventSource.CLOSED) {
-			connect();
-		}
-	}, 5000);
-
-	return { data: messages, state, error };
+    return { data: messages, state, error };
 }

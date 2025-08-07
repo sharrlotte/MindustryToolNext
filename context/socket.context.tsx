@@ -36,6 +36,7 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 	const [socket] = useState<SocketClient>(defaultContextValue.socket);
 	const [state, setState] = useState<SocketState>(defaultContextValue.socket.getState());
 	const { state: authState } = useSession();
+    
 	const isShowDisconnected = useRef(false);
 
 	useEffect(() => {
