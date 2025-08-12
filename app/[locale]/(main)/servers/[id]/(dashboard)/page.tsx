@@ -10,9 +10,11 @@ import CopyButton from '@/components/button/copy.button';
 import { CatchError } from '@/components/common/catch-error';
 import ColorText from '@/components/common/color-text';
 import ErrorMessage from '@/components/common/error-message';
+import { RelativeTime } from '@/components/common/relative-time';
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
 import ServerStatusBadge from '@/components/server/server-status-badge';
+import ServerVersion from '@/components/server/server-version';
 import Divider from '@/components/ui/divider';
 import { Skeleton } from '@/components/ui/skeleton';
 import Skeletons from '@/components/ui/skeletons';
@@ -27,7 +29,6 @@ import { formatTitle, hasAccess } from '@/lib/utils';
 
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import ServerVersion from '@/components/server/server-version';
 
 export const experimental_ppr = true;
 
@@ -79,9 +80,25 @@ export default async function Page({ params }: Props) {
 		return <ErrorMessage error={session} />;
 	}
 
-	const { name, avatar, description, port, mode, gamemode, players, kicks, status, userId, address, mapName, errors, version } =
-		server;
+	const {
+		name,
+		avatar,
+		description,
+		port,
+		mode,
+		gamemode,
+		players,
+		kicks,
+		status,
+		userId,
+		address,
+		mapName,
+		errors,
+		version,
+		startedAt,
+	} = server;
 
+	const startTime = new Date(startedAt);
 	const canAccess = hasAccess(session, { any: [{ authority: 'VIEW_ADMIN_SERVER' }, { authorId: server.userId }] });
 
 	return (
@@ -135,6 +152,12 @@ export default async function Page({ params }: Props) {
 									</Fragment>
 								</div>
 							)}
+							<div className="flex flex-col gap-1">
+								<Fragment>
+									<Tran text="server.start-time" />
+									<RelativeTime date={startTime}/>
+								</Fragment>
+							</div>
 						</main>
 						<Divider />
 						<div className="flex items-start justify-between gap-4 flex-wrap">
