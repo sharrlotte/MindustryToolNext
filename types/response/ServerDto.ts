@@ -33,6 +33,7 @@ export const ServerDtoSchema = z.object({
 	plan: ServerPlanSchema,
 	image: z.string(),
 	version: z.string(),
+    startedAt: z.number()
 });
 
 export type ServerDto = z.infer<typeof ServerDtoSchema>;
