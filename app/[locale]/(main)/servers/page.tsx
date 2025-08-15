@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import React, { Suspense } from 'react';
 
 import ServerFooter from '@/app/[locale]/(main)/servers/page.footer';
+import PlayerConnectRoomList from '@/app/[locale]/(main)/servers/player-connect-room-list';
 import ServerList from '@/app/[locale]/(main)/servers/server-list';
 import ServersSkeleton from '@/app/[locale]/(main)/servers/servers.skeleton';
 
@@ -16,6 +16,8 @@ import { getTranslation } from '@/i18n/server';
 import ClientProtectedElement from '@/layout/client-protected-element';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
+
+import dynamic from 'next/dynamic';
 
 const MeServer = dynamic(() => import('@/app/[locale]/(main)/servers/my-server'));
 
@@ -55,10 +57,13 @@ export default async function Page({ searchParams }: Props) {
 
 	return (
 		<div className="flex h-full flex-col overflow-hidden">
-			<ServerTabs name="tab" value="server-list" values={['server-list', 'my-server']}>
+			<ServerTabs name="tab" value="server-list" values={['server-list', 'my-server', 'player-connect']}>
 				<ServerTabsList>
 					<ServerTabsTrigger value="server-list">
 						<Tran text="server.server-list" />
+					</ServerTabsTrigger>
+					<ServerTabsTrigger value="player-connect">
+						<Tran text="server.player-connect" />
 					</ServerTabsTrigger>
 					<ServerTabsTrigger value="my-server">
 						<Tran text="server.my-server" />
@@ -70,6 +75,11 @@ export default async function Page({ searchParams }: Props) {
 					</Suspense>
 					<Suspense>
 						<ServerFooter create={create} />
+					</Suspense>
+				</ServerTabsContent>
+				<ServerTabsContent className="flex-col justify-between overflow-hidden" display="flex" value="player-connect">
+					<Suspense fallback={<ServersSkeleton />}>
+						<PlayerConnectRoomList />
 					</Suspense>
 				</ServerTabsContent>
 				<ServerTabsContent className="flex-col justify-between overflow-hidden" display="flex" value="my-server">
