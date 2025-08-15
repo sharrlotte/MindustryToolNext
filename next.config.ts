@@ -93,6 +93,18 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
+    async rewrites() {
+    return [
+      {
+        source: '/:locale/docs',
+        destination: 'https://web.mindustry-tool.com/:locale/docs',
+      },
+      {
+        source: '/:locale/docs/:path*',
+        destination: 'https://web.mindustry-tool.com/:locale/docs/:path*',
+      },
+    ]
+  },
 };
 
 const analyze = process.env.ANALYZE === 'true';
