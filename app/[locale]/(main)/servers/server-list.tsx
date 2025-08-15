@@ -10,12 +10,12 @@ import { SearchBar, SearchInput } from '@/components/search/search-input';
 import ServerCard from '@/components/server/server-card';
 import ServerCardSkeleton from '@/components/server/server-card.skeleton';
 
-import { getServers } from '@/query/server';
 import { PaginationQuerySchema } from '@/types/schema/search-query';
+
+import { getServers } from '@/query/server';
 
 export default function ServerList() {
 	const [name, setName] = useState('');
-
 	const [debounced] = useDebounceValue(name, 200);
 
 	return (
