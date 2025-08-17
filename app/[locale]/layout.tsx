@@ -47,7 +47,6 @@ export const metadata: Metadata = {
 	twitter: {
 		site: '@MindustryTool',
 		card: 'summary_large_image',
-        'images': '/home.jpg'
 	},
 	openGraph: {
 		images: '/home.jpg',
