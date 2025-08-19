@@ -223,7 +223,7 @@ export const groups: readonly PathGroup[] = [
 			},
 			{
 				id: 'posts',
-				path: 'web.mindustry-tool.com/posts',
+				path: 'https://web.mindustry-tool.com/posts',
 				name: <Tran asChild text="post" />,
 				icon: <BookOpenIcon />,
 				regex: [`^${localesRegex}/posts`],
