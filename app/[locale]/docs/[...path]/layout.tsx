@@ -10,10 +10,10 @@ import SmallNavbarCollapse from '@/app/[locale]/(main)/small-navbar-collapse';
 import SmallNavbarInsideToggle from '@/app/[locale]/(main)/small-navbar-inside-toggle';
 import SmallNavbarToggle from '@/app/[locale]/(main)/small-navbar-toggle';
 import { UserDisplay } from '@/app/[locale]/(main)/user-display';
-import DocSearchBar from '@/app/[locale]/_docs/doc-search-bar';
-import { Doc, isDocExists, readDocsByLocale, reduceDocs } from '@/app/[locale]/_docs/doc-type';
-import LanguageSwitcher from '@/app/[locale]/_docs/language-switcher';
-import ThemeSwitcher from '@/app/[locale]/_docs/theme-swicther';
+import DocSearchBar from '@/app/[locale]/docs/doc-search-bar';
+import { Doc, isDocExists, readDocsByLocale, reduceDocs } from '@/app/[locale]/docs/doc-type';
+import LanguageSwitcher from '@/app/[locale]/docs/language-switcher';
+import ThemeSwitcher from '@/app/[locale]/docs/theme-swicther';
 
 import Aurora from '@/components/common/aurora';
 import { CatchError } from '@/components/common/catch-error';

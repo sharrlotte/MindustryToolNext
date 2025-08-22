@@ -1,6 +1,6 @@
 import removeMd from 'remove-markdown';
 
-import { HeadingCards } from '@/app/[locale]/_docs/[...path]/heading-card';
+import { HeadingCards } from '@/app/[locale]/docs/[...path]/heading-card';
 
 import ScrollContainer from '@/components/common/scroll-container';
 import Tran from '@/components/common/tran';
