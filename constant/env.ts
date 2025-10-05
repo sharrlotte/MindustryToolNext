@@ -5,7 +5,7 @@ const env = {
 	webName: 'Mindustry Tool',
 	locales: ['en', 'vi', 'kr', 'cn', 'jp', 'ru', 'uk'] as const,
 	defaultLocale: 'en',
-	imageFormat: '.webp',
+	imageFormat: '.jpg',
 	url: {
 		socket: process.env.NEXT_PUBLIC_BACKEND_SOCKET_URL as string,
 		base: process.env.NEXT_PUBLIC_FRONTEND_URL as string,
