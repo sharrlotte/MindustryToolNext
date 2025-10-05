@@ -5,8 +5,3 @@
 #docs-markdown tr {
 	@apply border-b;
 }
-
-#docs-markdown th,
-td {
-	@apply p-2;
-}

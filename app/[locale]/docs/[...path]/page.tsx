@@ -1,11 +1,12 @@
 import fs from 'fs';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { Metadata } from 'next';
-import Link from 'next/link';
 import removeMd from 'remove-markdown';
 
-import TableOfContents from '@/app/[locale]/_docs/[...path]/table-of-contents';
-import { getDocFolderPath, getDocPath, getNextPrevDoc, isDocExists, readDoc, readDocFolder } from '@/app/[locale]/_docs/doc-type';
+import './document.module.css';
+
+import TableOfContents from '@/app/[locale]/docs/[...path]/table-of-contents';
+import { getDocFolderPath, getDocPath, getNextPrevDoc, isDocExists, readDoc, readDocFolder } from '@/app/[locale]/docs/doc-type';
 
 import { CatchError } from '@/components/common/catch-error';
 import InternalLink from '@/components/common/internal-link';
@@ -18,7 +19,7 @@ import Divider from '@/components/ui/divider';
 import { generateAlternate } from '@/lib/i18n.utils';
 import { formatTitle } from '@/lib/utils';
 
-import './document.module.css';
+import Link from 'next/link';
 
 type Props = { params: Promise<{ path: string[]; locale: string }> };
 
