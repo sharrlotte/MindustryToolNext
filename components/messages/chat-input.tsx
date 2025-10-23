@@ -13,7 +13,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import useMessage from '@/hooks/use-message';
 
 import { maxMessageLength } from '@/constant/constant';
-import { useSocket } from '@/context/socket.context';
 import { cn } from '@/lib/utils';
 
 import dynamic from 'next/dynamic';
@@ -34,7 +33,6 @@ type ChatInputProps = {
 } & React.ComponentPropsWithoutRef<HTMLTextAreaElement>;
 
 export default function ChatInput({ className, room, placeholder, autocomplete, onKeyPress, ...props }: ChatInputProps) {
-	const { state } = useSocket();
 	const { theme } = useTheme();
 	const ref = useRef<AutosizeTextAreaRef>(null);
 
@@ -152,7 +150,7 @@ export default function ChatInput({ className, room, placeholder, autocomplete, 
 						type="submit"
 						title="send"
 						tabIndex={0}
-						disabled={state !== 'connected' || message.length === 0 || message.length > maxMessageLength}
+						disabled={ message.length === 0 || message.length > maxMessageLength}
 					>
 						<SendIcon />
 					</Button>
